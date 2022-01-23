@@ -8,10 +8,12 @@ environment:
   flutter: ">=1.17.0"
 
 dependencies:
+  adaptive_breakpoints: ^0.1.1
   flutter:
     sdk: flutter
   flutter_spinkit: ^5.1.0
   flutter_widget_from_html_core: ^0.8.4
+  google_fonts: ^2.2.0
   url_launcher: ^6.0.18
 
 dev_dependencies:
