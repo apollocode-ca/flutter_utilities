@@ -1,73 +1,7 @@
-import 'package:flutter/material.dart';
 
 /// Credit: https://github.com/iamvivekkaushik/AwesomeCard/blob/master/lib/extra/helper.dart
 /// Adapted for our usecase
 class CardHelper {
-  static Widget cardType(String? cardType) {
-    switch (cardType) {
-      case "amex":
-        return Image.asset(
-          'assets/images/cards/american_express.png',
-          width: 25,
-          height: 15,
-        );
-      case "dinersclub":
-        return Image.asset(
-          'assets/images/cards/diners_club.png',
-          width: 15,
-          height: 15,
-        );
-      case "discover":
-        return Image.asset(
-          'assets/images/cards/discover.png',
-          width: 35,
-          height: 20,
-        );
-      case "jcb":
-        return Image.asset(
-          'assets/images/cards/jcb.png',
-          width: 15,
-          height: 15,
-        );
-      case "mastercard":
-        return Image.asset(
-          'assets/images/cards/master_card.png',
-          width: 25,
-          height: 15,
-        );
-      case "maestro":
-        return Image.asset(
-          'assets/images/cards/maestro.png',
-          width: 25,
-          height: 15,
-        );
-      case "rupay":
-        return Image.asset(
-          'assets/images/cards/rupay.png',
-          width: 40,
-          height: 20,
-        );
-      case "visa":
-        return Image.asset(
-          'assets/images/cards/visa.png',
-          width: 25,
-          height: 15,
-          color: const Color(0xFF00579f),
-        );
-      case "elo":
-        return Image.asset(
-          'assets/images/cards/elo.png',
-          width: 20,
-          height: 20,
-        );
-      default:
-        return const SizedBox(
-          width: 20,
-          height: 20,
-        );
-    }
-  }
-
   static String getCardType(String cardNumber) {
     final rAmericanExpress = RegExp(r'^3[47][0-9]{0,}$');
     final rDinersClub = RegExp(r'^3(?:0[0-59]{1}|[689])[0-9]{0,}$');

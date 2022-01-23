@@ -38,7 +38,6 @@ flutter:
     - assets/
     - assets/icons/
     - assets/images/
-    - assets/images/cards
 
   # To add assets to your package, add an assets section, like this:
   # assets:
