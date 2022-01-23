@@ -10,7 +10,7 @@ import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class Auth {
   FirebaseAuth auth = FirebaseAuth.instance;
-  
+
   static get user => FirebaseAuth.instance.currentUser;
 
   static Future<bool> isAuth() async {
@@ -32,6 +32,31 @@ class Auth {
     if (user == null) return null;
     var token = FirebaseAuth.instance.currentUser?.refreshToken;
     return token;
+  }
+
+  static Future<UserCredential> authenticateUser(
+      String email, String password) async {
+    UserCredential userCredential = await FirebaseAuth.instance
+        .signInWithEmailAndPassword(email: email, password: password);
+
+    return userCredential;
+  }
+
+  static Future<UserCredential> anonymousLogin() async {
+    UserCredential userCredential =
+        await FirebaseAuth.instance.signInAnonymously();
+
+    return userCredential;
+  }
+
+  static Future<UserCredential> registerUser(
+      BuildContext context, String email, String newPassword) async {
+    await authenticateUser(email, newPassword);
+
+    UserCredential userCredential = await FirebaseAuth.instance
+        .createUserWithEmailAndPassword(email: email, password: newPassword);
+
+    return userCredential;
   }
 
   static Future<void> disconnectUser({BuildContext? context}) async {
