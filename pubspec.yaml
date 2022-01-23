@@ -9,12 +9,19 @@ environment:
 
 dependencies:
   adaptive_breakpoints: ^0.1.1
+  eventify: ^1.0.0
+  firebase_auth: ^3.3.5
   flutter:
     sdk: flutter
   flutter_spinkit: ^5.1.0
   flutter_widget_from_html_core: ^0.8.4
   google_fonts: ^2.2.0
+  google_sign_in: ^5.2.3
+  jwt_decoder: ^2.0.1
+  shared_preferences: ^2.0.12
+  sign_in_with_apple: ^3.3.0
   url_launcher: ^6.0.18
+  web_socket_channel: ^2.1.0
 
 dev_dependencies:
   flutter_test:
@@ -26,6 +33,12 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 flutter:
+
+  assets:
+    - assets/
+    - assets/icons/
+    - assets/images/
+    - assets/images/cards
 
   # To add assets to your package, add an assets section, like this:
   # assets:
