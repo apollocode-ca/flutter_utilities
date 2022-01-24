@@ -1,6 +1,6 @@
-import 'package:apollocode_flutter_widgets/services/auth.dart';
-import 'package:apollocode_flutter_widgets/widgets/loading.dart';
-import 'package:apollocode_flutter_widgets/widgets/not_found.dart';
+import 'package:apollocode_flutter_utilities/services/auth.dart';
+import 'package:apollocode_flutter_utilities/widgets/loading.dart';
+import 'package:apollocode_flutter_utilities/widgets/not_found.dart';
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 

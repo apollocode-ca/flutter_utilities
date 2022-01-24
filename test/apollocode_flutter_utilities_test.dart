@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:apollocode_flutter_widgets/apollocode_flutter_widgets.dart';
+import 'package:apollocode_flutter_utilities/apollocode_flutter_utilities.dart';
 
 void main() {
   test('adds one to input values', () {

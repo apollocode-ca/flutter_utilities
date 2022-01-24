@@ -1,5 +1,5 @@
-import 'package:apollocode_flutter_widgets/helpers/adaptive.dart';
-import 'package:apollocode_flutter_widgets/widgets/adaptive_appbar.dart';
+import 'package:apollocode_flutter_utilities/helpers/adaptive.dart';
+import 'package:apollocode_flutter_utilities/widgets/adaptive_appbar.dart';
 import 'package:flutter/material.dart';
 
 class DashboardLayout extends StatefulWidget {

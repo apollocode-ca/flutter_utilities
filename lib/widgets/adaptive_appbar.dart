@@ -1,4 +1,4 @@
-import 'package:apollocode_flutter_widgets/helpers/adaptive.dart';
+import 'package:apollocode_flutter_utilities/helpers/adaptive.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable

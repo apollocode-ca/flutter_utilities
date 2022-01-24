@@ -1,4 +1,4 @@
-library apollocode_flutter_widgets;
+library apollocode_flutter_utilities;
 
 /// A Calculator.
 class Calculator {
