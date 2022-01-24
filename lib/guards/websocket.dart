@@ -3,21 +3,17 @@ import 'package:flutter/material.dart';
 
 class WebsocketGuard extends StatelessWidget {
   final Widget body;
-  final String token;
   final String endpoint;
+  final bool useAuth;
 
-  const WebsocketGuard(
-    this.body,
-    this.token,
-    this.endpoint, {
-    Key? key,
-  }) : super(key: key);
+  const WebsocketGuard(this.body, this.endpoint,
+      {Key? key, this.useAuth = true})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: WebsocketService.init(token, endpoint),
-      initialData: null,
+      future: WebsocketService.init(endpoint, useAuth: useAuth),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         return body;
       },

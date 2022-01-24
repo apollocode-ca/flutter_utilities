@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:apollocode_flutter_utilities/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:eventify/eventify.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
@@ -10,10 +11,17 @@ class WebsocketService {
   static bool isWaitingOnReconnect = false;
   static bool printEventsToConsole = false;
 
-  static Future init(String idToken, String url) async {
-    channel = WebSocketChannel.connect(
-      Uri.parse('$url?authorization=$idToken'),
-    );
+  static Future init(String url, {bool useAuth = true}) async {
+    Uri uri;
+
+    if (useAuth) {
+      var token = await Auth.getToken();
+      uri = Uri.parse('$url?authorization=$token');
+    } else {
+      uri = Uri.parse(url);
+    }
+
+    channel = WebSocketChannel.connect(uri);
 
     channel!.stream.listen((message) => _handleMessage(message),
         onError: (error) {
