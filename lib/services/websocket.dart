@@ -20,7 +20,9 @@ class WebsocketService {
     } else {
       uri = Uri.parse(url);
     }
-
+    if (channel != null && channel?.closeCode == null) {
+      return;
+    }
     channel = WebSocketChannel.connect(uri);
 
     channel!.stream.listen((message) => _handleMessage(message),
