@@ -7,33 +7,33 @@ class AdaptiveAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final Color? desktopBackgroundColor;
   final Color? mobileBackgroundColor;
-  late bool _isDesktop;
+  final bool isDesktop;
 
   AdaptiveAppBar(
       {Key? key,
       this.actions = const [],
       this.title = "",
       this.desktopBackgroundColor,
-      this.mobileBackgroundColor})
+      this.mobileBackgroundColor,
+      this.isDesktop = false})
       : super(key: key);
 
   @override
-  Size get preferredSize => _isDesktop
+  Size get preferredSize => isDesktop
       ? const Size.fromHeight(appBarDesktopHeight)
       : const Size.fromHeight(kToolbarHeight);
 
   @override
   Widget build(BuildContext context) {
-    _isDesktop = isDisplayDesktop(context);
 
     return AppBar(
-        automaticallyImplyLeading: !_isDesktop,
+        automaticallyImplyLeading: !isDesktop,
         toolbarHeight: 125,
         elevation: 0,
         backgroundColor:
-            (_isDesktop) ? desktopBackgroundColor : mobileBackgroundColor,
+            (isDesktop) ? desktopBackgroundColor : mobileBackgroundColor,
         centerTitle: true,
-        title: (_isDesktop)
+        title: (isDesktop)
             ? Padding(
                 padding: const EdgeInsets.only(top: 75),
                 child: Text(
