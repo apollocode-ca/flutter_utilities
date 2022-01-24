@@ -10,7 +10,7 @@ class WebsocketService {
   static bool isWaitingOnReconnect = false;
   static bool printEventsToConsole = false;
 
-  static void init(String idToken, String url) {
+  static Future init(String idToken, String url) async {
     channel = WebSocketChannel.connect(
       Uri.parse('$url?authorization=$idToken'),
     );
