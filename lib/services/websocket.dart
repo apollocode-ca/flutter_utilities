@@ -46,7 +46,8 @@ class WebsocketService {
     if (WebsocketService.printEventsToConsole) {
       debugPrint(castedArgs['channel']);
     }
-    WebsocketService.emitter.emit(castedArgs['channel'], castedArgs['data']);
+    WebsocketService.emitter
+        .emit(castedArgs['channel'], null, castedArgs['data']);
   }
 
   static void sendMessage(String event, dynamic data) {
