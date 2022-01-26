@@ -10,12 +10,14 @@ class AuthGuard extends StatelessWidget {
   final bool allowAnonymous;
   final Widget loading;
   final Widget notFound;
+  final String pathToLogin;
   static String? pathAfterConnection;
 
   Future goToLogin(BuildContext context) async {
     await Future.delayed(Duration.zero);
 
-    Navigator.of(context).pushNamedAndRemoveUntil("/login", (route) => false);
+    Navigator.of(context)
+        .pushNamedAndRemoveUntil(pathToLogin, (route) => false);
   }
 
   AuthGuard(this.body,
@@ -24,6 +26,7 @@ class AuthGuard extends StatelessWidget {
       this.defaultToAnonymous = false,
       this.allowAnonymous = true,
       String? pathAfterConnection,
+      this.pathToLogin = "/login",
       this.loading = const Loading(),
       this.notFound = const NotFound()})
       : super(key: key) {
@@ -41,9 +44,10 @@ class AuthGuard extends StatelessWidget {
           return loading;
         }
 
-        if ((snapshot.data == false && mustBeConnected) || (Auth.user!.isAnonymous && !allowAnonymous)) {
-            goToLogin(context);
-            return loading;
+        if ((snapshot.data == false && mustBeConnected) ||
+            (Auth.user!.isAnonymous && !allowAnonymous)) {
+          goToLogin(context);
+          return loading;
         }
 
         return body;
