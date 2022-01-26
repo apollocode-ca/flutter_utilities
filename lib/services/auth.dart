@@ -11,7 +11,7 @@ import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 class Auth {
   FirebaseAuth auth = FirebaseAuth.instance;
 
-  static get user => FirebaseAuth.instance.currentUser;
+  static User? get user => FirebaseAuth.instance.currentUser;
 
   static Future<bool> isAuth({bool defaultToAnonymous = false}) async {
     var user = await FirebaseAuth.instance.userChanges().first;

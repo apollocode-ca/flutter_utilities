@@ -7,6 +7,7 @@ class AuthGuard extends StatelessWidget {
   final Widget body;
   final bool mustBeConnected;
   final bool defaultToAnonymous;
+  final bool allowAnonymous;
   final Widget loading;
   final Widget notFound;
   static String? pathAfterConnection;
@@ -21,6 +22,7 @@ class AuthGuard extends StatelessWidget {
       {Key? key,
       this.mustBeConnected = true,
       this.defaultToAnonymous = false,
+      this.allowAnonymous = true,
       String? pathAfterConnection,
       this.loading = const Loading(),
       this.notFound = const NotFound()})
@@ -38,9 +40,10 @@ class AuthGuard extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return loading;
         }
-        if (snapshot.data == false && mustBeConnected) {
-          goToLogin(context);
-          return loading;
+
+        if ((snapshot.data == false && mustBeConnected) || (Auth.user!.isAnonymous && !allowAnonymous)) {
+            goToLogin(context);
+            return loading;
         }
 
         return body;
