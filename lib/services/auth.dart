@@ -13,8 +13,12 @@ class Auth {
 
   static get user => FirebaseAuth.instance.currentUser;
 
-  static Future<bool> isAuth() async {
+  static Future<bool> isAuth({bool defaultToAnonymous = false}) async {
     var user = await FirebaseAuth.instance.userChanges().first;
+
+    if (user == null && defaultToAnonymous) {
+      await Auth.anonymousLogin();
+    }
 
     return user != null;
   }

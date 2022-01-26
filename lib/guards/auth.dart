@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 class AuthGuard extends StatelessWidget {
   final Widget body;
   final bool mustBeConnected;
+  final bool defaultToAnonymous;
   final Widget loading;
   final Widget notFound;
   static String? pathAfterConnection;
@@ -17,7 +18,12 @@ class AuthGuard extends StatelessWidget {
   }
 
   AuthGuard(this.body,
-      {Key? key, this.mustBeConnected = true, String? pathAfterConnection, this.loading = const Loading(), this.notFound = const NotFound()})
+      {Key? key,
+      this.mustBeConnected = true,
+      this.defaultToAnonymous = false,
+      String? pathAfterConnection,
+      this.loading = const Loading(),
+      this.notFound = const NotFound()})
       : super(key: key) {
     // ignore: prefer_initializing_formals
     AuthGuard.pathAfterConnection = pathAfterConnection;
@@ -26,7 +32,7 @@ class AuthGuard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<bool>(
-      future: Auth.isAuth(),
+      future: Auth.isAuth(defaultToAnonymous: defaultToAnonymous),
       initialData: null,
       builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
