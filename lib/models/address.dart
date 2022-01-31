@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class Address {
   String? number;
@@ -28,7 +29,7 @@ class Address {
 
   Map<String, dynamic> toJson() {
     return {
-      'address': street,
+      'street': street,
       'number': number,
       'apt': apt,
       'city': city,
@@ -41,4 +42,13 @@ class Address {
   String toString() {
     return '${(apt != null && apt != "") ? apt! + "-" : ""}$number $street, $city, $province, $zipCode';
   }
+
+  static bool validateZipCode(String zipCode) {
+    RegExp regExp = RegExp(r'^[A-Za-z]\d[A-Za-z] \d[A-Za-z]\d$');
+    return regExp.hasMatch(zipCode);
+  }
+
+  static var zipFormatter = MaskTextInputFormatter(
+      mask: 'A#A #A#',
+      filter: {"#": RegExp(r'[0-9]'), "A": RegExp(r'[AA-ZZ]')});
 }
