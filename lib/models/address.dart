@@ -50,5 +50,5 @@ class Address {
 
   static var zipFormatter = MaskTextInputFormatter(
       mask: 'A#A #A#',
-      filter: {"#": RegExp(r'[0-9]'), "A": RegExp(r'[AA-ZZ]')});
+      filter: {"#": RegExp(r'[0-9]'), "A": RegExp(r'[aA-zZ]')});
 }
