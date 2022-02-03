@@ -47,6 +47,7 @@ class FormFieldInput {
       this.onChanged,
       this.onChangedDate,
       this.focusNode,
+      this.controller,
       this.initialValue,
       this.initialDateValue}) {
     controller = TextEditingController(text: initialValue);
