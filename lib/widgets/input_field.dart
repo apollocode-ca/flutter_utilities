@@ -1,4 +1,5 @@
 import 'package:apollocode_flutter_utilities/models/form_field_input.dart';
+import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -45,6 +46,67 @@ class _InputFieldState extends State<InputField> {
           widget.config.onChanged!(widget.config.controller!.text);
         }
       });
+    }
+
+    if (widget.config.type == TextInputType.datetime) {
+      FormFieldInput temp = widget.config;
+      temp.type = TextInputType.text;
+      // temp.enabled = false;
+      temp.iconWidget = const Icon(Icons.calendar_today);
+      return DateTimePicker(
+        type: (widget.config.dateOnly)
+            ? DateTimePickerType.date
+            : DateTimePickerType.dateTime,
+        firstDate: (widget.config.minimumDate != null)
+            ? widget.config.minimumDate
+            : DateTime(1970, 01, 01),
+        lastDate: DateTime(2100, 07, 07),
+        initialDate: widget.config.initialDateValue,
+        initialValue: (widget.config.controller != null)
+            ? null
+            : widget.config.initialDateValue.toString(),
+        controller: widget.config.controller,
+        enabled: widget.config.enabled,
+        onChanged: (String value) {
+          if (widget.config.onChangedDate != null) {
+            widget.config.onChangedDate!(DateTime.tryParse(value.toString()));
+          }
+        },
+        decoration: (widget.config.enabled)
+            ? InputDecoration(
+                suffixIcon: widget.config.iconWidget,
+                hintText: widget.config.label,
+                labelText:
+                    (widget.config.secondary) ? widget.config.label : null,
+                hintStyle: GoogleFonts.poppins(
+                    color: (widget.config.focusNode!.hasFocus)
+                        ? Theme.of(context).colorScheme.secondary
+                        : ((widget.config.secondary)
+                            ? Theme.of(context)
+                                .colorScheme
+                                .secondary
+                                .withOpacity(0.70)
+                            : Colors.white)),
+                fillColor: (widget.config.focusNode!.hasFocus)
+                    ? Colors.white
+                    : ((widget.config.secondary)
+                        ? Colors.white
+                        : Colors.transparent)
+                // labelText: widget.config.label,
+                )
+            : InputDecoration(
+                fillColor: Theme.of(context).disabledColor,
+                suffixIcon: widget.config.iconWidget,
+                hintText: widget.config.label,
+                hintStyle: GoogleFonts.poppins(color: Colors.white),
+              ),
+        style: GoogleFonts.poppins(
+            color: (widget.config.focusNode!.hasFocus)
+                ? Theme.of(context).colorScheme.secondary
+                : ((widget.config.secondary)
+                    ? Theme.of(context).colorScheme.secondary.withOpacity(0.70)
+                    : Colors.white)),
+      );
     }
 
     return Padding(

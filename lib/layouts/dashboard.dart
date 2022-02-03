@@ -31,7 +31,7 @@ class _DashboardLayoutState extends State<DashboardLayout> {
           _ListDrawer(widget.menu, widget.menuWidth),
           Expanded(
             child: Scaffold(
-              appBar: AdaptiveAppBar(
+              appBar: const AdaptiveAppBar(
                 isDesktop: true,
               ),
               body: body,
@@ -42,7 +42,7 @@ class _DashboardLayoutState extends State<DashboardLayout> {
     }
 
     return Scaffold(
-      appBar: AdaptiveAppBar(),
+      appBar: const AdaptiveAppBar(),
       body: body,
       drawer: _ListDrawer(widget.menu, widget.menuWidth),
     );

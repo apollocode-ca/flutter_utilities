@@ -9,7 +9,7 @@ class AdaptiveAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Color? mobileBackgroundColor;
   final bool isDesktop;
 
-  AdaptiveAppBar(
+  const AdaptiveAppBar(
       {Key? key,
       this.actions = const [],
       this.title = "",
