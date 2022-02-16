@@ -1,8 +1,8 @@
 # This is a generated file; do not edit or check into version control.
-firebase_auth=/home/cobolt/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_auth-3.3.5/
-firebase_auth_web=/home/cobolt/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_auth_web-3.3.6/
+firebase_auth=/home/cobolt/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_auth-3.3.7/
+firebase_auth_web=/home/cobolt/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_auth_web-3.3.7/
 firebase_core=/home/cobolt/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core-1.11.0/
-firebase_core_web=/home/cobolt/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core_web-1.5.3/
+firebase_core_web=/home/cobolt/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core_web-1.5.4/
 google_sign_in=/home/cobolt/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/google_sign_in-5.2.3/
 google_sign_in_web=/home/cobolt/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/google_sign_in_web-0.10.0+4/
 path_provider=/home/cobolt/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider-2.0.8/

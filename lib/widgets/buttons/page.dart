@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class PageButton extends StatelessWidget {
@@ -15,7 +16,7 @@ class PageButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       onTap: () {
-        Navigator.of(context).pushNamed(path);
+        GoRouter.of(context).go(path);
       },
       selected: (currentPage == path),
       selectedTileColor:
