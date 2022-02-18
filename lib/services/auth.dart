@@ -138,6 +138,7 @@ class Auth {
         .toString()
         .split('=')[1]
         .toString()
+        .replaceAll('%2B', '+')
         .replaceAll('%40', '@');
     await FirebaseAuth.instance
         .signInWithEmailLink(email: email, emailLink: url);
