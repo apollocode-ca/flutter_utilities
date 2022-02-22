@@ -22,7 +22,7 @@ class Address {
         number: json['number'] ?? '',
         apt: json['apt'] ?? '',
         city: json['city'] ?? '',
-        zipCode: json['zipCode'] ?? '',
+        zipCode: json['zip_code'] ?? '',
         province: json['province'] ?? '');
   }
 
