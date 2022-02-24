@@ -24,7 +24,8 @@ dependencies:
   mask_text_input_formatter: ^2.1.0
   shared_preferences: ^2.0.12
   sign_in_with_apple:
-    git: https://github.com/noordawod/dart_packages/tree/bugfix/flutter-v2.11.0-0.0.pre.632
+    git: 
+      url: https://github.com/apollocode-ca/dart_packages
   url_launcher: ^6.0.18
   web_socket_channel: ^2.1.0
 
