@@ -2,6 +2,7 @@ name: apollocode_flutter_utilities
 description: A new Flutter package project.
 version: 0.0.1
 homepage: apollocode.ca
+publish_to: none
 
 environment:
   sdk: ">=2.15.0-268.0.dev <3.0.0"
@@ -22,7 +23,8 @@ dependencies:
   jwt_decoder: ^2.0.1
   mask_text_input_formatter: ^2.1.0
   shared_preferences: ^2.0.12
-  sign_in_with_apple: ^3.3.0
+  sign_in_with_apple:
+    git: https://github.com/noordawod/dart_packages/tree/bugfix/flutter-v2.11.0-0.0.pre.632
   url_launcher: ^6.0.18
   web_socket_channel: ^2.1.0
 
