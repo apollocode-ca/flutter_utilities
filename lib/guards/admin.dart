@@ -22,13 +22,13 @@ class AdminGuard extends StatelessWidget {
         }
 
         if (snapshot.data == null) {
-          return const NotFound();
+          return notFound;
         }
 
         Map<String, dynamic> decodedToken = JwtDecoder.decode(snapshot.data!);
         
         if (decodedToken['role'] != "admin") {
-          return const NotFound();
+          return notFound;
         }
 
         return body;
