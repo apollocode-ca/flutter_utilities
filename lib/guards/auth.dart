@@ -2,6 +2,7 @@ import 'package:apollocode_flutter_utilities/services/auth.dart';
 import 'package:apollocode_flutter_utilities/widgets/loading.dart';
 import 'package:apollocode_flutter_utilities/widgets/not_found.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class AuthGuard extends StatelessWidget {
   final Widget body;
@@ -11,13 +12,19 @@ class AuthGuard extends StatelessWidget {
   final Widget loading;
   final Widget notFound;
   final String pathToLogin;
+  final bool useGoRouter;
   static String? pathAfterConnection;
 
   Future goToLogin(BuildContext context) async {
     await Future.delayed(Duration.zero);
 
-    Navigator.of(context)
-        .pushNamedAndRemoveUntil(pathToLogin, (route) => false);
+    if (!useGoRouter) {
+      Navigator.of(context)
+          .pushNamedAndRemoveUntil(pathToLogin, (route) => false);
+      return;
+    }
+
+    GoRouter.of(context).go(pathToLogin);
   }
 
   AuthGuard(this.body,
@@ -28,7 +35,8 @@ class AuthGuard extends StatelessWidget {
       String? pathAfterConnection,
       this.pathToLogin = "/login",
       this.loading = const Loading(),
-      this.notFound = const NotFound()})
+      this.notFound = const NotFound(),
+      this.useGoRouter = false})
       : super(key: key) {
     // ignore: prefer_initializing_formals
     AuthGuard.pathAfterConnection = pathAfterConnection;
