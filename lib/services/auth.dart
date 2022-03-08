@@ -125,7 +125,7 @@ class Auth {
     return await FirebaseAuth.instance.signInWithCredential(oauthCredential);
   }
 
-  Future<UserCredential> signInWithFacebook() async {
+  static Future<UserCredential> signInWithFacebook() async {
     // Trigger the sign-in flow
     final LoginResult loginResult = await FacebookAuth.instance.login();
 
