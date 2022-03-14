@@ -53,7 +53,7 @@ class AuthGuard extends StatelessWidget {
         }
 
         if ((snapshot.data == false && mustBeConnected) ||
-            (Auth.user!.isAnonymous && !allowAnonymous)) {
+            (Auth.user?.isAnonymous == true && !allowAnonymous)) {
           goToLogin(context);
           return loading;
         }
