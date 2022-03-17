@@ -7,10 +7,6 @@ class TranslatedString {
     return TranslatedString(json.cast<String, String?>());
   }
 
-  // String string(String lang) {
-//
-  // }
-
   String? operator [](String languageCode) {
     String? translation = _translations[languageCode];
 
