@@ -37,7 +37,7 @@ class TranslatedString {
     return languageCode;
   }
 
-  void setTranslation(String languageCode, String? value) {
+  void operator []=(String languageCode, String? value) {
     _translations[languageCode] = value;
   }
 
