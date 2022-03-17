@@ -1,21 +1,12 @@
 
 class TranslatedString {
-  String? fr;
-  String? en;
-  get string => (String lang) {
-    if (lang.contains(lang)) {
-      return fr;
-    } 
+  Map<String, String> translations = {};
 
-    return en;
-  };
-
-  TranslatedString({this.fr, this.en});
+  TranslatedString(this.translations);
 
   factory TranslatedString.fromJson(Map<String, dynamic> json) {
-    return TranslatedString(
-        fr: json['fr']?.toString(), en: json['en']?.toString());
+    return TranslatedString(json.cast<String, String>());
   }
 
-  Map<String, dynamic> toJson() => {'fr': fr, 'en': en};
+  Map<String, dynamic> toJson() => translations.cast<String, dynamic>();
 }
