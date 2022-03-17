@@ -34,7 +34,7 @@ class TranslatedString {
       });
     }
 
-    return languageCode;
+    return translation;
   }
 
   void operator []=(String languageCode, String? value) {
