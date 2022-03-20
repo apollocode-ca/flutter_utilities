@@ -19,4 +19,11 @@ class Paginated<T> {
             0,
         json['pages']);
   }
+
+  Map<String, dynamic> toJson() => {
+        'data': data,
+        'itemCount': itemCount,
+        'pageCount': pageCount,
+        'pages': pages
+      };
 }
