@@ -1,8 +1,8 @@
 import 'package:apollocode_flutter_utilities/models/type_paginated.dart';
 import 'package:flutter/material.dart';
 
-class PaginationWidget extends StatelessWidget {
-  final Paginated paginated;
+class PaginationWidget<T> extends StatelessWidget {
+  final Paginated<T> paginated;
   final int page;
   final int pageSize;
   final String search;
