@@ -36,7 +36,7 @@ class PaginationWidget<T> extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Text("${paginated.itemCount} clients"),
+              Text("${paginated.itemCount} $label"),
               IconButton(
                   splashRadius: 4,
                   onPressed: onPageBack,
