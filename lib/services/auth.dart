@@ -54,11 +54,15 @@ class Auth {
   }
 
   static Future<UserCredential> registerUser(
-      BuildContext context, String email, String newPassword) async {
+      BuildContext context, String email, String newPassword, String? displayName) async {
     // await authenticateUser(email, newPassword);
 
     UserCredential userCredential = await FirebaseAuth.instance
         .createUserWithEmailAndPassword(email: email, password: newPassword);
+
+    if (displayName != null) {
+      await FirebaseAuth.instance.currentUser?.updateDisplayName(displayName);
+    }
 
     return userCredential;
   }
