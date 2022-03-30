@@ -54,7 +54,8 @@ class Auth {
   }
 
   static Future<UserCredential> registerUser(
-      BuildContext context, String email, String newPassword, String? displayName) async {
+      BuildContext context, String email, String newPassword,
+      {String? displayName}) async {
     // await authenticateUser(email, newPassword);
 
     UserCredential userCredential = await FirebaseAuth.instance
