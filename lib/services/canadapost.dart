@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:apollocode_flutter_utilities/models/address.dart';
-import 'package:apollocode_flutter_utilities/models/suggestion.dart';
 import 'package:apollocode_flutter_utilities/services/auth.dart';
 import 'package:flutter/material.dart';
 
