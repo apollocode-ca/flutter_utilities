@@ -1,4 +1,4 @@
-import 'package:apollocode_flutter_utilities/models/type_paginated.dart';
+import 'package:apollocode_dart_utilities/src/models/type_paginated.dart';
 import 'package:flutter/material.dart';
 
 class PaginationWidget<T> extends StatelessWidget {

@@ -1,5 +1,6 @@
 import 'package:apollocode_flutter_utilities/models/address.dart';
-import 'package:apollocode_flutter_utilities/models/suggestion.dart';
+import 'package:apollocode_dart_utilities/apollocode_dart_utilities.dart';
+
 import 'package:apollocode_flutter_utilities/services/canadapost.dart';
 import 'package:apollocode_flutter_utilities/widgets/input_field.dart';
 import 'package:flutter/material.dart';
