@@ -6,7 +6,10 @@ class DashboardLayout extends StatefulWidget {
   final Widget child;
   final Widget menu;
   final double menuWidth;
-  const DashboardLayout(this.child, this.menu, {Key? key, this.menuWidth = 125}) : super(key: key);
+  final Color? drawerColor;
+  const DashboardLayout(this.child, this.menu,
+      {Key? key, this.menuWidth = 125, this.drawerColor})
+      : super(key: key);
 
   @override
   State<DashboardLayout> createState() => _DashboardLayoutState();
@@ -28,7 +31,11 @@ class _DashboardLayoutState extends State<DashboardLayout> {
     if (isDesktop) {
       return Row(
         children: [
-          _ListDrawer(widget.menu, widget.menuWidth),
+          _ListDrawer(
+            widget.menu,
+            widget.menuWidth,
+            color: widget.drawerColor,
+          ),
           Expanded(
             child: Scaffold(
               appBar: const AdaptiveAppBar(
@@ -44,7 +51,11 @@ class _DashboardLayoutState extends State<DashboardLayout> {
     return Scaffold(
       appBar: const AdaptiveAppBar(),
       body: body,
-      drawer: _ListDrawer(widget.menu, widget.menuWidth),
+      drawer: _ListDrawer(
+        widget.menu,
+        widget.menuWidth,
+        color: widget.drawerColor,
+      ),
     );
   }
 }
@@ -52,7 +63,9 @@ class _DashboardLayoutState extends State<DashboardLayout> {
 class _ListDrawer extends StatelessWidget {
   final Widget menu;
   final double size;
-  const _ListDrawer(this.menu, this.size, {Key? key}) : super(key: key);
+  final Color? color;
+  const _ListDrawer(this.menu, this.size, {Key? key, this.color})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +73,7 @@ class _ListDrawer extends StatelessWidget {
       width: size,
       child: Drawer(
         elevation: 0,
-        backgroundColor: Colors.transparent,
+        backgroundColor: color ?? Colors.transparent,
         child: SafeArea(
           minimum: const EdgeInsets.only(top: 50, bottom: 125),
           child: menu,
