@@ -30,6 +30,7 @@ dependencies:
       url: https://github.com/apollocode-ca/dart_packages
   url_launcher: ^6.0.18
   web_socket_channel: ^2.1.0
+  flutter_facebook_auth: ^4.3.0
 
 dev_dependencies:
   flutter_test:
