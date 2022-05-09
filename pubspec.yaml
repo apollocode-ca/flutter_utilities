@@ -12,7 +12,7 @@ dependencies:
   adaptive_breakpoints: ^0.1.1
   date_time_picker: ^2.1.0
   eventify: ^1.0.0
-  firebase_auth: ^3.3.7
+  firebase_auth: ^3.3.17
   flutter:
     sdk: flutter
   flutter_spinkit: ^5.1.0
