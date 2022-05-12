@@ -7,6 +7,8 @@ class PaginationWidget<T> extends StatelessWidget {
   final int pageSize;
   final String search;
   final String label;
+  final String? nextLabel;
+  final String? backLabel;
   final double? width;
 
   final Function()? onPageBack;
@@ -21,7 +23,9 @@ class PaginationWidget<T> extends StatelessWidget {
       this.width,
       this.label = "items",
       this.onPageBack,
+      this.backLabel,
       this.onPageNext,
+      this.nextLabel,
       this.onPageSizeChange})
       : super(key: key);
 
@@ -37,14 +41,14 @@ class PaginationWidget<T> extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Text("${paginated.itemCount} $label"),
-              IconButton(
-                  splashRadius: 4,
+              TextButton.icon(
                   onPressed: onPageBack,
+                  label: Text(backLabel ?? ""),
                   icon: const Icon(Icons.arrow_back_ios_new)),
               Text('$page/${paginated.pageCount}'),
-              IconButton(
-                  splashRadius: 4,
+              TextButton.icon(
                   onPressed: onPageNext,
+                  label: Text(nextLabel ?? ""),
                   icon: const Icon(Icons.arrow_forward_ios)),
               DropdownButton(
                   isDense: true,
