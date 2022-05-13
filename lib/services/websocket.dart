@@ -42,12 +42,17 @@ class WebsocketService {
   }
 
   static void _handleMessage(dynamic args) {
-    Map<String, dynamic> castedArgs = jsonDecode(args.toString());
-    if (WebsocketService.printEventsToConsole) {
-      debugPrint(castedArgs['channel']);
+    try {
+      Map<String, dynamic> castedArgs = jsonDecode(args.toString());
+      if (WebsocketService.printEventsToConsole) {
+        debugPrint(castedArgs['channel']);
+      }
+      WebsocketService.emitter
+          .emit(castedArgs['channel'], null, castedArgs['data']);
+    } catch (e) {
+      WebsocketService.emitter.emit('error', null, args);
+      debugPrint("ERROR: $e");
     }
-    WebsocketService.emitter
-        .emit(castedArgs['channel'], null, castedArgs['data']);
   }
 
   static void sendMessage(String event, dynamic data) {
