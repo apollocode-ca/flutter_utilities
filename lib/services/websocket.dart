@@ -24,7 +24,6 @@ class WebsocketService {
       return;
     }
     channel = WebSocketChannel.connect(uri);
-
     channel!.stream.listen((message) => _handleMessage(message),
         onError: (error) {
       debugPrint("ERROR $error");
@@ -43,6 +42,12 @@ class WebsocketService {
 
   static void _handleMessage(dynamic args) {
     try {
+      print(args);
+      print(args);
+      print(args);
+      print(args);
+      print(args);
+      print(args);
       Map<String, dynamic> castedArgs = jsonDecode(args.toString());
       if (WebsocketService.printEventsToConsole) {
         debugPrint(castedArgs['channel']);
