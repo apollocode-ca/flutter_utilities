@@ -142,7 +142,7 @@ class Auth {
     return FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
   }
 
-  Future<UserCredential> signInWithFacebookWeb() async {
+  static Future<UserCredential> signInWithFacebookWeb() async {
     // Create a new provider
     FacebookAuthProvider facebookProvider = FacebookAuthProvider();
 
