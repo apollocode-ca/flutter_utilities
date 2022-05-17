@@ -142,6 +142,22 @@ class Auth {
     return FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
   }
 
+  Future<UserCredential> signInWithFacebookWeb() async {
+    // Create a new provider
+    FacebookAuthProvider facebookProvider = FacebookAuthProvider();
+
+    facebookProvider.addScope('email');
+    facebookProvider.setCustomParameters({
+      'display': 'popup',
+    });
+
+    // Once signed in, return the UserCredential
+    return await FirebaseAuth.instance.signInWithPopup(facebookProvider);
+
+    // Or use signInWithRedirect
+    // return await FirebaseAuth.instance.signInWithRedirect(facebookProvider);
+  }
+
   static Future<dynamic> loginFromUrl(BuildContext context) async {
     await Future.delayed(const Duration(milliseconds: 500));
     var url = ModalRoute.of(context)!.settings.name!;
