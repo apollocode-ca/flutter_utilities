@@ -25,9 +25,7 @@ dependencies:
   jwt_decoder: ^2.0.1
   mask_text_input_formatter: ^2.1.0
   shared_preferences: ^2.0.12
-  sign_in_with_apple:
-    git: 
-      url: https://github.com/apollocode-ca/dart_packages
+  sign_in_with_apple: ^4.0.0
   url_launcher: ^6.0.18
   web_socket_channel: ^2.1.0
   flutter_facebook_auth: ^4.3.4
