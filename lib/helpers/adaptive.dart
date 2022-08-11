@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 ///
 /// Used to build adaptive and responsive layouts.
 bool isDisplayDesktop(BuildContext context) {
-  return getBreakpointEntry(context).range.start >= 1440;
+  return getBreakpointEntry(context).range.start >= 1280;
 }
 
 /// Returns a boolean value whether the window is considered small size.
