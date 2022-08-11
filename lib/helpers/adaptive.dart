@@ -11,6 +11,14 @@ import 'package:flutter/material.dart';
 bool isDisplayDesktop(BuildContext context) =>
     getWindowType(context) >= AdaptiveWindowType.medium;
 
+/// Returns a boolean value whether the window is considered small size.
+///
+/// Used to build adaptive and responsive layouts.
+bool isDisplayTablet(BuildContext context) {
+  return getWindowType(context) >= AdaptiveWindowType.small &&
+      !isDisplayDesktop(context);
+}
+
 /// Returns boolean value whether the window is considered medium size.
 ///
 /// Used to build adaptive and responsive layouts.
