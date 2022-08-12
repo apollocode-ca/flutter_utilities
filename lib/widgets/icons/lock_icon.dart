@@ -15,6 +15,7 @@ class _State extends State<LockIcon> {
   Widget build(BuildContext context) {
     return SvgPicture.asset(
       'icons/lock_icon.svg',
+      package: 'apollocode_flutter_utilities',
       clipBehavior: Clip.antiAlias,
     );
   }
