@@ -12,6 +12,13 @@ bool isDisplayDesktop(BuildContext context) {
   return getBreakpointEntry(context).range.start >= 1280;
 }
 
+/// Returns a boolean value whether the window is considered extra-small size.
+///
+/// Used to build adaptive and responsive layouts.
+bool isDisplayMobile(BuildContext context) {
+  return getBreakpointEntry(context).range.start < 600;
+}
+
 /// Returns a boolean value whether the window is considered small size.
 ///
 /// Used to build adaptive and responsive layouts.
