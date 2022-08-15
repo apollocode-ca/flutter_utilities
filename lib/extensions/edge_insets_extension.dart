@@ -2,8 +2,7 @@ import 'package:apollocode_flutter_utilities/helpers/dimensions_helper.dart';
 import 'package:flutter/material.dart';
 
 extension EdgeInsetsExtension on EdgeInsets {
-  EdgeInsets scaleFrom(BuildContext context, [Size? figmaFrameSize]) {
-    final helper = DimensionsHelper.getInstance(context, figmaFrameSize);
+  EdgeInsets scaleWith(DimensionsHelper helper) {
     return EdgeInsets.only(
       bottom: helper.scaleHeightFrom(
         figmaHeight: bottom,
