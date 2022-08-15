@@ -1,33 +1,67 @@
 import 'package:flutter/material.dart';
 
+Size _getMediaSize(BuildContext context) {
+  return MediaQuery.of(context).size;
+}
+
 class DimensionsHelper {
-  static late DimensionsHelper _instance;
-  static bool _isInitialized = false;
+  static late Map<String, DimensionsHelper> _instances;
 
-  static void initialize(BuildContext context, Size figmaFrameSize) {
-    _instance = DimensionsHelper._(context, figmaFrameSize);
-    _isInitialized = true;
-  }
-
-  static DimensionsHelper get instance {
-    if (_isInitialized) {
-      return _instance;
+  static DimensionsHelper getInstance(
+    BuildContext context,
+    Size? figmaFrameSize,
+  ) {
+    final key = _getInstanceKey(context, figmaFrameSize);
+    final instance = _instances[key];
+    if (instance != null) {
+      return instance;
     }
     throw StateError(
       'DimensionsHelper must be initialized before to get an instance.',
     );
   }
 
+  static void initialize(BuildContext context, Size? figmaFrameSize) {
+    final key = _getInstanceKey(context, figmaFrameSize);
+    if (!_instances.containsKey(key)) {
+      _instances[key] = DimensionsHelper._(
+        context,
+        figmaFrameSize,
+      );
+    }
+  }
+
+  static String _getInstanceKey(BuildContext context, Size? figmaFrameSize) {
+    if (figmaFrameSize != null) {
+      return figmaFrameSize.toString();
+    }
+    return _getMediaSize(context).toString();
+  }
+
   late final BuildContext _context;
   late final Size _figmaFrameSize;
 
-  DimensionsHelper._(BuildContext context, Size figmaFrameSize) {
+  DimensionsHelper._(BuildContext context, Size? figmaFrameSize) {
     _context = context;
-    _figmaFrameSize = figmaFrameSize;
+    _figmaFrameSize = figmaFrameSize ?? _mediaSize;
+  }
+
+  double get _figmaFrameHeight {
+    if (_figmaFrameSize.height != double.infinity) {
+      return _figmaFrameSize.height;
+    }
+    return _mediaSize.height;
+  }
+
+  double get _figmaFrameWidth {
+    if (_figmaFrameSize.width != double.infinity) {
+      return _figmaFrameSize.width;
+    }
+    return _mediaSize.width;
   }
 
   Size get _mediaSize {
-    return MediaQuery.of(_context).size;
+    return _getMediaSize(_context);
   }
 
   double scaleHeightFrom({
@@ -40,7 +74,7 @@ class DimensionsHelper {
       'scaleHeightFrom',
     );
     if (validator.validate()) {
-      return validator.dimension / _figmaFrameSize.height * _mediaSize.height;
+      return validator.dimension / _figmaFrameHeight * _mediaSize.height;
     }
     throw validator.error;
   }
@@ -55,7 +89,7 @@ class DimensionsHelper {
       'scaleWidthFrom',
     );
     if (validator.validate()) {
-      return validator.dimension / _figmaFrameSize.width * _mediaSize.width;
+      return validator.dimension / _figmaFrameWidth * _mediaSize.width;
     }
     throw validator.error;
   }
