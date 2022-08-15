@@ -5,7 +5,7 @@ Size _getMediaSize(BuildContext context) {
 }
 
 class DimensionsHelper {
-  static late Map<String, DimensionsHelper> _instances;
+  static final _instances = <String, DimensionsHelper>{};
 
   static DimensionsHelper getInstance(
     BuildContext context, [
@@ -17,7 +17,8 @@ class DimensionsHelper {
       return instance;
     }
     throw StateError(
-      'DimensionsHelper must be initialized before to get an instance.',
+      'The "$key" instance of DimensionsHelper has not been initialized before '
+      'to get it.',
     );
   }
 
