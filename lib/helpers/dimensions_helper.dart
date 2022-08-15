@@ -8,9 +8,9 @@ class DimensionsHelper {
   static late Map<String, DimensionsHelper> _instances;
 
   static DimensionsHelper getInstance(
-    BuildContext context,
+    BuildContext context, [
     Size? figmaFrameSize,
-  ) {
+  ]) {
     final key = _getInstanceKey(context, figmaFrameSize);
     final instance = _instances[key];
     if (instance != null) {
