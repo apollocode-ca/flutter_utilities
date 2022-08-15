@@ -21,7 +21,7 @@ class DimensionsHelper {
     );
   }
 
-  static void initialize(BuildContext context, Size? figmaFrameSize) {
+  static void initialize(BuildContext context, [Size? figmaFrameSize]) {
     final key = _getInstanceKey(context, figmaFrameSize);
     if (!_instances.containsKey(key)) {
       _instances[key] = DimensionsHelper._(
