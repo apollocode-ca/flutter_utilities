@@ -79,6 +79,21 @@ class DimensionsHelper {
     throw validator.error;
   }
 
+  double scaleRadiusFrom({
+    required double figmaRadius,
+  }) {
+    final scaledRadiusFromHeight = scaleHeightFrom(
+      figmaHeight: figmaRadius,
+    );
+    final scaledRadiusFromWidth = scaleWidthFrom(
+      figmaWidth: figmaRadius,
+    );
+    if (scaledRadiusFromHeight < scaledRadiusFromWidth) {
+      return scaledRadiusFromHeight;
+    }
+    return scaledRadiusFromWidth;
+  }
+
   double scaleWidthFrom({
     double? figmaWidth,
     Size? figmaSize,
