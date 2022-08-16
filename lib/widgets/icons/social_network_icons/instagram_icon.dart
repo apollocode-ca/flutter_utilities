@@ -1,13 +1,21 @@
+import 'package:apollocode_flutter_utilities/widgets/icons/social_network_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class InstagramIcon extends StatefulWidget {
-  final Color? color;
-
+class InstagramIcon extends SocialNetworkIcon {
   const InstagramIcon({
-    this.color,
+    Color? color,
     Key? key,
-  }) : super(key: key);
+  }) : super(color: color, key: key);
+
+  @override
+  SocialNetworkIcon copyWith({
+    Color? color,
+  }) {
+    return InstagramIcon(
+      color: color ?? this.color,
+    );
+  }
 
   @override
   State<InstagramIcon> createState() => _State();
@@ -24,6 +32,7 @@ class _State extends State<InstagramIcon> {
       'assets/icons/instagram_icon.svg',
       clipBehavior: Clip.antiAlias,
       color: color,
+      fit: BoxFit.fitHeight,
       package: 'apollocode_flutter_utilities',
     );
   }
