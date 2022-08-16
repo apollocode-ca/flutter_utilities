@@ -1,8 +1,10 @@
+import 'package:apollocode_flutter_utilities/enums/animation_type.dart';
 import 'package:apollocode_flutter_utilities/widgets/clickable.dart';
 import 'package:apollocode_flutter_utilities/widgets/icons/social_network_icon.dart';
 import 'package:flutter/material.dart';
 
 class SocialNetworkIconButton extends StatefulWidget {
+  final AnimationType animationType;
   final Color background;
   final double borderWidth;
   final SocialNetworkIcon icon;
@@ -11,6 +13,7 @@ class SocialNetworkIconButton extends StatefulWidget {
   final Size size;
 
   const SocialNetworkIconButton({
+    required this.animationType,
     required this.background,
     required this.borderWidth,
     required this.foreground,
@@ -25,19 +28,26 @@ class SocialNetworkIconButton extends StatefulWidget {
 }
 
 class _State extends State<SocialNetworkIconButton> {
-  late Color backgroundColor;
-  late Color foregroundColor;
+  late Color background;
+  late double borderWidth;
+  late Color foreground;
 
-  Color get background {
-    return widget.background;
+  AnimationType get animationType {
+    return widget.animationType;
   }
 
-  double get borderWidth {
-    return widget.borderWidth;
-  }
-
-  Color get foreground {
-    return widget.foreground;
+  Color get borderColor {
+    switch (animationType) {
+      case AnimationType.background:
+        return widget.background;
+      case AnimationType.border:
+        return widget.foreground;
+      default:
+        throw UnimplementedError(
+          'Animation has not been implemented for '
+          'AnimationType.$animationType.',
+        );
+    }
   }
 
   SocialNetworkIcon get icon {
@@ -52,21 +62,105 @@ class _State extends State<SocialNetworkIconButton> {
     return widget.size;
   }
 
+  void backgroundAnimation({
+    bool reverse = false,
+  }) {
+    if (reverse) {
+      background = widget.background;
+      foreground = widget.foreground;
+    } else {
+      background = Colors.transparent;
+      foreground = widget.background;
+    }
+  }
+
+  void borderAnimation({
+    bool reverse = false,
+  }) {
+    if (reverse) {
+      borderWidth = 0;
+    } else {
+      borderWidth = widget.borderWidth;
+    }
+  }
+
+  void onEnter() {
+    switch (animationType) {
+      case AnimationType.background:
+        setState(() {
+          backgroundAnimation();
+        });
+        break;
+      case AnimationType.border:
+        setState(() {
+          borderAnimation();
+        });
+        break;
+      default:
+        throw UnimplementedError(
+          'Animation has not been implemented for '
+          'AnimationType.$animationType.',
+        );
+    }
+  }
+
+  void onExit() {
+    switch (animationType) {
+      case AnimationType.background:
+        setState(() {
+          backgroundAnimation(
+            reverse: true,
+          );
+        });
+        break;
+      case AnimationType.border:
+        setState(() {
+          borderAnimation(
+            reverse: true,
+          );
+        });
+        break;
+      default:
+        throw UnimplementedError(
+          'Animation has not been implemented for '
+          'AnimationType.$animationType.',
+        );
+    }
+  }
+
+  double getBorderWidth() {
+    switch (animationType) {
+      case AnimationType.background:
+        return widget.borderWidth;
+      case AnimationType.border:
+        return 0;
+      default:
+        throw UnimplementedError(
+          'Animation has not been implemented for '
+          'AnimationType.$animationType.',
+        );
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    backgroundColor = background;
-    foregroundColor = foreground;
+    background = widget.background;
+    borderWidth = getBorderWidth();
+    foreground = widget.foreground;
   }
 
   @override
   void didUpdateWidget(covariant SocialNetworkIconButton oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.background != background) {
-      backgroundColor = background;
+    if (oldWidget.background != widget.background) {
+      background = widget.background;
     }
-    if (oldWidget.foreground != foreground) {
-      foregroundColor = foreground;
+    if (oldWidget.borderWidth != widget.borderWidth) {
+      borderWidth = getBorderWidth();
+    }
+    if (oldWidget.foreground != widget.foreground) {
+      foreground = widget.foreground;
     }
   }
 
@@ -76,17 +170,17 @@ class _State extends State<SocialNetworkIconButton> {
       child: AnimatedContainer(
         child: Center(
           child: icon.copyWith(
-            color: foregroundColor,
+            color: foreground,
           ),
         ),
         clipBehavior: Clip.antiAlias,
         constraints: BoxConstraints.loose(size),
         decoration: BoxDecoration(
           border: Border.all(
-            color: background,
+            color: borderColor,
             width: borderWidth,
           ),
-          color: backgroundColor,
+          color: background,
           shape: BoxShape.circle,
         ),
         duration: const Duration(
@@ -95,16 +189,10 @@ class _State extends State<SocialNetworkIconButton> {
       ),
       cursor: SystemMouseCursors.click,
       onEnter: (_) {
-        setState(() {
-          backgroundColor = Colors.transparent;
-          foregroundColor = background;
-        });
+        onEnter();
       },
       onExit: (_) {
-        setState(() {
-          backgroundColor = background;
-          foregroundColor = foreground;
-        });
+        onExit();
       },
       onTap: onTap,
     );

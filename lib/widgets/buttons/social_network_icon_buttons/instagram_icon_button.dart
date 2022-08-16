@@ -1,8 +1,10 @@
+import 'package:apollocode_flutter_utilities/enums/animation_type.dart';
 import 'package:apollocode_flutter_utilities/widgets/buttons/social_network_icon_button.dart';
 import 'package:apollocode_flutter_utilities/widgets/icons/social_network_icons/instagram_icon.dart';
 import 'package:flutter/material.dart';
 
 class InstagramIconButton extends StatefulWidget {
+  final AnimationType animationType;
   final Color background;
   final double borderWidth;
   final Color foreground;
@@ -10,6 +12,7 @@ class InstagramIconButton extends StatefulWidget {
   final Size size;
 
   const InstagramIconButton({
+    required this.animationType,
     required this.background,
     required this.borderWidth,
     required this.foreground,
@@ -23,6 +26,10 @@ class InstagramIconButton extends StatefulWidget {
 }
 
 class _State extends State<InstagramIconButton> {
+  AnimationType get animationType {
+    return widget.animationType;
+  }
+
   Color get background {
     return widget.background;
   }
@@ -46,6 +53,7 @@ class _State extends State<InstagramIconButton> {
   @override
   Widget build(BuildContext context) {
     return SocialNetworkIconButton(
+      animationType: animationType,
       background: background,
       borderWidth: borderWidth,
       foreground: foreground,
