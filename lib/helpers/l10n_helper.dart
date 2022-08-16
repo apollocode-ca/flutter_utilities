@@ -1,10 +1,10 @@
-import 'package:apollocode_flutter_utilities/errors/i10n_error.dart';
+import 'package:apollocode_flutter_utilities/errors/l10n_error.dart';
 
-class I10nHelper {
-  static late final I10nHelper _instance;
+class L10nHelper {
+  static late final L10nHelper _instance;
   static var _isInitialized = false;
 
-  static I10nHelper get instance {
+  static L10nHelper get instance {
     if (_isInitialized) {
       return _instance;
     }
@@ -14,13 +14,13 @@ class I10nHelper {
   }
 
   static void initialize(String locale) {
-    _instance = I10nHelper._(locale);
+    _instance = L10nHelper._(locale);
     _isInitialized = true;
   }
 
   late final String _locale;
 
-  I10nHelper._(String locale) {
+  L10nHelper._(String locale) {
     _locale = locale;
   }
 
@@ -28,7 +28,7 @@ class I10nHelper {
     if (label != null) {
       return label;
     }
-    throw I10nError(
+    throw L10nError(
       labelName: labelName,
       locale: _locale,
     );

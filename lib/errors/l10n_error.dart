@@ -1,8 +1,8 @@
-class I10nError extends Error {
+class L10nError extends Error {
   final String labelName;
   final String locale;
 
-  I10nError({
+  L10nError({
     required this.labelName,
     required this.locale,
   });
