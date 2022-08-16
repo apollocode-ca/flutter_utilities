@@ -195,6 +195,10 @@ class _State extends State<SocialNetworkIconButton> {
         duration: const Duration(
           milliseconds: 300,
         ),
+        padding: EdgeInsets.symmetric(
+          horizontal: size.width * 0.15,
+          vertical: size.height * 0.15,
+        ),
       ),
       cursor: SystemMouseCursors.click,
       onEnter: (_) {
