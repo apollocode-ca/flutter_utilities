@@ -14,8 +14,10 @@ class L10nHelper {
   }
 
   static void initialize(String locale) {
-    _instance = L10nHelper._(locale);
-    _isInitialized = true;
+    if (!_isInitialized) {
+      _instance = L10nHelper._(locale);
+      _isInitialized = true;
+    }
   }
 
   late final String _locale;
