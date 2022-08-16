@@ -66,6 +66,13 @@ class _State extends State<SocialNetworkIconButton> {
     return widget.icon;
   }
 
+  Size get iconSize {
+    return Size(
+      size.width * 0.7,
+      size.height * 0.7,
+    );
+  }
+
   void Function() get onTap {
     return widget.onTap;
   }
@@ -181,8 +188,11 @@ class _State extends State<SocialNetworkIconButton> {
     return Clickable(
       child: AnimatedContainer(
         child: Center(
-          child: icon.copyWith(
-            color: foreground,
+          child: ConstrainedBox(
+            child: icon.copyWith(
+              color: foreground,
+            ),
+            constraints: BoxConstraints.loose(iconSize),
           ),
         ),
         clipBehavior: Clip.antiAlias,
@@ -194,10 +204,6 @@ class _State extends State<SocialNetworkIconButton> {
         ),
         duration: const Duration(
           milliseconds: 300,
-        ),
-        padding: EdgeInsets.symmetric(
-          horizontal: size.width * 0.15,
-          vertical: size.height * 0.15,
         ),
       ),
       cursor: SystemMouseCursors.click,
