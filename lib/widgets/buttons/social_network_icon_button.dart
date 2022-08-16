@@ -36,6 +36,18 @@ class _State extends State<SocialNetworkIconButton> {
     return widget.animationType;
   }
 
+  BoxBorder get border {
+    if (borderWidth == 0) {
+      return const Border.fromBorderSide(
+        BorderSide.none,
+      );
+    }
+    return Border.all(
+      color: borderColor,
+      width: borderWidth,
+    );
+  }
+
   Color get borderColor {
     switch (animationType) {
       case AnimationType.background:
@@ -176,10 +188,7 @@ class _State extends State<SocialNetworkIconButton> {
         clipBehavior: Clip.antiAlias,
         constraints: BoxConstraints.loose(size),
         decoration: BoxDecoration(
-          border: Border.all(
-            color: borderColor,
-            width: borderWidth,
-          ),
+          border: border,
           color: background,
           shape: BoxShape.circle,
         ),
