@@ -28,6 +28,8 @@ class SocialNetworkIconButton extends StatefulWidget {
 }
 
 class _State extends State<SocialNetworkIconButton> {
+  static const paddingScale = 0.2;
+
   late Color background;
   late double borderWidth;
   late Color foreground;
@@ -193,11 +195,11 @@ class _State extends State<SocialNetworkIconButton> {
           shape: BoxShape.circle,
         ),
         duration: const Duration(
-          milliseconds: 300,
+          milliseconds: 500,
         ),
         padding: EdgeInsets.symmetric(
-          horizontal: size.width * 0.2,
-          vertical: size.height * 0.2,
+          horizontal: size.width * paddingScale,
+          vertical: size.height * paddingScale,
         ),
       ),
       cursor: SystemMouseCursors.click,
