@@ -68,8 +68,8 @@ class _State extends State<SocialNetworkIconButton> {
 
   Size get iconSize {
     return Size(
-      size.width * 0.7,
-      size.height * 0.7,
+      size.width * 0.5,
+      size.height * 0.5,
     );
   }
 
