@@ -28,7 +28,8 @@ class SocialNetworkIconButton extends StatefulWidget {
 }
 
 class _State extends State<SocialNetworkIconButton> {
-  static const paddingScale = 0.2;
+  static const paddingScaleForBackgroundAnimation = 0.15;
+  static const paddingScaleForBorderAnimation = 0.2;
 
   late Color background;
   late double borderWidth;
@@ -64,12 +65,50 @@ class _State extends State<SocialNetworkIconButton> {
     }
   }
 
+  Duration get duration {
+    switch (animationType) {
+      case AnimationType.background:
+        return const Duration(
+          milliseconds: 300,
+        );
+      case AnimationType.border:
+        return const Duration(
+          milliseconds: 400,
+        );
+      default:
+        throw UnimplementedError(
+          'Animation has not been implemented for '
+          'AnimationType.$animationType.',
+        );
+    }
+  }
+
   SocialNetworkIcon get icon {
     return widget.icon;
   }
 
   void Function() get onTap {
     return widget.onTap;
+  }
+
+  EdgeInsets get padding {
+    switch (animationType) {
+      case AnimationType.background:
+        return EdgeInsets.symmetric(
+          horizontal: size.width * paddingScaleForBackgroundAnimation,
+          vertical: size.height * paddingScaleForBackgroundAnimation,
+        );
+      case AnimationType.border:
+        return EdgeInsets.symmetric(
+          horizontal: size.width * paddingScaleForBorderAnimation,
+          vertical: size.height * paddingScaleForBorderAnimation,
+        );
+      default:
+        throw UnimplementedError(
+          'Animation has not been implemented for '
+          'AnimationType.$animationType.',
+        );
+    }
   }
 
   Size get size {
@@ -194,13 +233,8 @@ class _State extends State<SocialNetworkIconButton> {
           color: background,
           shape: BoxShape.circle,
         ),
-        duration: const Duration(
-          milliseconds: 500,
-        ),
-        padding: EdgeInsets.symmetric(
-          horizontal: size.width * paddingScale,
-          vertical: size.height * paddingScale,
-        ),
+        duration: duration,
+        padding: padding,
       ),
       cursor: SystemMouseCursors.click,
       onEnter: (_) {
