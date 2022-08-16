@@ -188,12 +188,15 @@ class _State extends State<SocialNetworkIconButton> {
     return Clickable(
       child: AnimatedContainer(
         child: Center(
-          child: ConstrainedBox(
-            child: icon.copyWith(
-              color: foreground,
-            ),
-            constraints: BoxConstraints.loose(iconSize),
+          child: icon.copyWith(
+            color: foreground,
           ),
+          // child: ConstrainedBox(
+          //   child: icon.copyWith(
+          //     color: foreground,
+          //   ),
+          //   constraints: BoxConstraints.loose(iconSize),
+          // ),
         ),
         clipBehavior: Clip.antiAlias,
         constraints: BoxConstraints.loose(size),
@@ -205,6 +208,8 @@ class _State extends State<SocialNetworkIconButton> {
         duration: const Duration(
           milliseconds: 300,
         ),
+        padding: EdgeInsets.symmetric(
+            horizontal: size.width * 0.25, vertical: size.height * 0.25),
       ),
       cursor: SystemMouseCursors.click,
       onEnter: (_) {
