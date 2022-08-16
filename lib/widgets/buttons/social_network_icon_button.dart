@@ -83,7 +83,7 @@ class _State extends State<SocialNetworkIconButton> {
         constraints: BoxConstraints.loose(size),
         decoration: BoxDecoration(
           border: Border.all(
-            color: backgroundColor,
+            color: background,
             width: borderWidth,
           ),
           color: backgroundColor,
