@@ -76,17 +76,17 @@ class _State extends State<SocialNetworkIconButton> {
       child: AnimatedContainer(
         child: Center(
           child: icon.copyWith(
-            color: foreground,
+            color: foregroundColor,
           ),
         ),
         clipBehavior: Clip.antiAlias,
         constraints: BoxConstraints.loose(size),
         decoration: BoxDecoration(
           border: Border.all(
-            color: background,
+            color: backgroundColor,
             width: borderWidth,
           ),
-          color: background,
+          color: backgroundColor,
           shape: BoxShape.circle,
         ),
         duration: const Duration(
