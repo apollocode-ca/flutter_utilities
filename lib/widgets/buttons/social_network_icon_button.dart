@@ -28,8 +28,8 @@ class SocialNetworkIconButton extends StatefulWidget {
 }
 
 class _State extends State<SocialNetworkIconButton> {
-  static const paddingScaleForBackgroundAnimation = 0;
-  static const paddingScaleForBorderAnimation = 0.2;
+  static const iconScaleForBackgroundAnimation = 0.7;
+  static const iconScaleForBorderAnimation = 0.6;
 
   late Color background;
   late double borderWidth;
@@ -87,28 +87,22 @@ class _State extends State<SocialNetworkIconButton> {
     return widget.icon;
   }
 
-  void Function() get onTap {
-    return widget.onTap;
-  }
-
-  EdgeInsets get padding {
+  Size get iconSize {
     switch (animationType) {
       case AnimationType.background:
-        return EdgeInsets.symmetric(
-          horizontal: size.width * paddingScaleForBackgroundAnimation,
-          vertical: size.height * paddingScaleForBackgroundAnimation,
-        );
+        return size * iconScaleForBackgroundAnimation;
       case AnimationType.border:
-        return EdgeInsets.symmetric(
-          horizontal: size.width * paddingScaleForBorderAnimation,
-          vertical: size.height * paddingScaleForBorderAnimation,
-        );
+        return size * iconScaleForBorderAnimation;
       default:
         throw UnimplementedError(
           'Animation has not been implemented for '
           'AnimationType.$animationType.',
         );
     }
+  }
+
+  void Function() get onTap {
+    return widget.onTap;
   }
 
   Size get size {
@@ -221,12 +215,10 @@ class _State extends State<SocialNetworkIconButton> {
   Widget build(BuildContext context) {
     return Clickable(
       child: AnimatedContainer(
-        child: Container(
-          alignment: Alignment.center,
-          color: Colors.red,
-          child: icon.copyWith(
-            color: foreground,
-          ),
+        alignment: Alignment.center,
+        child: icon.copyWith(
+          color: foreground,
+          size: iconSize,
         ),
         clipBehavior: Clip.antiAlias,
         constraints: BoxConstraints.tight(size),
@@ -236,7 +228,6 @@ class _State extends State<SocialNetworkIconButton> {
           shape: BoxShape.circle,
         ),
         duration: duration,
-        padding: padding,
       ),
       cursor: SystemMouseCursors.click,
       onEnter: (_) {

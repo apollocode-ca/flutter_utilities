@@ -5,15 +5,18 @@ import 'package:flutter_svg/flutter_svg.dart';
 class TwitterIcon extends SocialNetworkIcon {
   const TwitterIcon({
     Color? color,
+    Size? size,
     Key? key,
-  }) : super(color: color, key: key);
+  }) : super(color: color, key: key, size: size);
 
   @override
   SocialNetworkIcon copyWith({
     Color? color,
+    Size? size,
   }) {
     return TwitterIcon(
       color: color ?? this.color,
+      size: size ?? this.size,
     );
   }
 
@@ -26,6 +29,10 @@ class _State extends State<TwitterIcon> {
     return widget.color;
   }
 
+  Size? get size {
+    return widget.size;
+  }
+
   @override
   Widget build(BuildContext context) {
     return SvgPicture.asset(
@@ -34,6 +41,7 @@ class _State extends State<TwitterIcon> {
       color: color,
       fit: BoxFit.fitWidth,
       package: 'apollocode_flutter_utilities',
+      width: size?.width,
     );
   }
 }

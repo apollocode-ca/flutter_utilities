@@ -57,9 +57,7 @@ class _State extends State<InstagramIconButton> {
       background: background,
       borderWidth: borderWidth,
       foreground: foreground,
-      icon: InstagramIcon(
-        height: size.height,
-      ),
+      icon: const InstagramIcon(),
       onTap: onTap,
       size: size,
     );

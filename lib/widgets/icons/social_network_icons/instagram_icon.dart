@@ -3,22 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class InstagramIcon extends SocialNetworkIcon {
-  final double height;
-
   const InstagramIcon({
     Color? color,
-    required this.height,
+    Size? size,
     Key? key,
-  }) : super(color: color, key: key);
+  }) : super(color: color, key: key, size: size);
 
   @override
   SocialNetworkIcon copyWith({
     Color? color,
-    double? height,
+    Size? size,
   }) {
     return InstagramIcon(
       color: color ?? this.color,
-      height: height ?? this.height,
+      size: size ?? this.size,
     );
   }
 
@@ -31,6 +29,10 @@ class _State extends State<InstagramIcon> {
     return widget.color;
   }
 
+  Size? get size {
+    return widget.size;
+  }
+
   @override
   Widget build(BuildContext context) {
     return SvgPicture.asset(
@@ -38,7 +40,7 @@ class _State extends State<InstagramIcon> {
       clipBehavior: Clip.antiAlias,
       color: color,
       fit: BoxFit.fitHeight,
-      height: widget.height,
+      height: size?.height,
       package: 'apollocode_flutter_utilities',
     );
   }
