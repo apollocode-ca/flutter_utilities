@@ -227,7 +227,7 @@ class _State extends State<SocialNetworkIconButton> {
           ),
         ),
         clipBehavior: Clip.antiAlias,
-        constraints: BoxConstraints.loose(size),
+        constraints: BoxConstraints.tight(size),
         decoration: BoxDecoration(
           border: border,
           color: background,
