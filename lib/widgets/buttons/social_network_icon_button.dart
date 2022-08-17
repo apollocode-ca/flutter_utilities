@@ -28,8 +28,8 @@ class SocialNetworkIconButton extends StatefulWidget {
 }
 
 class _State extends State<SocialNetworkIconButton> {
-  static const iconScaleForBackgroundAnimation = 0.7;
-  static const iconScaleForBorderAnimation = 0.6;
+  static const iconScaleForBackgroundAnimation = 0.6;
+  static const iconScaleForBorderAnimation = 0.5;
 
   late Color background;
   late double borderWidth;
