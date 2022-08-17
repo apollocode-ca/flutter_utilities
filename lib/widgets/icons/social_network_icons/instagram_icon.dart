@@ -32,7 +32,7 @@ class _State extends State<InstagramIcon> {
       'assets/icons/instagram_icon.svg',
       clipBehavior: Clip.antiAlias,
       color: color,
-      fit: BoxFit.contain,
+      fit: BoxFit.cover,
       package: 'apollocode_flutter_utilities',
     );
   }
