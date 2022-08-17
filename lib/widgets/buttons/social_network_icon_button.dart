@@ -28,8 +28,7 @@ class SocialNetworkIconButton extends StatefulWidget {
 }
 
 class _State extends State<SocialNetworkIconButton> {
-  static const iconScaleForBackgroundAnimation = 0.56;
-  static const iconScaleForBorderAnimation = 0.56;
+  static const iconSizeScale = 0.56;
 
   late Color background;
   late double borderWidth;
@@ -88,17 +87,7 @@ class _State extends State<SocialNetworkIconButton> {
   }
 
   Size get iconSize {
-    switch (animationType) {
-      case AnimationType.background:
-        return size * iconScaleForBackgroundAnimation;
-      case AnimationType.border:
-        return size * iconScaleForBorderAnimation;
-      default:
-        throw UnimplementedError(
-          'Animation has not been implemented for '
-          'AnimationType.$animationType.',
-        );
-    }
+    return size * iconSizeScale;
   }
 
   void Function() get onTap {
