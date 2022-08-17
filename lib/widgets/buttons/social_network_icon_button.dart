@@ -221,7 +221,9 @@ class _State extends State<SocialNetworkIconButton> {
   Widget build(BuildContext context) {
     return Clickable(
       child: AnimatedContainer(
-        child: Center(
+        child: Container(
+          alignment: Alignment.center,
+          color: Colors.red,
           child: icon.copyWith(
             color: foreground,
           ),
