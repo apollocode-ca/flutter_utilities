@@ -9,6 +9,7 @@ class SocialNetworkIconButton extends StatefulWidget {
   final double borderWidth;
   final SocialNetworkIcon icon;
   final Color foreground;
+  final EdgeInsets? margin;
   final void Function() onTap;
   final Size size;
 
@@ -18,6 +19,7 @@ class SocialNetworkIconButton extends StatefulWidget {
     required this.borderWidth,
     required this.foreground,
     required this.icon,
+    this.margin,
     required this.onTap,
     required this.size,
     Key? key,
@@ -88,6 +90,10 @@ class _State extends State<SocialNetworkIconButton> {
 
   Size get iconSize {
     return size * iconSizeScale;
+  }
+
+  EdgeInsets? get margin {
+    return widget.margin;
   }
 
   void Function() get onTap {
@@ -202,30 +208,33 @@ class _State extends State<SocialNetworkIconButton> {
 
   @override
   Widget build(BuildContext context) {
-    return Clickable(
-      child: AnimatedContainer(
-        alignment: Alignment.center,
-        child: icon.copyWith(
-          color: foreground,
-          size: iconSize,
+    return Container(
+      child: Clickable(
+        child: AnimatedContainer(
+          alignment: Alignment.center,
+          child: icon.copyWith(
+            color: foreground,
+            size: iconSize,
+          ),
+          clipBehavior: Clip.antiAlias,
+          constraints: BoxConstraints.tight(size),
+          decoration: BoxDecoration(
+            border: border,
+            color: background,
+            shape: BoxShape.circle,
+          ),
+          duration: duration,
         ),
-        clipBehavior: Clip.antiAlias,
-        constraints: BoxConstraints.tight(size),
-        decoration: BoxDecoration(
-          border: border,
-          color: background,
-          shape: BoxShape.circle,
-        ),
-        duration: duration,
+        cursor: SystemMouseCursors.click,
+        onEnter: (_) {
+          onEnter();
+        },
+        onExit: (_) {
+          onExit();
+        },
+        onTap: onTap,
       ),
-      cursor: SystemMouseCursors.click,
-      onEnter: (_) {
-        onEnter();
-      },
-      onExit: (_) {
-        onExit();
-      },
-      onTap: onTap,
+      margin: margin,
     );
   }
 }

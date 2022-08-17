@@ -8,6 +8,7 @@ class DiscordIconButton extends StatefulWidget {
   final Color background;
   final double borderWidth;
   final Color foreground;
+  final EdgeInsets? margin;
   final void Function() onTap;
   final Size size;
 
@@ -16,6 +17,7 @@ class DiscordIconButton extends StatefulWidget {
     required this.background,
     required this.borderWidth,
     required this.foreground,
+    this.margin,
     required this.onTap,
     required this.size,
     Key? key,
@@ -42,6 +44,10 @@ class _State extends State<DiscordIconButton> {
     return widget.foreground;
   }
 
+  EdgeInsets? get margin {
+    return widget.margin;
+  }
+
   void Function() get onTap {
     return widget.onTap;
   }
@@ -58,6 +64,7 @@ class _State extends State<DiscordIconButton> {
       borderWidth: borderWidth,
       foreground: foreground,
       icon: const DiscordIcon(),
+      margin: margin,
       onTap: onTap,
       size: size,
     );
