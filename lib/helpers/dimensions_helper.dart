@@ -44,24 +44,24 @@ class DimensionsHelper {
 
   DimensionsHelper._(BuildContext context, Size? figmaFrameSize) {
     _context = context;
-    _figmaFrameSize = figmaFrameSize ?? _mediaSize;
+    _figmaFrameSize = figmaFrameSize ?? mediaSize;
   }
 
   double get _figmaFrameHeight {
     if (_figmaFrameSize.height != double.infinity) {
       return _figmaFrameSize.height;
     }
-    return _mediaSize.height;
+    return mediaSize.height;
   }
 
   double get _figmaFrameWidth {
     if (_figmaFrameSize.width != double.infinity) {
       return _figmaFrameSize.width;
     }
-    return _mediaSize.width;
+    return mediaSize.width;
   }
 
-  Size get _mediaSize {
+  Size get mediaSize {
     return _getMediaSize(_context);
   }
 
@@ -75,7 +75,7 @@ class DimensionsHelper {
       'scaleHeightFrom',
     );
     if (validator.validate()) {
-      return validator.dimension / _figmaFrameHeight * _mediaSize.height;
+      return validator.dimension / _figmaFrameHeight * mediaSize.height;
     }
     throw validator.error;
   }
@@ -105,7 +105,7 @@ class DimensionsHelper {
       'scaleWidthFrom',
     );
     if (validator.validate()) {
-      return validator.dimension / _figmaFrameWidth * _mediaSize.width;
+      return validator.dimension / _figmaFrameWidth * mediaSize.width;
     }
     throw validator.error;
   }
