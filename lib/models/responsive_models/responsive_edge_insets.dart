@@ -1,3 +1,4 @@
+import 'package:apollocode_flutter_utilities/helpers/dimensions_helper.dart';
 import 'package:apollocode_flutter_utilities/models/responsive.dart';
 import 'package:flutter/material.dart';
 
@@ -6,4 +7,11 @@ class ResponsiveEdgeInsets extends Responsive<EdgeInsets> {
     required EdgeInsets desktop,
     required EdgeInsets mobile,
   }) : super(desktop, mobile);
+
+  EdgeInsets scaleWith(DimensionsHelper helper) {
+    if (helper.isDesktop) {
+      return desktop.scaleWith(helper);
+    }
+    return mobile.scaleWith(helper);
+  }
 }
