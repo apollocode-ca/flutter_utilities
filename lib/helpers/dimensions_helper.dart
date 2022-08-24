@@ -1,50 +1,60 @@
+import 'package:apollocode_flutter_utilities/helpers/adaptive.dart';
+import 'package:apollocode_flutter_utilities/models/responsive_size.dart';
 import 'package:flutter/material.dart';
 
-Size _getMediaSize(BuildContext context) {
-  return MediaQuery.of(context).size;
-}
-
 class DimensionsHelper {
-  static final _instances = <String, DimensionsHelper>{};
+  static final _instances = <Type, DimensionsHelper>{};
 
   static DimensionsHelper getInstance(
-    BuildContext context, [
-    Size? figmaFrameSize,
-  ]) {
-    final key = _getInstanceKey(context, figmaFrameSize);
-    final instance = _instances[key];
+    BuildContext context,
+    Type figmaFrameType,
+  ) {
+    final instance = _instances[figmaFrameType];
     if (instance != null) {
       return instance;
     }
     throw StateError(
-      'The "$key" instance of DimensionsHelper has not been initialized before '
-      'to get it.',
+      'The "$figmaFrameType" instance of DimensionsHelper has not been '
+      'initialized before to get it.',
     );
   }
 
-  static void initialize(BuildContext context, [Size? figmaFrameSize]) {
-    final key = _getInstanceKey(context, figmaFrameSize);
-    if (!_instances.containsKey(key)) {
-      _instances[key] = DimensionsHelper._(
+  static void initialize(
+    BuildContext context,
+    Type figmaFrameType, [
+    Size? figmaDesktopSize,
+    Size? figmaMobileSize,
+  ]) {
+    if (!_instances.containsKey(figmaFrameType)) {
+      _instances[figmaFrameType] = DimensionsHelper._(
         context,
-        figmaFrameSize,
+        figmaDesktopSize,
+        figmaMobileSize,
       );
     }
   }
 
-  static String _getInstanceKey(BuildContext context, Size? figmaFrameSize) {
-    if (figmaFrameSize != null) {
-      return figmaFrameSize.toString();
-    }
-    return _getMediaSize(context).toString();
+  late final BuildContext _context;
+  late final ResponsiveSize _figmaFrameSizes;
+
+  DimensionsHelper._(
+    BuildContext context,
+    Size? figmaDesktopSize,
+    Size? figmaMobileSize,
+  ) {
+    _context = context;
+    final desktopSize = figmaDesktopSize ?? mediaSize;
+    _figmaFrameSizes = ResponsiveSize(
+      desktop: desktopSize,
+      mobile: figmaMobileSize ?? desktopSize,
+    );
   }
 
-  late final BuildContext _context;
-  late final Size _figmaFrameSize;
-
-  DimensionsHelper._(BuildContext context, Size? figmaFrameSize) {
-    _context = context;
-    _figmaFrameSize = figmaFrameSize ?? mediaSize;
+  Size get _figmaFrameSize {
+    if (isDisplayMobile(_context)) {
+      return _figmaFrameSizes.mobile;
+    }
+    return _figmaFrameSizes.desktop;
   }
 
   double get _figmaFrameHeight {
@@ -62,7 +72,7 @@ class DimensionsHelper {
   }
 
   Size get mediaSize {
-    return _getMediaSize(_context);
+    return MediaQuery.of(_context).size;
   }
 
   double scaleHeightFrom({
