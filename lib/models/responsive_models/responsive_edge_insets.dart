@@ -8,6 +8,7 @@ class ResponsiveEdgeInsets extends Responsive<EdgeInsets> {
     required EdgeInsets mobile,
   }) : super(desktop, mobile);
 
+  @override
   EdgeInsets scaleWith(DimensionsHelper helper) {
     if (helper.isDesktop) {
       return desktop.scaleWith(helper);
