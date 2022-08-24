@@ -22,15 +22,10 @@ class DimensionsHelper {
   static void initialize(
     BuildContext context,
     Enum figmaFrameType, [
-    Size? figmaDesktopSize,
-    Size? figmaMobileSize,
+    ResponsiveSize? sizes,
   ]) {
     if (!_instances.containsKey(figmaFrameType)) {
-      _instances[figmaFrameType] = DimensionsHelper._(
-        context,
-        figmaDesktopSize,
-        figmaMobileSize,
-      );
+      _instances[figmaFrameType] = DimensionsHelper._(context, sizes);
     }
   }
 
@@ -39,14 +34,13 @@ class DimensionsHelper {
 
   DimensionsHelper._(
     BuildContext context,
-    Size? figmaDesktopSize,
-    Size? figmaMobileSize,
+    ResponsiveSize? sizes,
   ) {
     _context = context;
-    final desktopSize = figmaDesktopSize ?? mediaSize;
+    final desktopSize = sizes?.desktop ?? mediaSize;
     _figmaFrameSizes = ResponsiveSize(
       desktop: desktopSize,
-      mobile: figmaMobileSize ?? desktopSize,
+      mobile: sizes?.mobile ?? desktopSize,
     );
   }
 
