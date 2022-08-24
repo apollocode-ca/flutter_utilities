@@ -65,6 +65,14 @@ class DimensionsHelper {
     return mediaSize.width;
   }
 
+  bool get isDesktop {
+    return !isMobile;
+  }
+
+  bool get isMobile {
+    return isDisplayMobile(_context);
+  }
+
   Size get mediaSize {
     return MediaQuery.of(_context).size;
   }
