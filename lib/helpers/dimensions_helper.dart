@@ -2,6 +2,12 @@ import 'package:apollocode_flutter_utilities/helpers/adaptive.dart';
 import 'package:apollocode_flutter_utilities/models/responsive_size.dart';
 import 'package:flutter/material.dart';
 
+export 'package:apollocode_flutter_utilities/extensions/edge_insets_extension.dart';
+export 'package:apollocode_flutter_utilities/extensions/offset_extension.dart';
+export 'package:apollocode_flutter_utilities/extensions/size_extension.dart';
+export 'package:apollocode_flutter_utilities/extensions/text_style_extension.dart';
+export 'package:apollocode_flutter_utilities/extensions/vector3_extension.dart';
+
 class DimensionsHelper {
   static final _instances = <Enum, DimensionsHelper>{};
 
