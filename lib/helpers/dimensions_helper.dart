@@ -3,7 +3,7 @@ import 'package:apollocode_flutter_utilities/models/responsive_size.dart';
 import 'package:flutter/material.dart';
 
 class DimensionsHelper {
-  static final _instances = <Type, DimensionsHelper>{};
+  static final _instances = <Enum, DimensionsHelper>{};
 
   static DimensionsHelper getInstance(
     BuildContext context,
@@ -21,7 +21,7 @@ class DimensionsHelper {
 
   static void initialize(
     BuildContext context,
-    Type figmaFrameType, [
+    Enum figmaFrameType, [
     Size? figmaDesktopSize,
     Size? figmaMobileSize,
   ]) {
