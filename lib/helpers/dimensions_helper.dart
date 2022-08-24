@@ -7,7 +7,7 @@ class DimensionsHelper {
 
   static DimensionsHelper getInstance(
     BuildContext context,
-    Type figmaFrameType,
+    Enum figmaFrameType,
   ) {
     final instance = _instances[figmaFrameType];
     if (instance != null) {
