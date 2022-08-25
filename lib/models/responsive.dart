@@ -9,6 +9,13 @@ abstract class Responsive<T> {
     this.mobile,
   );
 
+  T getCurrentWith(DimensionsHelper helper) {
+    if (helper.isDesktop) {
+      return desktop;
+    }
+    return mobile;
+  }
+
   T scaleWith(
     DimensionsHelper helper, {
     T? max,
@@ -17,5 +24,11 @@ abstract class Responsive<T> {
     T? min,
     T? minDesktop,
     T? minMobile,
-  });
+  }) {
+    throw UnimplementedError(
+      'The "scaleWith" method has not been implemented yet for the class '
+      '"$runtimeType". Please override it in the class "$runtimeType" to be '
+      'able to use it.',
+    );
+  }
 }
