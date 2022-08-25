@@ -204,7 +204,7 @@ class _ArgumentsValidator {
     }
 
     if (figmaDimension != null) {
-      dimension = dimension.clamp(lowerClampLimit, upperClampLimit);
+      dimension = figmaDimension.clamp(lowerClampLimit, upperClampLimit);
       return true;
     }
 
