@@ -12,19 +12,23 @@ class ResponsiveSize extends Responsive<Size> {
   Size scaleWith(
     DimensionsHelper helper, {
     Size? max,
+    Size? maxDesktop,
+    Size? maxMobile,
     Size? min,
+    Size? minDesktop,
+    Size? minMobile,
   }) {
     if (helper.isDesktop) {
       return desktop.scaleWith(
         helper,
-        maxSize: max,
-        minSize: min,
+        maxSize: maxDesktop ?? max,
+        minSize: minDesktop ?? min,
       );
     }
     return mobile.scaleWith(
       helper,
-      maxSize: max,
-      minSize: min,
+      maxSize: maxMobile ?? max,
+      minSize: minMobile ?? min,
     );
   }
 }

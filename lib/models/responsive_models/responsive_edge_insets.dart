@@ -12,19 +12,23 @@ class ResponsiveEdgeInsets extends Responsive<EdgeInsets> {
   EdgeInsets scaleWith(
     DimensionsHelper helper, {
     EdgeInsets? max,
+    EdgeInsets? maxDesktop,
+    EdgeInsets? maxMobile,
     EdgeInsets? min,
+    EdgeInsets? minDesktop,
+    EdgeInsets? minMobile,
   }) {
     if (helper.isDesktop) {
       return desktop.scaleWith(
         helper,
-        maxInsets: max,
-        minInsets: min,
+        maxInsets: maxDesktop ?? max,
+        minInsets: minDesktop ?? min,
       );
     }
     return mobile.scaleWith(
       helper,
-      maxInsets: max,
-      minInsets: min,
+      maxInsets: maxMobile ?? max,
+      minInsets: minMobile ?? min,
     );
   }
 }

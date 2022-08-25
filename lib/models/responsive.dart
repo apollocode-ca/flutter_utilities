@@ -12,6 +12,10 @@ abstract class Responsive<T> {
   T scaleWith(
     DimensionsHelper helper, {
     T? max,
+    T? maxDesktop,
+    T? maxMobile,
     T? min,
+    T? minDesktop,
+    T? minMobile,
   });
 }

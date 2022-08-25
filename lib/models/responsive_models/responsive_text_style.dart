@@ -12,7 +12,11 @@ class ResponsiveTextStyle extends Responsive<TextStyle> {
   TextStyle scaleWith(
     DimensionsHelper helper, {
     TextStyle? max,
+    TextStyle? maxDesktop,
+    TextStyle? maxMobile,
     TextStyle? min,
+    TextStyle? minDesktop,
+    TextStyle? minMobile,
   }) {
     if (helper.isDesktop) {
       return desktop;
