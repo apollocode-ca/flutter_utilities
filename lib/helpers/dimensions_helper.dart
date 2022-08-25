@@ -182,7 +182,7 @@ class _ArgumentsValidator {
 
   double get upperClampLimit {
     final maxDimension = this.maxDimension;
-    if (maxDimension != null) {
+    if (maxDimension != null && maxDimension != double.infinity) {
       return maxDimension;
     }
     if (methodName == 'scaleHeightFrom') {
