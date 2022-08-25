@@ -177,7 +177,7 @@ class _ArgumentsValidator {
     if (minDimension != null) {
       return minDimension;
     }
-    return 0;
+    return double.negativeInfinity;
   }
 
   double get upperClampLimit {
