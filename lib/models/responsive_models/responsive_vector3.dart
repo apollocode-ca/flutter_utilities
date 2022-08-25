@@ -3,7 +3,7 @@ import 'package:apollocode_flutter_utilities/models/responsive.dart';
 import 'package:vector_math/vector_math_64.dart';
 
 class ResponsiveVector3 extends Responsive<Vector3> {
-  const ResponsiveVector3({
+  ResponsiveVector3({
     required Vector3 desktop,
     required Vector3 mobile,
   }) : super(desktop, mobile);
