@@ -9,5 +9,9 @@ abstract class Responsive<T> {
     this.mobile,
   );
 
-  T scaleWith(DimensionsHelper helper);
+  T scaleWith(
+    DimensionsHelper helper, {
+    T? max,
+    T? min,
+  });
 }

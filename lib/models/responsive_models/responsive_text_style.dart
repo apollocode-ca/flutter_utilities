@@ -9,7 +9,11 @@ class ResponsiveTextStyle extends Responsive<TextStyle> {
   }) : super(desktop, mobile);
 
   @override
-  TextStyle scaleWith(DimensionsHelper helper) {
+  TextStyle scaleWith(
+    DimensionsHelper helper, {
+    TextStyle? max,
+    TextStyle? min,
+  }) {
     if (helper.isDesktop) {
       return desktop;
     }

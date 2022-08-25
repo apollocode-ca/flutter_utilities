@@ -9,10 +9,22 @@ class ResponsiveSize extends Responsive<Size> {
   }) : super(desktop, mobile);
 
   @override
-  Size scaleWith(DimensionsHelper helper) {
+  Size scaleWith(
+    DimensionsHelper helper, {
+    Size? max,
+    Size? min,
+  }) {
     if (helper.isDesktop) {
-      return desktop.scaleWith(helper);
+      return desktop.scaleWith(
+        helper,
+        maxSize: max,
+        minSize: min,
+      );
     }
-    return mobile.scaleWith(helper);
+    return mobile.scaleWith(
+      helper,
+      maxSize: max,
+      minSize: min,
+    );
   }
 }

@@ -86,11 +86,16 @@ class DimensionsHelper {
   double scaleHeightFrom({
     double? figmaHeight,
     Size? figmaSize,
+    double? maxHeight,
+    double? minHeight,
   }) {
     final validator = _ArgumentsValidator(
       figmaHeight,
       figmaSize,
+      maxHeight,
+      mediaSize,
       'scaleHeightFrom',
+      minHeight,
     );
     if (validator.validate()) {
       return validator.dimension / _figmaFrameHeight * mediaSize.height;
@@ -100,12 +105,18 @@ class DimensionsHelper {
 
   double scaleRadiusFrom({
     required double figmaRadius,
+    double? maxRadius,
+    double? minRadius,
   }) {
     final scaledRadiusFromHeight = scaleHeightFrom(
       figmaHeight: figmaRadius,
+      maxHeight: maxRadius,
+      minHeight: minRadius,
     );
     final scaledRadiusFromWidth = scaleWidthFrom(
       figmaWidth: figmaRadius,
+      maxWidth: maxRadius,
+      minWidth: minRadius,
     );
     if (scaledRadiusFromHeight < scaledRadiusFromWidth) {
       return scaledRadiusFromHeight;
@@ -116,11 +127,16 @@ class DimensionsHelper {
   double scaleWidthFrom({
     double? figmaWidth,
     Size? figmaSize,
+    double? maxWidth,
+    double? minWidth,
   }) {
     final validator = _ArgumentsValidator(
       figmaWidth,
       figmaSize,
+      maxWidth,
+      mediaSize,
       'scaleWidthFrom',
+      minWidth,
     );
     if (validator.validate()) {
       return validator.dimension / _figmaFrameWidth * mediaSize.width;
@@ -132,7 +148,10 @@ class DimensionsHelper {
 class _ArgumentsValidator {
   final double? figmaDimension;
   final Size? figmaSize;
+  final double? maxDimension;
+  final Size mediaSize;
   final String methodName;
+  final double? minDimension;
 
   late final double dimension;
   late final Error error;
@@ -140,7 +159,10 @@ class _ArgumentsValidator {
   _ArgumentsValidator(
     this.figmaDimension,
     this.figmaSize,
+    this.maxDimension,
+    this.mediaSize,
     this.methodName,
+    this.minDimension,
   );
 
   String get argumentName {
@@ -148,6 +170,25 @@ class _ArgumentsValidator {
       return 'figmaHeight';
     }
     return 'figmaWidth';
+  }
+
+  double get lowerClampLimit {
+    final minDimension = this.minDimension;
+    if (minDimension != null) {
+      return minDimension;
+    }
+    return 0;
+  }
+
+  double get upperClampLimit {
+    final maxDimension = this.maxDimension;
+    if (maxDimension != null) {
+      return maxDimension;
+    }
+    if (methodName == 'scaleHeightFrom') {
+      return mediaSize.height;
+    }
+    return mediaSize.width;
   }
 
   bool validate() {
@@ -163,7 +204,7 @@ class _ArgumentsValidator {
     }
 
     if (figmaDimension != null) {
-      dimension = figmaDimension;
+      dimension = dimension.clamp(lowerClampLimit, upperClampLimit);
       return true;
     }
 
@@ -181,8 +222,8 @@ class _ArgumentsValidator {
 
   double getDimensionFrom(Size figmaSize) {
     if (methodName == 'scaleHeightFrom') {
-      return figmaSize.height;
+      return figmaSize.height.clamp(lowerClampLimit, upperClampLimit);
     }
-    return figmaSize.width;
+    return figmaSize.width.clamp(lowerClampLimit, upperClampLimit);
   }
 }

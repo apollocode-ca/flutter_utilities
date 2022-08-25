@@ -9,10 +9,22 @@ class ResponsiveVector3 extends Responsive<Vector3> {
   }) : super(desktop, mobile);
 
   @override
-  Vector3 scaleWith(DimensionsHelper helper) {
+  Vector3 scaleWith(
+    DimensionsHelper helper, {
+    Vector3? max,
+    Vector3? min,
+  }) {
     if (helper.isDesktop) {
-      return desktop.scaleFrom(helper);
+      return desktop.scaleFrom(
+        helper,
+        maxVector3: max,
+        minVector3: min,
+      );
     }
-    return mobile.scaleFrom(helper);
+    return mobile.scaleFrom(
+      helper,
+      maxVector3: max,
+      minVector3: min,
+    );
   }
 }
