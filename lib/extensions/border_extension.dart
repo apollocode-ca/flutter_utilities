@@ -1,7 +1,37 @@
+import 'dart:math';
+
 import 'package:apollocode_flutter_utilities/helpers/dimensions_helper.dart';
 import 'package:flutter/material.dart';
 
 extension BorderExtension on Border {
+  double get maxWidth {
+    final dimensions = [
+      bottom.width,
+      left.width,
+      right.width,
+      top.width,
+    ];
+    var maxWidth = dimensions.first;
+    for (var dimension in dimensions.skip(1)) {
+      maxWidth = max(maxWidth, dimension);
+    }
+    return maxWidth;
+  }
+
+  double get minWidth {
+    final dimensions = [
+      bottom.width,
+      left.width,
+      right.width,
+      top.width,
+    ];
+    var minWidth = dimensions.first;
+    for (var dimension in dimensions.skip(1)) {
+      minWidth = min(minWidth, dimension);
+    }
+    return minWidth;
+  }
+
   Border scaleWith(
     DimensionsHelper helper, {
     Border? maxBorder,
@@ -14,8 +44,8 @@ extension BorderExtension on Border {
     if (isBottomSameThanTop && isLeftSameThanTop && isRightSameThanTop) {
       width = helper.scaleRadiusFrom(
         figmaRadius: top.width,
-        maxRadius: maxBorder?.top.width,
-        minRadius: minBorder?.top.width,
+        maxRadius: maxBorder?.maxWidth,
+        minRadius: minBorder?.minWidth,
       );
     }
     final bottomWidth = helper.scaleHeightFrom(
