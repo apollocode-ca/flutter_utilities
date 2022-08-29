@@ -8,7 +8,7 @@ extension SizeExtension on Size {
     Size? minSize,
   }) {
     double? dimension;
-    if (height == width) {
+    if (height == width && height != double.infinity) {
       dimension = helper.scaleRadiusFrom(
         figmaRadius: height,
         maxRadius: maxSize?.longestSide,
