@@ -115,7 +115,7 @@ class _State extends State<ResponsiveImage> {
   }
 
   Clip get clipBehavior {
-    if (isAntiAlias) {
+    if (widget.isAntiAlias) {
       return Clip.antiAlias;
     }
     return widget.clipBehavior;
@@ -162,7 +162,7 @@ class _State extends State<ResponsiveImage> {
   }
 
   bool get isAntiAlias {
-    if (clipBehavior == Clip.antiAlias) {
+    if (widget.clipBehavior == Clip.antiAlias) {
       return true;
     }
     return widget.isAntiAlias;
