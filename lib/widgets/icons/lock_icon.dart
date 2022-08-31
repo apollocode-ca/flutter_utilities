@@ -1,12 +1,19 @@
+import 'package:apollocode_flutter_utilities/helpers/dimensions_helper.dart';
+import 'package:apollocode_flutter_utilities/widgets/images/responsive_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class LockIcon extends StatefulWidget {
+  final bool alwaysUsePng;
+  final bool alwaysUseSvg;
+  final DimensionsHelper? helper;
   final Size? size;
 
   const LockIcon({
-    this.size,
+    this.alwaysUsePng = false,
+    this.alwaysUseSvg = false,
+    this.helper,
     Key? key,
+    this.size,
   }) : super(key: key);
 
   @override
@@ -14,10 +21,26 @@ class LockIcon extends StatefulWidget {
 }
 
 class _State extends State<LockIcon> {
+  bool get alwaysUsePng {
+    return widget.alwaysUsePng;
+  }
+
+  bool get alwaysUseSvg {
+    return widget.alwaysUseSvg;
+  }
+
+  DimensionsHelper? get helper {
+    return widget.helper;
+  }
+
   Widget get icon {
-    return SvgPicture.asset(
-      'assets/icons/lock_icon.svg',
+    return ResponsiveImage(
+      'assets/icons/lock_icon',
+      alwaysUsePng: alwaysUsePng,
+      alwaysUseSvg: alwaysUseSvg,
       clipBehavior: Clip.antiAlias,
+      filterQuality: FilterQuality.high,
+      helper: helper,
       package: 'apollocode_flutter_utilities',
     );
   }
