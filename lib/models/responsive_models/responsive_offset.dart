@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 
 class ResponsiveOffset extends Responsive<Offset> {
   const ResponsiveOffset({
-    required Offset desktop,
-    required Offset mobile,
+    Offset? desktop,
+    Offset? mobile,
   }) : super(desktop, mobile);
 
   @override
@@ -18,17 +18,13 @@ class ResponsiveOffset extends Responsive<Offset> {
     Offset? minDesktop,
     Offset? minMobile,
   }) {
-    if (helper.isDesktop) {
-      return desktop.scaleWith(
-        helper,
-        maxOffset: maxDesktop ?? max,
-        minOffset: minDesktop ?? min,
-      );
-    }
-    return mobile.scaleWith(
+    final current = getCurrentWith(helper);
+    final maxOffset = helper.isDesktop ? maxDesktop : maxMobile ?? max;
+    final minOffset = helper.isDesktop ? minDesktop : minMobile ?? min;
+    return current.scaleWith(
       helper,
-      maxOffset: maxMobile ?? max,
-      minOffset: minMobile ?? min,
+      maxOffset: maxOffset,
+      minOffset: minOffset,
     );
   }
 }
