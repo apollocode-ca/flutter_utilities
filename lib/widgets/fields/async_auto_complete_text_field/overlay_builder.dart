@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 class OverlayBuilder<T> extends StatefulWidget {
   final BoxDecoration decoration;
-  final RenderBox fieldRenderBox;
+  final RenderBox? fieldRenderBox;
   final Widget Function(T) itemBuilder;
   final Color? itemHoverColor;
   final Curve? itemHoverCurve;
@@ -22,7 +22,7 @@ class OverlayBuilder<T> extends StatefulWidget {
 
   const OverlayBuilder({
     required this.decoration,
-    required this.fieldRenderBox,
+    this.fieldRenderBox,
     required this.itemBuilder,
     this.itemHoverColor,
     this.itemHoverCurve,
@@ -48,7 +48,7 @@ class _State<T> extends State<OverlayBuilder<T>> {
     return widget.decoration;
   }
 
-  RenderBox get fieldRenderBox {
+  RenderBox? get fieldRenderBox {
     return widget.fieldRenderBox;
   }
 

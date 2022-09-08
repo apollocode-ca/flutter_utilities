@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class AsyncOverlay<T> extends StatefulWidget {
   final List<T>? asyncItems;
   final BoxDecoration decoration;
-  final RenderBox fieldRenderBox;
+  final RenderBox? fieldRenderBox;
   final bool isAsync;
   final bool isBuilderMounted;
   final bool isLoading;
@@ -22,7 +22,7 @@ class AsyncOverlay<T> extends StatefulWidget {
   const AsyncOverlay({
     this.asyncItems,
     required this.decoration,
-    required this.fieldRenderBox,
+    this.fieldRenderBox,
     this.isAsync = true,
     this.isLoading = false,
     required this.isBuilderMounted,
@@ -62,11 +62,11 @@ class _State<T> extends State<AsyncOverlay<T>> {
   BoxConstraints get constraints {
     if (isLoading) {
       return BoxConstraints.tight(
-        fieldRenderBox.size,
+        fieldRenderBox?.size ?? Size.zero,
       );
     }
     return BoxConstraints.tightFor(
-      width: fieldRenderBox.size.width,
+      width: fieldRenderBox?.size.width,
     );
   }
 
@@ -74,7 +74,7 @@ class _State<T> extends State<AsyncOverlay<T>> {
     return widget.decoration;
   }
 
-  RenderBox get fieldRenderBox {
+  RenderBox? get fieldRenderBox {
     return widget.fieldRenderBox;
   }
 
@@ -168,6 +168,10 @@ class _State<T> extends State<AsyncOverlay<T>> {
 
   @override
   Widget build(BuildContext context) {
+    final fieldRenderBox = this.fieldRenderBox;
+    if (fieldRenderBox == null) {
+      return Container();
+    }
     return Positioned(
       width: fieldRenderBox.size.width,
       child: CompositedTransformFollower(

@@ -143,6 +143,9 @@ class _State<T> extends State<AsyncAutoCompleteTextField<T>> {
     return OverlayEntry(
       maintainState: true,
       builder: (context) {
+        final fieldRenderObject = context.findRenderObject();
+        final fieldRenderBox =
+            fieldRenderObject != null ? fieldRenderObject as RenderBox : null;
         return NotificationListener(
           onNotification: (notification) {
             if (notification is SelectedItemNotification<T>) {
@@ -154,7 +157,7 @@ class _State<T> extends State<AsyncAutoCompleteTextField<T>> {
           },
           child: OverlayBuilder(
             decoration: overlayDecoration,
-            fieldRenderBox: context.findRenderObject() as RenderBox,
+            fieldRenderBox: fieldRenderBox,
             itemBuilder: overlayItemBuilder,
             itemHoverColor: overlayItemHoverColor,
             itemHoverCurve: overlayItemHoverCurve,
