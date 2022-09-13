@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 
 class ResponsiveSize extends Responsive<Size> {
   const ResponsiveSize({
-    Size? desktop,
-    Size? mobile,
+    required Size desktop,
+    required Size mobile,
   }) : super(desktop, mobile);
 
   @override
@@ -18,13 +18,17 @@ class ResponsiveSize extends Responsive<Size> {
     Size? minDesktop,
     Size? minMobile,
   }) {
-    final current = getCurrentWith(helper);
-    final maxSize = helper.isDesktop ? maxDesktop : maxMobile ?? max;
-    final minSize = helper.isDesktop ? minDesktop : minMobile ?? min;
-    return current.scaleWith(
+    if (helper.isDesktop) {
+      return desktop.scaleWith(
+        helper,
+        maxSize: maxDesktop ?? max,
+        minSize: minDesktop ?? min,
+      );
+    }
+    return mobile.scaleWith(
       helper,
-      maxSize: maxSize,
-      minSize: minSize,
+      maxSize: maxMobile ?? max,
+      minSize: minMobile ?? min,
     );
   }
 }

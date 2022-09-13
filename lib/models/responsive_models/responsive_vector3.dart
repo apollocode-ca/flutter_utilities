@@ -4,8 +4,8 @@ import 'package:vector_math/vector_math_64.dart';
 
 class ResponsiveVector3 extends Responsive<Vector3> {
   ResponsiveVector3({
-    Vector3? desktop,
-    Vector3? mobile,
+    required Vector3 desktop,
+    required Vector3 mobile,
   }) : super(desktop, mobile);
 
   @override
@@ -18,13 +18,17 @@ class ResponsiveVector3 extends Responsive<Vector3> {
     Vector3? minDesktop,
     Vector3? minMobile,
   }) {
-    final current = getCurrentWith(helper);
-    final maxVector3 = helper.isDesktop ? maxDesktop : maxMobile ?? max;
-    final minVector3 = helper.isMobile ? minDesktop : minMobile ?? min;
-    return current.scaleWith(
+    if (helper.isDesktop) {
+      return desktop.scaleWith(
+        helper,
+        maxVector3: maxDesktop ?? max,
+        minVector3: minDesktop ?? min,
+      );
+    }
+    return mobile.scaleWith(
       helper,
-      maxVector3: maxVector3,
-      minVector3: minVector3,
+      maxVector3: maxMobile ?? max,
+      minVector3: minMobile ?? min,
     );
   }
 }

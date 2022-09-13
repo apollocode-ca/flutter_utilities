@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 
 class ResponsiveBorder extends Responsive<Border> {
   ResponsiveBorder({
-    Border? desktop,
-    Border? mobile,
+    required Border desktop,
+    required Border mobile,
   }) : super(desktop, mobile);
 
   @override
@@ -18,13 +18,17 @@ class ResponsiveBorder extends Responsive<Border> {
     Border? minDesktop,
     Border? minMobile,
   }) {
-    final current = getCurrentWith(helper);
-    final maxBorder = helper.isDesktop ? maxDesktop : maxMobile ?? max;
-    final minBorder = helper.isDesktop ? minDesktop : minMobile ?? min;
-    return current.scaleWith(
+    if (helper.isDesktop) {
+      return desktop.scaleWith(
+        helper,
+        maxBorder: maxDesktop ?? max,
+        minBorder: minDesktop ?? min,
+      );
+    }
+    return mobile.scaleWith(
       helper,
-      maxBorder: maxBorder,
-      minBorder: minBorder,
+      maxBorder: maxMobile ?? max,
+      minBorder: minMobile ?? min,
     );
   }
 }

@@ -9,14 +9,14 @@ class ResponsiveEdgeInsets extends Responsive<EdgeInsets> {
   );
 
   const ResponsiveEdgeInsets({
-    EdgeInsets? desktop,
-    EdgeInsets? mobile,
+    required EdgeInsets desktop,
+    required EdgeInsets mobile,
   }) : super(desktop, mobile);
 
   ResponsiveEdgeInsets operator +(ResponsiveEdgeInsets other) {
     return ResponsiveEdgeInsets(
-      desktop: _add(desktop, other.desktop),
-      mobile: _add(mobile, other.mobile),
+      desktop: desktop + other.desktop,
+      mobile: mobile + other.mobile,
     );
   }
 
@@ -30,26 +30,17 @@ class ResponsiveEdgeInsets extends Responsive<EdgeInsets> {
     EdgeInsets? minDesktop,
     EdgeInsets? minMobile,
   }) {
-    final current = getCurrentWith(helper);
-    final maxInsets = helper.isDesktop ? maxDesktop : maxMobile ?? max;
-    final minInsets = helper.isDesktop ? minDesktop : minMobile ?? min;
-    return current.scaleWith(
+    if (helper.isDesktop) {
+      return desktop.scaleWith(
+        helper,
+        maxInsets: maxDesktop ?? max,
+        minInsets: minDesktop ?? min,
+      );
+    }
+    return mobile.scaleWith(
       helper,
-      maxInsets: maxInsets,
-      minInsets: minInsets,
+      maxInsets: maxMobile ?? max,
+      minInsets: minMobile ?? min,
     );
-  }
-
-  EdgeInsets? _add(EdgeInsets? first, EdgeInsets? second) {
-    if (first == null && second == null) {
-      return null;
-    }
-    if (first == null) {
-      return second;
-    }
-    if (second == null) {
-      return first;
-    }
-    return first + second;
   }
 }

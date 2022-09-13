@@ -28,9 +28,9 @@ class DimensionsHelper {
 
   static void initialize(
     BuildContext context,
-    Enum figmaFrameType,
-    ResponsiveSize sizes,
-  ) {
+    Enum figmaFrameType, [
+    ResponsiveSize? sizes,
+  ]) {
     if (!_instances.containsKey(figmaFrameType)) {
       _instances[figmaFrameType] = DimensionsHelper._(context, sizes);
     }
@@ -41,10 +41,14 @@ class DimensionsHelper {
 
   DimensionsHelper._(
     BuildContext context,
-    ResponsiveSize sizes,
+    ResponsiveSize? sizes,
   ) {
     _context = context;
-    _figmaFrameSizes = sizes;
+    final desktopSize = sizes?.desktop ?? mediaSize;
+    _figmaFrameSizes = ResponsiveSize(
+      desktop: desktopSize,
+      mobile: sizes?.mobile ?? desktopSize,
+    );
   }
 
   Size get _figmaFrameSize {
