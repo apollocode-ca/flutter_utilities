@@ -47,6 +47,7 @@ class DimensionsHelper {
     final desktopSize = sizes?.desktop ?? mediaSize;
     _figmaFrameSizes = ResponsiveSize(
       desktop: desktopSize,
+      laptop: sizes?.laptop ?? desktopSize,
       mobile: sizes?.mobile ?? desktopSize,
     );
   }
@@ -70,11 +71,19 @@ class DimensionsHelper {
   }
 
   bool get isDesktop {
-    return !isMobile;
+    return isDisplayDesktop(_context);
+  }
+
+  bool get isLaptop {
+    return isDisplayLaptop(_context);
   }
 
   bool get isMobile {
     return isDisplayMobile(_context);
+  }
+
+  bool get isTablet {
+    return isDisplayTablet(_context);
   }
 
   Size get mediaSize {

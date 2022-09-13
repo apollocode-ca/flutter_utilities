@@ -3,16 +3,21 @@ import 'package:apollocode_flutter_utilities/helpers/dimensions_helper.dart';
 
 abstract class Responsive<T> {
   final T desktop;
+  final T laptop;
   final T mobile;
 
   const Responsive(
     this.desktop,
+    this.laptop,
     this.mobile,
   );
 
   T getCurrentWith(DimensionsHelper helper) {
     if (helper.isDesktop) {
       return desktop;
+    }
+    if (helper.isLaptop) {
+      return laptop;
     }
     return mobile;
   }
@@ -21,9 +26,11 @@ abstract class Responsive<T> {
     DimensionsHelper helper, {
     T? max,
     T? maxDesktop,
+    T? maxLaptop,
     T? maxMobile,
     T? min,
     T? minDesktop,
+    T? minLaptop,
     T? minMobile,
   }) {
     throw UnimplementedError(

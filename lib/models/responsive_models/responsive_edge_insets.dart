@@ -5,17 +5,20 @@ import 'package:flutter/material.dart';
 class ResponsiveEdgeInsets extends Responsive<EdgeInsets> {
   static const zero = ResponsiveEdgeInsets(
     desktop: EdgeInsets.zero,
+    laptop: EdgeInsets.zero,
     mobile: EdgeInsets.zero,
   );
 
   const ResponsiveEdgeInsets({
     required EdgeInsets desktop,
+    required EdgeInsets laptop,
     required EdgeInsets mobile,
-  }) : super(desktop, mobile);
+  }) : super(desktop, laptop, mobile);
 
   ResponsiveEdgeInsets operator +(ResponsiveEdgeInsets other) {
     return ResponsiveEdgeInsets(
       desktop: desktop + other.desktop,
+      laptop: laptop + other.laptop,
       mobile: mobile + other.mobile,
     );
   }
@@ -25,9 +28,11 @@ class ResponsiveEdgeInsets extends Responsive<EdgeInsets> {
     DimensionsHelper helper, {
     EdgeInsets? max,
     EdgeInsets? maxDesktop,
+    EdgeInsets? maxLaptop,
     EdgeInsets? maxMobile,
     EdgeInsets? min,
     EdgeInsets? minDesktop,
+    EdgeInsets? minLaptop,
     EdgeInsets? minMobile,
   }) {
     if (helper.isDesktop) {
@@ -35,6 +40,13 @@ class ResponsiveEdgeInsets extends Responsive<EdgeInsets> {
         helper,
         maxInsets: maxDesktop ?? max,
         minInsets: minDesktop ?? min,
+      );
+    }
+    if (helper.isLaptop) {
+      return laptop.scaleWith(
+        helper,
+        maxInsets: maxLaptop ?? max,
+        minInsets: minLaptop ?? min,
       );
     }
     return mobile.scaleWith(
