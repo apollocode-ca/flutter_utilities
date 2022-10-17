@@ -71,19 +71,19 @@ class DimensionsHelper {
   }
 
   bool get isDesktop {
-    return isDisplayDesktop(_context);
+    return mediaSize.width >= 1240;
   }
 
   bool get isLaptop {
-    return isDisplayLaptop(_context);
+    return mediaSize.width >= 904 && mediaSize.width < 1240;
   }
 
   bool get isMobile {
-    return isDisplayMobile(_context);
+    return mediaSize.width < 600;
   }
 
   bool get isTablet {
-    return isDisplayTablet(_context);
+    return mediaSize.width >= 600 && mediaSize.width < 904;
   }
 
   Size get mediaSize {
