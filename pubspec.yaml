@@ -10,12 +10,14 @@ environment:
 
 dependencies:
   adaptive_breakpoints: ^0.1.1
+  another_flushbar: ^1.12.29
   date_time_picker: ^2.1.0
   eventify: ^1.0.0
   firebase_auth: ^3.3.17
   flutter:
     sdk: flutter
   flutter_spinkit: ^5.1.0
+  flutter_web3: ^2.1.9
   flutter_widget_from_html_core: ^0.8.4
   apollocode_dart_utilities:
     git: https://github.com/apollocode-ca/dart_utilities
