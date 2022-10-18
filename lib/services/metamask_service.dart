@@ -42,27 +42,29 @@ class MetamaskService {
             context: context,
             message: networkError,
           );
-        }
-        try {
-          ethereum?.requestAccount().then((addresses) {
-            if (addresses.isEmpty) {
-              _bannerManager.showErrorBanner(
-                context: context,
-                message: noAccountError,
-              );
-            }
-            callback(addresses.first);
-          });
-        } on EthereumException {
-          _bannerManager.showErrorBanner(
-            context: context,
-            message: walletRequestError,
-          );
-        } on EthereumUserRejected {
-          _bannerManager.showErrorBanner(
-            context: context,
-            message: walletRejectedError,
-          );
+        } else {
+          try {
+            ethereum?.requestAccount().then((addresses) {
+              if (addresses.isEmpty) {
+                _bannerManager.showErrorBanner(
+                  context: context,
+                  message: noAccountError,
+                );
+              } else {
+                callback(addresses.first);
+              }
+            });
+          } on EthereumException {
+            _bannerManager.showErrorBanner(
+              context: context,
+              message: walletRequestError,
+            );
+          } on EthereumUserRejected {
+            _bannerManager.showErrorBanner(
+              context: context,
+              message: walletRejectedError,
+            );
+          }
         }
       });
     } else {
