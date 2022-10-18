@@ -48,6 +48,7 @@ class BannerManager {
       titleText: Text(
         message,
         style: textStyle ?? Theme.of(context).textTheme.bodyLarge,
+        textAlign: TextAlign.center,
       ),
     );
     _flushbar.show(context);
