@@ -17,12 +17,10 @@ class Conditional extends StatelessWidget {
     if (children.length != conditions.length + 1) {
       throw ConditionalError(children, conditions);
     }
-    return LayoutBuilder(builder: (context, constraints) {
-      return RecursiveConditional(
-        children: children,
-        conditions: conditions,
-        index: 0,
-      );
-    });
+    return RecursiveConditional(
+      children: children,
+      conditions: conditions,
+      index: 0,
+    );
   }
 }
