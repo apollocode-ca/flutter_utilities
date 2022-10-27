@@ -64,6 +64,7 @@ class ResponsivePadding extends StatelessWidget {
                 constraints: BoxConstraints.tight(
                   const Size.fromWidth(840),
                 ),
+                child: child,
               ),
             ),
             Padding(
