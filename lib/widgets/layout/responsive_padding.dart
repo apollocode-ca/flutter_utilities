@@ -45,41 +45,46 @@ class ResponsivePadding extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        return Conditional(
-          conditions: [
-            _isDesktop(context),
-            _isLaptop(context),
-            _isTablet(context),
-          ],
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 200,
-              ),
-              child: child,
-            ),
-            Align(
-              alignment: Alignment.topCenter,
-              child: ConstrainedBox(
-                constraints: BoxConstraints.tight(
-                  const Size.fromWidth(840),
+        return Container(
+          decoration: BoxDecoration(
+            color: backgroundColor,
+          ),
+          child: Conditional(
+            conditions: [
+              _isDesktop(context),
+              _isLaptop(context),
+              _isTablet(context),
+            ],
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 200,
                 ),
                 child: child,
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 32,
+              Align(
+                alignment: Alignment.topCenter,
+                child: ConstrainedBox(
+                  constraints: BoxConstraints.tight(
+                    const Size.fromWidth(840),
+                  ),
+                  child: child,
+                ),
               ),
-              child: child,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16,
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 32,
+                ),
+                child: child,
               ),
-              child: child,
-            ),
-          ],
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                ),
+                child: child,
+              ),
+            ],
+          ),
         );
       },
     );
