@@ -37,7 +37,7 @@ class TitleText extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  TextStyle? _getStyle(BuildContext context) {
+  TextStyle? _getResponsiveStyle(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final helper = this.helper;
     if (helper != null) {
@@ -59,9 +59,38 @@ class TitleText extends StatelessWidget {
     return textTheme.titleSmall;
   }
 
+  TextStyle? getStyle(BuildContext context) {
+    final style = _getResponsiveStyle(context);
+    return style?.copyWith(
+      background: this.style?.background,
+      backgroundColor: this.style?.backgroundColor,
+      color: this.style?.color,
+      decorationColor: this.style?.decorationColor,
+      decorationStyle: this.style?.decorationStyle,
+      decorationThickness: this.style?.decorationThickness,
+      debugLabel: this.style?.debugLabel,
+      fontFamily: this.style?.fontFamily,
+      fontFamilyFallback: this.style?.fontFamilyFallback,
+      fontFeatures: this.style?.fontFeatures,
+      fontVariations: this.style?.fontVariations,
+      fontSize: this.style?.fontSize,
+      fontStyle: this.style?.fontStyle,
+      fontWeight: this.style?.fontWeight,
+      foreground: this.style?.foreground,
+      height: this.style?.height,
+      inherit: this.style?.inherit,
+      leadingDistribution: this.style?.leadingDistribution,
+      letterSpacing: this.style?.letterSpacing,
+      locale: this.style?.locale,
+      overflow: this.style?.overflow,
+      shadows: this.style?.shadows,
+      textBaseline: this.style?.textBaseline,
+      wordSpacing: this.style?.wordSpacing,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final style = _getStyle(context);
     return Text(
       data,
       locale: locale,
@@ -71,32 +100,7 @@ class TitleText extends StatelessWidget {
       semanticsLabel: semanticsLabel,
       softWrap: softWrap,
       strutStyle: strutStyle,
-      style: style?.copyWith(
-        background: this.style?.background,
-        backgroundColor: this.style?.backgroundColor,
-        color: this.style?.color,
-        decorationColor: this.style?.decorationColor,
-        decorationStyle: this.style?.decorationStyle,
-        decorationThickness: this.style?.decorationThickness,
-        debugLabel: this.style?.debugLabel,
-        fontFamily: this.style?.fontFamily,
-        fontFamilyFallback: this.style?.fontFamilyFallback,
-        fontFeatures: this.style?.fontFeatures,
-        fontVariations: this.style?.fontVariations,
-        fontSize: this.style?.fontSize,
-        fontStyle: this.style?.fontStyle,
-        fontWeight: this.style?.fontWeight,
-        foreground: this.style?.foreground,
-        height: this.style?.height,
-        inherit: this.style?.inherit,
-        leadingDistribution: this.style?.leadingDistribution,
-        letterSpacing: this.style?.letterSpacing,
-        locale: this.style?.locale,
-        overflow: this.style?.overflow,
-        shadows: this.style?.shadows,
-        textBaseline: this.style?.textBaseline,
-        wordSpacing: this.style?.wordSpacing,
-      ),
+      style: getStyle(context),
       textAlign: textAlign,
       textDirection: textDirection,
       textHeightBehavior: textHeightBehavior,
