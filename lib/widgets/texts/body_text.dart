@@ -1,6 +1,8 @@
 import 'package:apollocode_flutter_utilities/helpers/dimensions_helper.dart';
 import 'package:flutter/material.dart';
 
+export 'package:apollocode_flutter_utilities/extensions/text_style_extension.dart';
+
 class BodyText extends StatelessWidget {
   final String data;
   final DimensionsHelper? helper;

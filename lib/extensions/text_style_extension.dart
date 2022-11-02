@@ -2,6 +2,12 @@ import 'package:apollocode_flutter_utilities/helpers/dimensions_helper.dart';
 import 'package:flutter/material.dart';
 
 extension TextStyleExtension on TextStyle {
+  double get realHeight {
+    final fontSize = this.fontSize as double;
+    final height = this.height as double;
+    return fontSize * height;
+  }
+
   double scaleFontSizeFrom(
     DimensionsHelper helper, {
     double? maxFontSize,
