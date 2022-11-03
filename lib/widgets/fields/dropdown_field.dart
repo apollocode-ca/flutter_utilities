@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 
 class DropdownField<T> extends StatefulWidget {
   final String label;
-  final void Function(T suggestion) onChange;
+  final void Function(T suggestion)? onChange;
   final Widget Function(
     BuildContext context,
     T suggestion, {
@@ -15,7 +15,7 @@ class DropdownField<T> extends StatefulWidget {
 
   const DropdownField({
     required this.label,
-    required this.onChange,
+    this.onChange,
     required this.suggestionBuilder,
     required this.suggestions,
     Key? key,
@@ -85,7 +85,10 @@ class _State<T> extends State<DropdownField<T>> {
       selectedSuggestion = suggestion;
     });
     FocusScope.of(context).unfocus();
-    widget.onChange(suggestion);
+    final onChange = widget.onChange;
+    if (onChange != null) {
+      onChange(suggestion);
+    }
   }
 
   void onEnter() {
