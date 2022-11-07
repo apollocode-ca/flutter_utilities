@@ -179,7 +179,8 @@ class _State extends State<MaterialTextField> {
   Color? supportingDecorationColor;
 
   InputDecoration get decoration {
-    final enabledBorder = Theme.of(context).inputDecorationTheme.enabledBorder;
+    final enabledBorder = decoration.enabledBorder ??
+        Theme.of(context).inputDecorationTheme.enabledBorder;
     return widget.decoration.copyWith(
       counter: widget.counter,
       counterStyle: counterStyle?.copyWith(
