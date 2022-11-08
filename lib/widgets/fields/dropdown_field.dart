@@ -33,6 +33,7 @@ class DropdownField<T> extends StatefulWidget {
 class _State<T> extends State<DropdownField<T>> {
   final focusNode = FocusNode();
   final link = LayerLink();
+  final textFieldController = TextEditingController();
   final textFieldFocusNode = FocusNode();
 
   int focusedSuggestionIndex = -1;
@@ -43,7 +44,7 @@ class _State<T> extends State<DropdownField<T>> {
   T? selectedSuggestion;
 
   String get assetName {
-    if (focusNode.hasFocus) {
+    if (focusNode.hasFocus && !textFieldFocusNode.hasFocus) {
       return 'dropdown_arrow_up';
     }
     return 'dropdown_arrow_down';
@@ -88,7 +89,11 @@ class _State<T> extends State<DropdownField<T>> {
 
   void onChange(T suggestion) {
     setState(() {
-      selectedSuggestion = suggestion;
+      if (widget.editable) {
+        textFieldController.text = suggestion.toString();
+      } else {
+        selectedSuggestion = suggestion;
+      }
     });
     FocusScope.of(context).unfocus();
     final onChange = widget.onChange;
@@ -99,7 +104,12 @@ class _State<T> extends State<DropdownField<T>> {
 
   void onEnter() {
     setState(() {
-      selectedSuggestion = widget.suggestions[focusedSuggestionIndex];
+      final suggestion = widget.suggestions[focusedSuggestionIndex];
+      if (widget.editable) {
+        textFieldController.text = suggestion.toString();
+      } else {
+        selectedSuggestion = suggestion;
+      }
     });
     FocusScope.of(context).unfocus();
   }
@@ -147,12 +157,19 @@ class _State<T> extends State<DropdownField<T>> {
   void dispose() {
     focusNode.removeListener(onFocusChange);
     focusNode.dispose();
+    textFieldController.dispose();
     textFieldFocusNode.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    if (widget.editable) {
+      assert(
+        T is String,
+        'When the DropdownField is editable, the generic type must be String',
+      );
+    }
     final theme = Theme.of(context).inputDecorationTheme;
     final enabledBorder = theme.enabledBorder as OutlineInputBorder;
     return CompositedTransformTarget(
@@ -219,7 +236,15 @@ class _State<T> extends State<DropdownField<T>> {
                 borderRadius: enabledBorder.borderRadius,
               ),
               padding: EdgeInsets.symmetric(
-                horizontal: focusNode.hasFocus ? 15 : 16,
+                horizontal: () {
+                  if (textFieldFocusNode.hasFocus) {
+                    return 0;
+                  }
+                  if (focusNode.hasFocus) {
+                    return 15;
+                  }
+                  return 16;
+                }() as double,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -229,6 +254,7 @@ class _State<T> extends State<DropdownField<T>> {
                       builder: (context) {
                         if (widget.editable) {
                           return MaterialTextField(
+                            controller: textFieldController,
                             decoration: const InputDecoration(
                               disabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide.none,
