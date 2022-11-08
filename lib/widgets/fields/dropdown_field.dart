@@ -17,7 +17,7 @@ class DropdownField<T> extends StatefulWidget {
   final List<T> suggestions;
 
   const DropdownField({
-    required this.editable,
+    this.editable = false,
     required this.label,
     this.onChange,
     this.onEdit,
