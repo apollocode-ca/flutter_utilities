@@ -164,11 +164,8 @@ class _State<T> extends State<DropdownField<T>> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.editable) {
-      assert(
-        T is String,
-        'When the DropdownField is editable, the generic type must be String',
-      );
+    if (widget.editable && T is! String) {
+      print('T is not String');
     }
     final theme = Theme.of(context).inputDecorationTheme;
     final enabledBorder = theme.enabledBorder as OutlineInputBorder;
