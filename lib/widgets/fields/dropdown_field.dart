@@ -164,7 +164,7 @@ class _State<T> extends State<DropdownField<T>> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.editable && T is! String) {
+    if (widget.editable && T == String) {
       print(T);
     }
     final theme = Theme.of(context).inputDecorationTheme;
