@@ -1,11 +1,14 @@
 import 'package:apollocode_flutter_utilities/widgets/fields/dropdown_field/dropdown_overlay.dart';
+import 'package:apollocode_flutter_utilities/widgets/fields/material_text_field.dart';
 import 'package:apollocode_flutter_utilities/widgets/texts/body_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class DropdownField<T> extends StatefulWidget {
+  final bool editable;
   final String label;
   final void Function(T suggestion)? onChange;
+  final void Function(String value)? onEdit;
   final Widget Function(
     BuildContext context,
     T suggestion, {
@@ -14,8 +17,10 @@ class DropdownField<T> extends StatefulWidget {
   final List<T> suggestions;
 
   const DropdownField({
+    required this.editable,
     required this.label,
     this.onChange,
+    this.onEdit,
     required this.suggestionBuilder,
     required this.suggestions,
     Key? key,
@@ -28,6 +33,7 @@ class DropdownField<T> extends StatefulWidget {
 class _State<T> extends State<DropdownField<T>> {
   final focusNode = FocusNode();
   final link = LayerLink();
+  final textFieldFocusNode = FocusNode();
 
   int focusedSuggestionIndex = -1;
 
@@ -102,6 +108,22 @@ class _State<T> extends State<DropdownField<T>> {
     FocusScope.of(context).unfocus();
   }
 
+  void onFocusChange() {
+    if (focusNode.hasFocus) {
+      setState(() {
+        decorationColor = Theme.of(context).colorScheme.primary;
+      });
+      if (!textFieldFocusNode.hasFocus) {
+        showOverlay();
+      }
+    } else {
+      setState(() {
+        decorationColor = null;
+      });
+      hideOverlay();
+    }
+  }
+
   void showOverlay() {
     overlayEntry?.remove();
     overlayEntry = createOverlay();
@@ -115,27 +137,17 @@ class _State<T> extends State<DropdownField<T>> {
   @override
   void initState() {
     super.initState();
+    focusNode.addListener(onFocusChange);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       fieldSize = context.size;
-      focusNode.addListener(() {
-        if (focusNode.hasFocus) {
-          setState(() {
-            decorationColor = Theme.of(context).colorScheme.primary;
-          });
-          showOverlay();
-        } else {
-          setState(() {
-            decorationColor = null;
-          });
-          hideOverlay();
-        }
-      });
     });
   }
 
   @override
   void dispose() {
+    focusNode.removeListener(onFocusChange);
     focusNode.dispose();
+    textFieldFocusNode.dispose();
     super.dispose();
   }
 
@@ -214,6 +226,47 @@ class _State<T> extends State<DropdownField<T>> {
                 children: [
                   Builder(
                     builder: (context) {
+                      if (widget.editable) {
+                        return MaterialTextField(
+                          decoration: const InputDecoration(
+                            disabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide.none,
+                              gapPadding: 0,
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide.none,
+                              gapPadding: 0,
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderSide: BorderSide.none,
+                              gapPadding: 0,
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide.none,
+                              gapPadding: 0,
+                            ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderSide: BorderSide.none,
+                              gapPadding: 0,
+                            ),
+                          ),
+                          focusNode: textFieldFocusNode,
+                          label: Container(
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.surface,
+                            ),
+                            padding: EdgeInsets.only(
+                              bottom: 2,
+                              left: enabledBorder.gapPadding,
+                              right: enabledBorder.gapPadding,
+                            ),
+                            child: Text(
+                              widget.label,
+                            ),
+                          ),
+                          onChanged: widget.onEdit,
+                        );
+                      }
                       final selectedSuggestion = this.selectedSuggestion;
                       if (selectedSuggestion != null) {
                         return widget.suggestionBuilder(
