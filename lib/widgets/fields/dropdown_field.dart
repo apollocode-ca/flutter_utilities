@@ -234,7 +234,7 @@ class _State<T> extends State<DropdownField<T>> {
               ),
               padding: EdgeInsets.only(
                 left: () {
-                  if (textFieldFocusNode.hasFocus) {
+                  if (widget.editable) {
                     return 0;
                   }
                   if (focusNode.hasFocus) {
