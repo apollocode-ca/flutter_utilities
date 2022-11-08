@@ -232,8 +232,8 @@ class _State<T> extends State<DropdownField<T>> {
                 ),
                 borderRadius: enabledBorder.borderRadius,
               ),
-              padding: EdgeInsets.symmetric(
-                horizontal: () {
+              padding: EdgeInsets.only(
+                left: () {
                   if (textFieldFocusNode.hasFocus) {
                     return 0;
                   }
@@ -242,6 +242,7 @@ class _State<T> extends State<DropdownField<T>> {
                   }
                   return 16;
                 }() as double,
+                right: focusNode.hasFocus ? 15 : 16,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
