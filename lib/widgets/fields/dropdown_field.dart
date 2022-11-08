@@ -224,63 +224,65 @@ class _State<T> extends State<DropdownField<T>> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Builder(
-                    builder: (context) {
-                      if (widget.editable) {
-                        return MaterialTextField(
-                          decoration: const InputDecoration(
-                            disabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                              gapPadding: 0,
+                  Expanded(
+                    child: Builder(
+                      builder: (context) {
+                        if (widget.editable) {
+                          return MaterialTextField(
+                            decoration: const InputDecoration(
+                              disabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide.none,
+                                gapPadding: 0,
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide.none,
+                                gapPadding: 0,
+                              ),
+                              errorBorder: OutlineInputBorder(
+                                borderSide: BorderSide.none,
+                                gapPadding: 0,
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide.none,
+                                gapPadding: 0,
+                              ),
+                              focusedErrorBorder: OutlineInputBorder(
+                                borderSide: BorderSide.none,
+                                gapPadding: 0,
+                              ),
                             ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                              gapPadding: 0,
+                            focusNode: textFieldFocusNode,
+                            label: Container(
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).colorScheme.surface,
+                              ),
+                              padding: EdgeInsets.only(
+                                bottom: 2,
+                                left: enabledBorder.gapPadding,
+                                right: enabledBorder.gapPadding,
+                              ),
+                              child: Text(
+                                widget.label,
+                              ),
                             ),
-                            errorBorder: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                              gapPadding: 0,
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                              gapPadding: 0,
-                            ),
-                            focusedErrorBorder: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                              gapPadding: 0,
-                            ),
+                            onChanged: widget.onEdit,
+                          );
+                        }
+                        final selectedSuggestion = this.selectedSuggestion;
+                        if (selectedSuggestion != null) {
+                          return widget.suggestionBuilder(
+                            context,
+                            selectedSuggestion,
+                          );
+                        }
+                        return BodyText(
+                          widget.label,
+                          style: theme.labelStyle?.copyWith(
+                            color: decorationColor,
                           ),
-                          focusNode: textFieldFocusNode,
-                          label: Container(
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.surface,
-                            ),
-                            padding: EdgeInsets.only(
-                              bottom: 2,
-                              left: enabledBorder.gapPadding,
-                              right: enabledBorder.gapPadding,
-                            ),
-                            child: Text(
-                              widget.label,
-                            ),
-                          ),
-                          onChanged: widget.onEdit,
                         );
-                      }
-                      final selectedSuggestion = this.selectedSuggestion;
-                      if (selectedSuggestion != null) {
-                        return widget.suggestionBuilder(
-                          context,
-                          selectedSuggestion,
-                        );
-                      }
-                      return BodyText(
-                        widget.label,
-                        style: theme.labelStyle?.copyWith(
-                          color: decorationColor,
-                        ),
-                      );
-                    },
+                      },
+                    ),
                   ),
                   Image.asset(
                     'assets/icons/$assetName.png',
