@@ -134,6 +134,12 @@ class _State<T> extends State<DropdownField<T>> {
     }
   }
 
+  void onTextFieldFocusChange() {
+    if (focusNode.hasFocus) {
+      hideOverlay();
+    }
+  }
+
   void showOverlay() {
     overlayEntry?.remove();
     overlayEntry = createOverlay();
