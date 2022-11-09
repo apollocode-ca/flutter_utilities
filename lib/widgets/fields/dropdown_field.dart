@@ -134,6 +134,12 @@ class _State<T> extends State<DropdownField<T>> {
     }
   }
 
+  void onTextFieldFocusChange() {
+    if (focusNode.hasFocus) {
+      hideOverlay();
+    }
+  }
+
   void showOverlay() {
     overlayEntry?.remove();
     overlayEntry = createOverlay();
@@ -148,6 +154,7 @@ class _State<T> extends State<DropdownField<T>> {
   void initState() {
     super.initState();
     focusNode.addListener(onFocusChange);
+    textFieldFocusNode.addListener(onTextFieldFocusChange);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       fieldSize = context.size;
     });
@@ -156,6 +163,7 @@ class _State<T> extends State<DropdownField<T>> {
   @override
   void dispose() {
     focusNode.removeListener(onFocusChange);
+    textFieldFocusNode.removeListener(onTextFieldFocusChange);
     focusNode.dispose();
     textFieldController.dispose();
     textFieldFocusNode.dispose();
