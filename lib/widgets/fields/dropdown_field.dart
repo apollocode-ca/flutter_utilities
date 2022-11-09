@@ -323,7 +323,15 @@ class _State<T> extends State<DropdownField<T>> {
                   ),
                   Image.asset(
                     'assets/icons/$assetName.png',
-                    color: theme.suffixIconColor,
+                    color: () {
+                      if (widget.suggestions.isEmpty) {
+                        return Theme.of(context)
+                            .colorScheme
+                            .onSurface
+                            .withOpacity(0.38);
+                      }
+                      return theme.suffixIconColor;
+                    }(),
                     filterQuality: FilterQuality.high,
                     package: 'apollocode_flutter_utilities',
                   ),
