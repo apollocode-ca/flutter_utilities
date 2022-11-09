@@ -181,14 +181,19 @@ class _State<T> extends State<DropdownField<T>> {
       link: link,
       child: GestureDetector(
         onTap: () {
-          if (!focusNode.hasFocus) {
+          if (!focusNode.hasFocus && widget.suggestions.isNotEmpty) {
             focusNode.requestFocus();
           } else {
             FocusScope.of(context).unfocus();
           }
         },
         child: MouseRegion(
-          cursor: MaterialStateMouseCursor.clickable,
+          cursor: () {
+            if (widget.suggestions.isNotEmpty) {
+              return SystemMouseCursors.click;
+            }
+            return SystemMouseCursors.basic;
+          }(),
           onEnter: (event) {
             if (!focusNode.hasFocus) {
               setState(() {
