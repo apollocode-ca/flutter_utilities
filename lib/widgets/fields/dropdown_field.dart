@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 
 class DropdownField<T> extends StatefulWidget {
   final bool editable;
-  final String? errorText;
+  final bool isError;
   final String label;
   final void Function(T suggestion)? onChange;
   final void Function(String value)? onEdit;
@@ -19,7 +19,7 @@ class DropdownField<T> extends StatefulWidget {
 
   const DropdownField({
     this.editable = false,
-    this.errorText,
+    this.isError = false,
     required this.label,
     this.onChange,
     this.onEdit,
@@ -233,150 +233,118 @@ class _State<T> extends State<DropdownField<T>> {
               }
               return KeyEventResult.ignored;
             },
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  alignment: Alignment.centerLeft,
-                  constraints: BoxConstraints.tightFor(
-                    height: theme.constraints?.maxHeight,
-                  ),
-                  decoration: BoxDecoration(
-                    border: Border.fromBorderSide(
-                      enabledBorder.borderSide.copyWith(
-                        color: () {
-                          if (widget.errorText != null) {
-                            return theme.errorBorder?.borderSide.color;
-                          }
-                          return decorationColor;
-                        }(),
-                        width: focusNode.hasFocus ? 2 : null,
-                      ),
-                    ),
-                    borderRadius: enabledBorder.borderRadius,
-                  ),
-                  padding: EdgeInsets.only(
-                    left: () {
-                      if (widget.editable) {
-                        return 0;
+            child: Container(
+              alignment: Alignment.centerLeft,
+              constraints: BoxConstraints.tightFor(
+                height: theme.constraints?.maxHeight,
+              ),
+              decoration: BoxDecoration(
+                border: Border.fromBorderSide(
+                  enabledBorder.borderSide.copyWith(
+                    color: () {
+                      if (widget.isError) {
+                        return theme.errorBorder?.borderSide.color;
                       }
-                      if (focusNode.hasFocus) {
-                        return 15;
-                      }
-                      return 16;
-                    }() as double,
-                    right: focusNode.hasFocus ? 15 : 16,
+                      return decorationColor;
+                    }(),
+                    width: focusNode.hasFocus ? 2 : null,
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Builder(
-                          builder: (context) {
-                            if (widget.editable) {
-                              return MaterialTextField(
-                                controller: textFieldController,
-                                decoration: InputDecoration(
-                                  disabledBorder: const OutlineInputBorder(
-                                    borderSide: BorderSide.none,
-                                    gapPadding: 0,
-                                  ),
-                                  enabledBorder: const OutlineInputBorder(
-                                    borderSide: BorderSide.none,
-                                    gapPadding: 0,
-                                  ),
-                                  errorBorder: const OutlineInputBorder(
-                                    borderSide: BorderSide.none,
-                                    gapPadding: 0,
-                                  ),
-                                  focusedBorder: const OutlineInputBorder(
-                                    borderSide: BorderSide.none,
-                                    gapPadding: 0,
-                                  ),
-                                  focusedErrorBorder: const OutlineInputBorder(
-                                    borderSide: BorderSide.none,
-                                    gapPadding: 0,
-                                  ),
-                                  labelStyle: () {
-                                    if (widget.errorText != null) {
-                                      return theme.labelStyle?.copyWith(
-                                        color: theme.errorStyle?.color,
-                                      );
-                                    }
-                                    return null;
-                                  }(),
-                                ),
-                                focusNode: textFieldFocusNode,
-                                label: Container(
-                                  decoration: BoxDecoration(
-                                    color:
-                                        Theme.of(context).colorScheme.surface,
-                                  ),
-                                  padding: EdgeInsets.only(
-                                    bottom: 2,
-                                    left: enabledBorder.gapPadding,
-                                    right: enabledBorder.gapPadding,
-                                  ),
-                                  child: Text(
-                                    widget.label,
-                                  ),
-                                ),
-                                onChanged: widget.onEdit,
-                              );
-                            }
-                            final selectedSuggestion = this.selectedSuggestion;
-                            if (selectedSuggestion != null) {
-                              return widget.suggestionBuilder(
-                                context,
-                                selectedSuggestion,
-                              );
-                            }
-                            return BodyText(
-                              widget.label,
-                              style: theme.labelStyle?.copyWith(
-                                color: decorationColor,
+                ),
+                borderRadius: enabledBorder.borderRadius,
+              ),
+              padding: EdgeInsets.only(
+                left: () {
+                  if (widget.editable) {
+                    return 0;
+                  }
+                  if (focusNode.hasFocus) {
+                    return 15;
+                  }
+                  return 16;
+                }() as double,
+                right: focusNode.hasFocus ? 15 : 16,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Builder(
+                      builder: (context) {
+                        if (widget.editable) {
+                          return MaterialTextField(
+                            controller: textFieldController,
+                            decoration: const InputDecoration(
+                              disabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide.none,
+                                gapPadding: 0,
                               ),
-                            );
-                          },
-                        ),
-                      ),
-                      Image.asset(
-                        'assets/icons/$assetName.png',
-                        color: () {
-                          if (widget.suggestions.isEmpty) {
-                            return Theme.of(context)
-                                .colorScheme
-                                .onSurface
-                                .withOpacity(0.38);
-                          }
-                          return theme.suffixIconColor;
-                        }(),
-                        filterQuality: FilterQuality.high,
-                        package: 'apollocode_flutter_utilities',
-                      ),
-                    ],
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide.none,
+                                gapPadding: 0,
+                              ),
+                              errorBorder: OutlineInputBorder(
+                                borderSide: BorderSide.none,
+                                gapPadding: 0,
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide.none,
+                                gapPadding: 0,
+                              ),
+                              focusedErrorBorder: OutlineInputBorder(
+                                borderSide: BorderSide.none,
+                                gapPadding: 0,
+                              ),
+                            ),
+                            focusNode: textFieldFocusNode,
+                            isError: widget.isError,
+                            label: Container(
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).colorScheme.surface,
+                              ),
+                              padding: EdgeInsets.only(
+                                bottom: 2,
+                                left: enabledBorder.gapPadding,
+                                right: enabledBorder.gapPadding,
+                              ),
+                              child: Text(
+                                widget.label,
+                              ),
+                            ),
+                            onChanged: widget.onEdit,
+                          );
+                        }
+                        final selectedSuggestion = this.selectedSuggestion;
+                        if (selectedSuggestion != null) {
+                          return widget.suggestionBuilder(
+                            context,
+                            selectedSuggestion,
+                          );
+                        }
+                        return BodyText(
+                          widget.label,
+                          style: theme.labelStyle?.copyWith(
+                            color: decorationColor,
+                          ),
+                        );
+                      },
+                    ),
                   ),
-                ),
-                Builder(
-                  builder: (context) {
-                    final errorText = widget.errorText;
-                    if (errorText != null) {
-                      return Padding(
-                        padding: const EdgeInsets.only(
-                          left: 16,
-                          right: 16,
-                          top: 4,
-                        ),
-                        child: BodyText(
-                          errorText,
-                          style: theme.errorStyle,
-                        ),
-                      );
-                    }
-                    return Container();
-                  },
-                ),
-              ],
+                  Image.asset(
+                    'assets/icons/$assetName.png',
+                    color: () {
+                      if (widget.suggestions.isEmpty) {
+                        return Theme.of(context)
+                            .colorScheme
+                            .onSurface
+                            .withOpacity(0.38);
+                      }
+                      return theme.suffixIconColor;
+                    }(),
+                    filterQuality: FilterQuality.high,
+                    package: 'apollocode_flutter_utilities',
+                  ),
+                ],
+              ),
             ),
           ),
         ),

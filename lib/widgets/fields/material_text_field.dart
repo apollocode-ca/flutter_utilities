@@ -39,6 +39,7 @@ class MaterialTextField extends StatefulWidget {
   final Widget? icon;
   final String? initialValue;
   final List<TextInputFormatter> inputFormatters;
+  final bool isError;
   final Brightness? keyboardAppearance;
   final TextInputType? keyboardType;
   final Widget? label;
@@ -117,6 +118,7 @@ class MaterialTextField extends StatefulWidget {
     this.icon,
     this.initialValue,
     this.inputFormatters = const <TextInputFormatter>[],
+    this.isError = false,
     this.keyboardAppearance,
     this.keyboardType,
     this.label,
@@ -173,10 +175,54 @@ class _State extends State<MaterialTextField> {
   late final FocusNode focusNode;
 
   var isError = false;
+  var isHovered = false;
 
   Color? borderColor;
   Color? decorationColor;
   Color? supportingDecorationColor;
+
+  TextStyle? get counterStyle {
+    return responsiveStyle?.copyWith(
+      background: widget.decoration.counterStyle?.background,
+      backgroundColor: widget.decoration.counterStyle?.backgroundColor,
+      color: () {
+        if (widget.enabled) {
+          return widget.decoration.counterStyle?.color;
+        }
+        if (shouldThemeForError) {
+          return Theme.of(context).colorScheme.error;
+        }
+        return Theme.of(context).colorScheme.onSurface.withOpacity(0.38);
+      }(),
+      decorationColor: widget.decoration.counterStyle?.decorationColor,
+      decorationStyle: widget.decoration.counterStyle?.decorationStyle,
+      decorationThickness: widget.decoration.counterStyle?.decorationThickness,
+      debugLabel: widget.decoration.counterStyle?.debugLabel,
+      fontFamily: widget.decoration.counterStyle?.fontFamily,
+      fontFamilyFallback: widget.decoration.counterStyle?.fontFamilyFallback,
+      fontFeatures: widget.decoration.counterStyle?.fontFeatures,
+      fontSize: () {
+        final fontSize = responsiveStyle?.fontSize as double;
+        return widget.decoration.counterStyle?.fontSize ?? fontSize * 0.9;
+      }(),
+      fontStyle: widget.decoration.counterStyle?.fontStyle,
+      fontVariations: widget.decoration.counterStyle?.fontVariations,
+      fontWeight: widget.decoration.counterStyle?.fontWeight,
+      foreground: widget.decoration.counterStyle?.foreground,
+      height: () {
+        final height = responsiveStyle?.height as double;
+        return widget.decoration.counterStyle?.height ?? height * 0.9;
+      }(),
+      inherit: widget.decoration.counterStyle?.inherit,
+      leadingDistribution: widget.decoration.counterStyle?.leadingDistribution,
+      letterSpacing: widget.decoration.counterStyle?.letterSpacing,
+      locale: widget.decoration.counterStyle?.locale,
+      overflow: widget.decoration.counterStyle?.overflow,
+      shadows: widget.decoration.counterStyle?.shadows,
+      textBaseline: widget.decoration.counterStyle?.textBaseline,
+      wordSpacing: widget.decoration.counterStyle?.wordSpacing,
+    );
+  }
 
   InputDecoration get decoration {
     final enabledBorder = widget.decoration.enabledBorder ??
@@ -235,7 +281,7 @@ class _State extends State<MaterialTextField> {
         if (widget.enabled) {
           return null;
         }
-        if (isError || widget.errorText != null) {
+        if (shouldThemeForError) {
           return decorationColor ?? Theme.of(context).colorScheme.error;
         }
         return Theme.of(context).colorScheme.onSurface.withOpacity(0.38);
@@ -244,49 +290,6 @@ class _State extends State<MaterialTextField> {
         color: decorationColor,
       ),
       suffixText: widget.suffixText,
-    );
-  }
-
-  TextStyle? get counterStyle {
-    return responsiveStyle?.copyWith(
-      background: widget.decoration.counterStyle?.background,
-      backgroundColor: widget.decoration.counterStyle?.backgroundColor,
-      color: () {
-        if (widget.enabled) {
-          return widget.decoration.counterStyle?.color;
-        }
-        if (isError || widget.errorText != null) {
-          return Theme.of(context).colorScheme.error;
-        }
-        return Theme.of(context).colorScheme.onSurface.withOpacity(0.38);
-      }(),
-      decorationColor: widget.decoration.counterStyle?.decorationColor,
-      decorationStyle: widget.decoration.counterStyle?.decorationStyle,
-      decorationThickness: widget.decoration.counterStyle?.decorationThickness,
-      debugLabel: widget.decoration.counterStyle?.debugLabel,
-      fontFamily: widget.decoration.counterStyle?.fontFamily,
-      fontFamilyFallback: widget.decoration.counterStyle?.fontFamilyFallback,
-      fontFeatures: widget.decoration.counterStyle?.fontFeatures,
-      fontSize: () {
-        final fontSize = responsiveStyle?.fontSize as double;
-        return widget.decoration.counterStyle?.fontSize ?? fontSize * 0.9;
-      }(),
-      fontStyle: widget.decoration.counterStyle?.fontStyle,
-      fontVariations: widget.decoration.counterStyle?.fontVariations,
-      fontWeight: widget.decoration.counterStyle?.fontWeight,
-      foreground: widget.decoration.counterStyle?.foreground,
-      height: () {
-        final height = responsiveStyle?.height as double;
-        return widget.decoration.counterStyle?.height ?? height * 0.9;
-      }(),
-      inherit: widget.decoration.counterStyle?.inherit,
-      leadingDistribution: widget.decoration.counterStyle?.leadingDistribution,
-      letterSpacing: widget.decoration.counterStyle?.letterSpacing,
-      locale: widget.decoration.counterStyle?.locale,
-      overflow: widget.decoration.counterStyle?.overflow,
-      shadows: widget.decoration.counterStyle?.shadows,
-      textBaseline: widget.decoration.counterStyle?.textBaseline,
-      wordSpacing: widget.decoration.counterStyle?.wordSpacing,
     );
   }
 
@@ -333,7 +336,7 @@ class _State extends State<MaterialTextField> {
         if (widget.enabled) {
           return widget.decoration.floatingLabelStyle?.color;
         }
-        if (isError || widget.errorText != null) {
+        if (shouldThemeForError) {
           return Theme.of(context).colorScheme.error;
         }
         return Theme.of(context).colorScheme.onSurface.withOpacity(0.38);
@@ -379,7 +382,7 @@ class _State extends State<MaterialTextField> {
         if (widget.enabled) {
           return widget.decoration.helperStyle?.color;
         }
-        if (isError || widget.errorText != null) {
+        if (shouldThemeForError) {
           return Theme.of(context).colorScheme.error;
         }
         return Theme.of(context).colorScheme.onSurface.withOpacity(0.38);
@@ -422,7 +425,7 @@ class _State extends State<MaterialTextField> {
         if (widget.enabled) {
           return widget.decoration.hintStyle?.color;
         }
-        if (isError || widget.errorText != null) {
+        if (shouldThemeForError) {
           return Theme.of(context).colorScheme.error;
         }
         return Theme.of(context).colorScheme.onSurface.withOpacity(0.38);
@@ -459,7 +462,7 @@ class _State extends State<MaterialTextField> {
         if (widget.enabled) {
           return widget.decoration.labelStyle?.color;
         }
-        if (isError || widget.errorText != null) {
+        if (shouldThemeForError) {
           return Theme.of(context).colorScheme.error;
         }
         return Theme.of(context).colorScheme.onSurface.withOpacity(0.38);
@@ -496,7 +499,7 @@ class _State extends State<MaterialTextField> {
         if (widget.enabled) {
           return widget.decoration.prefixStyle?.color;
         }
-        if (isError || widget.errorText != null) {
+        if (shouldThemeForError) {
           return Theme.of(context).colorScheme.error;
         }
         return Theme.of(context).colorScheme.onSurface.withOpacity(0.38);
@@ -547,6 +550,10 @@ class _State extends State<MaterialTextField> {
     return textTheme.bodySmall;
   }
 
+  bool get shouldThemeForError {
+    return isError || widget.errorText != null || widget.isError;
+  }
+
   TextStyle? get style {
     return responsiveStyle?.copyWith(
       background: widget.style?.background,
@@ -589,7 +596,7 @@ class _State extends State<MaterialTextField> {
         if (widget.enabled) {
           return widget.decoration.suffixStyle?.color;
         }
-        if (isError || widget.errorText != null) {
+        if (shouldThemeForError) {
           return Theme.of(context).colorScheme.error;
         }
         return Theme.of(context).colorScheme.onSurface.withOpacity(0.38);
@@ -653,7 +660,7 @@ class _State extends State<MaterialTextField> {
       ),
       child: MouseRegion(
         onEnter: (event) {
-          if (isError || widget.errorText != null) {
+          if (shouldThemeForError) {
             setState(() {
               decorationColor = Theme.of(context).colorScheme.onErrorContainer;
               supportingDecorationColor = Theme.of(context).colorScheme.error;
@@ -672,7 +679,7 @@ class _State extends State<MaterialTextField> {
         onExit: (event) {
           setState(() {
             borderColor = null;
-            if (!focusNode.hasFocus && !isError && widget.errorText == null) {
+            if (!focusNode.hasFocus && !shouldThemeForError) {
               decorationColor = null;
               supportingDecorationColor = null;
             }
@@ -689,7 +696,7 @@ class _State extends State<MaterialTextField> {
                 buildCounter: widget.buildCounter,
                 controller: widget.controller,
                 cursorColor: () {
-                  if (isError || widget.errorText != null) {
+                  if (shouldThemeForError) {
                     return Theme.of(context).colorScheme.error;
                   }
                   return widget.cursorColor;
@@ -765,7 +772,7 @@ class _State extends State<MaterialTextField> {
               clipBehavior: widget.clipBehavior,
               controller: widget.controller,
               cursorColor: () {
-                if (isError || widget.errorText != null) {
+                if (shouldThemeForError) {
                   return Theme.of(context).colorScheme.error;
                 }
                 return widget.cursorColor;
