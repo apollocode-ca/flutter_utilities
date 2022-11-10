@@ -666,7 +666,7 @@ class _State extends State<MaterialTextField> {
       ),
       child: MouseRegion(
         onEnter: (event) {
-          if (shouldThemeForError) {
+          if (shouldThemeForError && !focusNode.hasFocus) {
             setState(() {
               decorationColor = Theme.of(context).colorScheme.onErrorContainer;
               supportingDecorationColor = Theme.of(context).colorScheme.error;
