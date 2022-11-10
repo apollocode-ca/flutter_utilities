@@ -234,6 +234,7 @@ class _State<T> extends State<DropdownField<T>> {
               return KeyEventResult.ignored;
             },
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
                   alignment: Alignment.centerLeft,
@@ -243,7 +244,12 @@ class _State<T> extends State<DropdownField<T>> {
                   decoration: BoxDecoration(
                     border: Border.fromBorderSide(
                       enabledBorder.borderSide.copyWith(
-                        color: decorationColor,
+                        color: () {
+                          if (widget.errorText != null) {
+                            return theme.errorBorder?.borderSide.color;
+                          }
+                          return decorationColor;
+                        }(),
                         width: focusNode.hasFocus ? 2 : null,
                       ),
                     ),
@@ -270,27 +276,35 @@ class _State<T> extends State<DropdownField<T>> {
                             if (widget.editable) {
                               return MaterialTextField(
                                 controller: textFieldController,
-                                decoration: const InputDecoration(
-                                  disabledBorder: OutlineInputBorder(
+                                decoration: InputDecoration(
+                                  disabledBorder: const OutlineInputBorder(
                                     borderSide: BorderSide.none,
                                     gapPadding: 0,
                                   ),
-                                  enabledBorder: OutlineInputBorder(
+                                  enabledBorder: const OutlineInputBorder(
                                     borderSide: BorderSide.none,
                                     gapPadding: 0,
                                   ),
-                                  errorBorder: OutlineInputBorder(
+                                  errorBorder: const OutlineInputBorder(
                                     borderSide: BorderSide.none,
                                     gapPadding: 0,
                                   ),
-                                  focusedBorder: OutlineInputBorder(
+                                  focusedBorder: const OutlineInputBorder(
                                     borderSide: BorderSide.none,
                                     gapPadding: 0,
                                   ),
-                                  focusedErrorBorder: OutlineInputBorder(
+                                  focusedErrorBorder: const OutlineInputBorder(
                                     borderSide: BorderSide.none,
                                     gapPadding: 0,
                                   ),
+                                  labelStyle: () {
+                                    if (widget.errorText != null) {
+                                      return theme.labelStyle?.copyWith(
+                                        color: theme.errorStyle?.color,
+                                      );
+                                    }
+                                    return null;
+                                  }(),
                                 ),
                                 focusNode: textFieldFocusNode,
                                 label: Container(
@@ -347,9 +361,16 @@ class _State<T> extends State<DropdownField<T>> {
                   builder: (context) {
                     final errorText = widget.errorText;
                     if (errorText != null) {
-                      return BodyText(
-                        errorText,
-                        style: theme.errorStyle,
+                      return Padding(
+                        padding: const EdgeInsets.only(
+                          left: 16,
+                          right: 16,
+                          top: 4,
+                        ),
+                        child: BodyText(
+                          errorText,
+                          style: theme.errorStyle,
+                        ),
                       );
                     }
                     return Container();
