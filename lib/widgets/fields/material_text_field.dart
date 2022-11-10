@@ -459,11 +459,11 @@ class _State extends State<MaterialTextField> {
       background: widget.decoration.labelStyle?.background,
       backgroundColor: widget.decoration.labelStyle?.backgroundColor,
       color: () {
-        if (widget.enabled) {
-          return widget.decoration.labelStyle?.color;
-        }
         if (shouldThemeForError) {
           return Theme.of(context).colorScheme.error;
+        }
+        if (widget.enabled) {
+          return widget.decoration.labelStyle?.color;
         }
         return Theme.of(context).colorScheme.onSurface.withOpacity(0.38);
       }(),
