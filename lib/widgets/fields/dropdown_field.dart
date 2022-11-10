@@ -197,7 +197,12 @@ class _State<T> extends State<DropdownField<T>> {
             return SystemMouseCursors.basic;
           }(),
           onEnter: (event) {
-            if (!focusNode.hasFocus) {
+            if (widget.isError) {
+              setState(() {
+                decorationColor =
+                    Theme.of(context).colorScheme.onErrorContainer;
+              });
+            } else if (!focusNode.hasFocus) {
               setState(() {
                 decorationColor = Theme.of(context).colorScheme.onSurface;
               });
@@ -242,10 +247,10 @@ class _State<T> extends State<DropdownField<T>> {
                 border: Border.fromBorderSide(
                   enabledBorder.borderSide.copyWith(
                     color: () {
-                      if (widget.isError) {
-                        return theme.errorBorder?.borderSide.color;
+                      if (!widget.isError) {
+                        return decorationColor;
                       }
-                      return decorationColor;
+                      return theme.errorBorder?.borderSide.color;
                     }(),
                     width: focusNode.hasFocus ? 2 : null,
                   ),
@@ -323,7 +328,12 @@ class _State<T> extends State<DropdownField<T>> {
                         return BodyText(
                           widget.label,
                           style: theme.labelStyle?.copyWith(
-                            color: decorationColor,
+                            color: () {
+                              if (!widget.isError) {
+                                return decorationColor;
+                              }
+                              return theme.errorBorder?.borderSide.color;
+                            }(),
                           ),
                         );
                       },
