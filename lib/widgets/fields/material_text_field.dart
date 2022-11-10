@@ -186,11 +186,11 @@ class _State extends State<MaterialTextField> {
       background: widget.decoration.counterStyle?.background,
       backgroundColor: widget.decoration.counterStyle?.backgroundColor,
       color: () {
-        if (widget.enabled) {
-          return widget.decoration.counterStyle?.color;
-        }
         if (shouldThemeForError) {
           return Theme.of(context).colorScheme.error;
+        }
+        if (widget.enabled) {
+          return widget.decoration.counterStyle?.color;
         }
         return Theme.of(context).colorScheme.onSurface.withOpacity(0.38);
       }(),
@@ -333,11 +333,11 @@ class _State extends State<MaterialTextField> {
       background: widget.decoration.floatingLabelStyle?.background,
       backgroundColor: widget.decoration.floatingLabelStyle?.backgroundColor,
       color: () {
-        if (widget.enabled) {
-          return widget.decoration.floatingLabelStyle?.color;
-        }
         if (shouldThemeForError) {
           return Theme.of(context).colorScheme.error;
+        }
+        if (widget.enabled) {
+          return widget.decoration.floatingLabelStyle?.color;
         }
         return Theme.of(context).colorScheme.onSurface.withOpacity(0.38);
       }(),
@@ -379,11 +379,11 @@ class _State extends State<MaterialTextField> {
       background: widget.decoration.helperStyle?.background,
       backgroundColor: widget.decoration.helperStyle?.backgroundColor,
       color: () {
-        if (widget.enabled) {
-          return widget.decoration.helperStyle?.color;
-        }
         if (shouldThemeForError) {
           return Theme.of(context).colorScheme.error;
+        }
+        if (widget.enabled) {
+          return widget.decoration.helperStyle?.color;
         }
         return Theme.of(context).colorScheme.onSurface.withOpacity(0.38);
       }(),
@@ -422,11 +422,11 @@ class _State extends State<MaterialTextField> {
       background: widget.decoration.hintStyle?.background,
       backgroundColor: widget.decoration.hintStyle?.backgroundColor,
       color: () {
-        if (widget.enabled) {
-          return widget.decoration.hintStyle?.color;
-        }
         if (shouldThemeForError) {
           return Theme.of(context).colorScheme.error;
+        }
+        if (widget.enabled) {
+          return widget.decoration.hintStyle?.color;
         }
         return Theme.of(context).colorScheme.onSurface.withOpacity(0.38);
       }(),
@@ -496,11 +496,11 @@ class _State extends State<MaterialTextField> {
       background: widget.decoration.prefixStyle?.background,
       backgroundColor: widget.decoration.prefixStyle?.backgroundColor,
       color: () {
-        if (widget.enabled) {
-          return widget.decoration.prefixStyle?.color;
-        }
         if (shouldThemeForError) {
           return Theme.of(context).colorScheme.error;
+        }
+        if (widget.enabled) {
+          return widget.decoration.prefixStyle?.color;
         }
         return Theme.of(context).colorScheme.onSurface.withOpacity(0.38);
       }(),
@@ -593,11 +593,11 @@ class _State extends State<MaterialTextField> {
       background: widget.decoration.suffixStyle?.background,
       backgroundColor: widget.decoration.suffixStyle?.backgroundColor,
       color: () {
-        if (widget.enabled) {
-          return widget.decoration.suffixStyle?.color;
-        }
         if (shouldThemeForError) {
           return Theme.of(context).colorScheme.error;
+        }
+        if (widget.enabled) {
+          return widget.decoration.suffixStyle?.color;
         }
         return Theme.of(context).colorScheme.onSurface.withOpacity(0.38);
       }(),
@@ -679,7 +679,7 @@ class _State extends State<MaterialTextField> {
         onExit: (event) {
           setState(() {
             borderColor = null;
-            if (!focusNode.hasFocus && !shouldThemeForError) {
+            if (!focusNode.hasFocus) {
               decorationColor = null;
               supportingDecorationColor = null;
             }
