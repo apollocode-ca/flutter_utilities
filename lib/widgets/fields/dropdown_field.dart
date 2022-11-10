@@ -124,7 +124,9 @@ class _State<T> extends State<DropdownField<T>> {
   void onFocusChange() {
     if (focusNode.hasFocus) {
       setState(() {
-        decorationColor = Theme.of(context).colorScheme.primary;
+        if (!widget.isError) {
+          decorationColor = Theme.of(context).colorScheme.primary;
+        }
       });
       if (!textFieldFocusNode.hasFocus) {
         showOverlay();
