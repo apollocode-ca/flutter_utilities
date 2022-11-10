@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 
 class DropdownField<T> extends StatefulWidget {
   final bool editable;
+  final String? errorText;
   final String label;
   final void Function(T suggestion)? onChange;
   final void Function(String value)? onEdit;
@@ -18,6 +19,7 @@ class DropdownField<T> extends StatefulWidget {
 
   const DropdownField({
     this.editable = false,
+    this.errorText,
     required this.label,
     this.onChange,
     this.onEdit,
@@ -288,6 +290,7 @@ class _State<T> extends State<DropdownField<T>> {
                                 gapPadding: 0,
                               ),
                             ),
+                            errorText: widget.errorText,
                             focusNode: textFieldFocusNode,
                             label: Container(
                               decoration: BoxDecoration(
