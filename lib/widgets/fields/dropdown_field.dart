@@ -132,9 +132,11 @@ class _State<T> extends State<DropdownField<T>> {
         showOverlay();
       }
     } else {
-      setState(() {
-        decorationColor = null;
-      });
+      if (!widget.isError) {
+        setState(() {
+          decorationColor = null;
+        });
+      }
       hideOverlay();
     }
   }

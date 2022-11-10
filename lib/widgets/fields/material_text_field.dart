@@ -626,13 +626,15 @@ class _State extends State<MaterialTextField> {
   }
 
   void onFocusChange() {
-    setState(() {
-      if (focusNode.hasFocus) {
+    if (focusNode.hasFocus && !shouldThemeForError) {
+      setState(() {
         decorationColor = Theme.of(context).colorScheme.primary;
-      } else {
+      });
+    } else if (!shouldThemeForError) {
+      setState(() {
         decorationColor = null;
-      }
-    });
+      });
+    }
   }
 
   @override
