@@ -630,7 +630,7 @@ class _State extends State<MaterialTextField> {
       setState(() {
         decorationColor = Theme.of(context).colorScheme.primary;
       });
-    } else if (!shouldThemeForError) {
+    } else if (shouldThemeForError) {
       setState(() {
         decorationColor = Theme.of(context).colorScheme.error;
       });
