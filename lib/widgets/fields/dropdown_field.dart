@@ -233,113 +233,129 @@ class _State<T> extends State<DropdownField<T>> {
               }
               return KeyEventResult.ignored;
             },
-            child: Container(
-              alignment: Alignment.centerLeft,
-              constraints: BoxConstraints.tightFor(
-                height: theme.constraints?.maxHeight,
-              ),
-              decoration: BoxDecoration(
-                border: Border.fromBorderSide(
-                  enabledBorder.borderSide.copyWith(
-                    color: decorationColor,
-                    width: focusNode.hasFocus ? 2 : null,
+            child: Column(
+              children: [
+                Container(
+                  alignment: Alignment.centerLeft,
+                  constraints: BoxConstraints.tightFor(
+                    height: theme.constraints?.maxHeight,
+                  ),
+                  decoration: BoxDecoration(
+                    border: Border.fromBorderSide(
+                      enabledBorder.borderSide.copyWith(
+                        color: decorationColor,
+                        width: focusNode.hasFocus ? 2 : null,
+                      ),
+                    ),
+                    borderRadius: enabledBorder.borderRadius,
+                  ),
+                  padding: EdgeInsets.only(
+                    left: () {
+                      if (widget.editable) {
+                        return 0;
+                      }
+                      if (focusNode.hasFocus) {
+                        return 15;
+                      }
+                      return 16;
+                    }() as double,
+                    right: focusNode.hasFocus ? 15 : 16,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Builder(
+                          builder: (context) {
+                            if (widget.editable) {
+                              return MaterialTextField(
+                                controller: textFieldController,
+                                decoration: const InputDecoration(
+                                  disabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide.none,
+                                    gapPadding: 0,
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide.none,
+                                    gapPadding: 0,
+                                  ),
+                                  errorBorder: OutlineInputBorder(
+                                    borderSide: BorderSide.none,
+                                    gapPadding: 0,
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide.none,
+                                    gapPadding: 0,
+                                  ),
+                                  focusedErrorBorder: OutlineInputBorder(
+                                    borderSide: BorderSide.none,
+                                    gapPadding: 0,
+                                  ),
+                                ),
+                                focusNode: textFieldFocusNode,
+                                label: Container(
+                                  decoration: BoxDecoration(
+                                    color:
+                                        Theme.of(context).colorScheme.surface,
+                                  ),
+                                  padding: EdgeInsets.only(
+                                    bottom: 2,
+                                    left: enabledBorder.gapPadding,
+                                    right: enabledBorder.gapPadding,
+                                  ),
+                                  child: Text(
+                                    widget.label,
+                                  ),
+                                ),
+                                onChanged: widget.onEdit,
+                              );
+                            }
+                            final selectedSuggestion = this.selectedSuggestion;
+                            if (selectedSuggestion != null) {
+                              return widget.suggestionBuilder(
+                                context,
+                                selectedSuggestion,
+                              );
+                            }
+                            return BodyText(
+                              widget.label,
+                              style: theme.labelStyle?.copyWith(
+                                color: decorationColor,
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      Image.asset(
+                        'assets/icons/$assetName.png',
+                        color: () {
+                          if (widget.suggestions.isEmpty) {
+                            return Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withOpacity(0.38);
+                          }
+                          return theme.suffixIconColor;
+                        }(),
+                        filterQuality: FilterQuality.high,
+                        package: 'apollocode_flutter_utilities',
+                      ),
+                    ],
                   ),
                 ),
-                borderRadius: enabledBorder.borderRadius,
-              ),
-              padding: EdgeInsets.only(
-                left: () {
-                  if (widget.editable) {
-                    return 0;
-                  }
-                  if (focusNode.hasFocus) {
-                    return 15;
-                  }
-                  return 16;
-                }() as double,
-                right: focusNode.hasFocus ? 15 : 16,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Builder(
-                      builder: (context) {
-                        if (widget.editable) {
-                          return MaterialTextField(
-                            controller: textFieldController,
-                            decoration: const InputDecoration(
-                              disabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide.none,
-                                gapPadding: 0,
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide.none,
-                                gapPadding: 0,
-                              ),
-                              errorBorder: OutlineInputBorder(
-                                borderSide: BorderSide.none,
-                                gapPadding: 0,
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide.none,
-                                gapPadding: 0,
-                              ),
-                              focusedErrorBorder: OutlineInputBorder(
-                                borderSide: BorderSide.none,
-                                gapPadding: 0,
-                              ),
-                            ),
-                            errorText: widget.errorText,
-                            focusNode: textFieldFocusNode,
-                            label: Container(
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).colorScheme.surface,
-                              ),
-                              padding: EdgeInsets.only(
-                                bottom: 2,
-                                left: enabledBorder.gapPadding,
-                                right: enabledBorder.gapPadding,
-                              ),
-                              child: Text(
-                                widget.label,
-                              ),
-                            ),
-                            onChanged: widget.onEdit,
-                          );
-                        }
-                        final selectedSuggestion = this.selectedSuggestion;
-                        if (selectedSuggestion != null) {
-                          return widget.suggestionBuilder(
-                            context,
-                            selectedSuggestion,
-                          );
-                        }
-                        return BodyText(
-                          widget.label,
-                          style: theme.labelStyle?.copyWith(
-                            color: decorationColor,
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                  Image.asset(
-                    'assets/icons/$assetName.png',
-                    color: () {
-                      if (widget.suggestions.isEmpty) {
-                        return Theme.of(context)
-                            .colorScheme
-                            .onSurface
-                            .withOpacity(0.38);
-                      }
-                      return theme.suffixIconColor;
-                    }(),
-                    filterQuality: FilterQuality.high,
-                    package: 'apollocode_flutter_utilities',
-                  ),
-                ],
-              ),
+                Builder(
+                  builder: (context) {
+                    final errorText = widget.errorText;
+                    if (errorText != null) {
+                      return BodyText(
+                        errorText,
+                        style: theme.errorStyle,
+                      );
+                    }
+                    return Container();
+                  },
+                ),
+              ],
             ),
           ),
         ),
