@@ -38,7 +38,8 @@ class _State<T> extends State<DropdownField<T>> {
   final textFieldController = TextEditingController();
   final textFieldFocusNode = FocusNode();
 
-  int focusedSuggestionIndex = -1;
+  var focusedSuggestionIndex = -1;
+  var isHovered = false;
 
   Color? decorationColor;
   Size? fieldSize;
@@ -199,11 +200,13 @@ class _State<T> extends State<DropdownField<T>> {
           onEnter: (event) {
             if (widget.isError) {
               setState(() {
+                isHovered = true;
                 decorationColor =
                     Theme.of(context).colorScheme.onErrorContainer;
               });
             } else if (!focusNode.hasFocus) {
               setState(() {
+                isHovered = true;
                 decorationColor = Theme.of(context).colorScheme.onSurface;
               });
             }
@@ -211,6 +214,7 @@ class _State<T> extends State<DropdownField<T>> {
           onExit: (event) {
             if (!focusNode.hasFocus) {
               setState(() {
+                isHovered = false;
                 decorationColor = null;
               });
             }
@@ -247,10 +251,13 @@ class _State<T> extends State<DropdownField<T>> {
                 border: Border.fromBorderSide(
                   enabledBorder.borderSide.copyWith(
                     color: () {
-                      if (!widget.isError) {
-                        return decorationColor;
+                      if (widget.isError) {
+                        if (isHovered) {
+                          return decorationColor;
+                        }
+                        return theme.errorBorder?.borderSide.color;
                       }
-                      return theme.errorBorder?.borderSide.color;
+                      return decorationColor;
                     }(),
                     width: focusNode.hasFocus ? 2 : null,
                   ),
@@ -329,10 +336,13 @@ class _State<T> extends State<DropdownField<T>> {
                           widget.label,
                           style: theme.labelStyle?.copyWith(
                             color: () {
-                              if (!widget.isError) {
-                                return decorationColor;
+                              if (widget.isError) {
+                                if (isHovered) {
+                                  return decorationColor;
+                                }
+                                return theme.errorBorder?.borderSide.color;
                               }
-                              return theme.errorBorder?.borderSide.color;
+                              return decorationColor;
                             }(),
                           ),
                         );
