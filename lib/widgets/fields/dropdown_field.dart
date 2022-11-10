@@ -132,7 +132,11 @@ class _State<T> extends State<DropdownField<T>> {
         showOverlay();
       }
     } else {
-      if (!widget.isError) {
+      if (widget.isError) {
+        setState(() {
+          decorationColor = Theme.of(context).colorScheme.error;
+        });
+      } else {
         setState(() {
           decorationColor = null;
         });
