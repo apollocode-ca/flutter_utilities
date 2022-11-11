@@ -236,7 +236,7 @@ class _State extends State<MaterialTextField> {
       enabledBorder: enabledBorder?.copyWith(
         borderSide: enabledBorder.borderSide.copyWith(
           color: () {
-            if (shouldThemeForError) {
+            if (shouldThemeForError && !isHovered) {
               return Theme.of(context).colorScheme.error;
             }
             return borderColor;
@@ -673,6 +673,7 @@ class _State extends State<MaterialTextField> {
         onEnter: (event) {
           if (shouldThemeForError && !focusNode.hasFocus) {
             setState(() {
+              isHovered = true;
               borderColor = Theme.of(context).colorScheme.onErrorContainer;
               decorationColor = Theme.of(context).colorScheme.onErrorContainer;
               supportingDecorationColor = Theme.of(context).colorScheme.error;
@@ -680,6 +681,7 @@ class _State extends State<MaterialTextField> {
           } else {
             final onSurface = Theme.of(context).colorScheme.onSurface;
             setState(() {
+              isHovered = true;
               borderColor = onSurface;
               if (!focusNode.hasFocus) {
                 decorationColor = onSurface;
@@ -690,6 +692,7 @@ class _State extends State<MaterialTextField> {
         },
         onExit: (event) {
           setState(() {
+            isHovered = false;
             borderColor = null;
             if (!focusNode.hasFocus) {
               decorationColor = null;
