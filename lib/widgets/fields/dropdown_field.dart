@@ -220,12 +220,12 @@ class _State<T> extends State<DropdownField<T>> {
             }
           },
           onExit: (event) {
-            if (!focusNode.hasFocus) {
-              setState(() {
-                isHovered = false;
+            setState(() {
+              isHovered = false;
+              if (!focusNode.hasFocus) {
                 decorationColor = null;
-              });
-            }
+              }
+            });
           },
           child: Focus(
             focusNode: focusNode,
