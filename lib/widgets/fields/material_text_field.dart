@@ -696,8 +696,8 @@ class _State extends State<MaterialTextField> {
             final onSurface = Theme.of(context).colorScheme.onSurface;
             setState(() {
               isHovered = true;
-              borderColor = onSurface;
               if (!focusNode.hasFocus) {
+                borderColor = onSurface;
                 decorationColor = onSurface;
                 supportingDecorationColor = onSurface;
               }
@@ -707,8 +707,8 @@ class _State extends State<MaterialTextField> {
         onExit: (event) {
           setState(() {
             isHovered = false;
-            borderColor = null;
             if (!focusNode.hasFocus) {
+              borderColor = null;
               decorationColor = null;
               supportingDecorationColor = null;
             }
