@@ -235,7 +235,12 @@ class _State extends State<MaterialTextField> {
       counterText: widget.counterText,
       enabledBorder: enabledBorder?.copyWith(
         borderSide: enabledBorder.borderSide.copyWith(
-          color: borderColor,
+          color: () {
+            if (shouldThemeForError) {
+              return Theme.of(context).colorScheme.error;
+            }
+            return borderColor;
+          }(),
         ),
       ),
       errorStyle: errorStyle,
@@ -668,6 +673,7 @@ class _State extends State<MaterialTextField> {
         onEnter: (event) {
           if (shouldThemeForError && !focusNode.hasFocus) {
             setState(() {
+              borderColor = Theme.of(context).colorScheme.onErrorContainer;
               decorationColor = Theme.of(context).colorScheme.onErrorContainer;
               supportingDecorationColor = Theme.of(context).colorScheme.error;
             });
