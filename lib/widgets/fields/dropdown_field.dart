@@ -260,7 +260,7 @@ class _State<T> extends State<DropdownField<T>> {
                   enabledBorder.borderSide.copyWith(
                     color: () {
                       if (widget.isError) {
-                        if (isHovered) {
+                        if (isHovered && !focusNode.hasFocus) {
                           return decorationColor;
                         }
                         return theme.errorBorder?.borderSide.color;
