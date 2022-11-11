@@ -645,6 +645,7 @@ class _State extends State<MaterialTextField> {
   void onFocusChange() {
     if (focusNode.hasFocus && !shouldThemeForError) {
       setState(() {
+        borderColor = Theme.of(context).colorScheme.primary;
         decorationColor = Theme.of(context).colorScheme.primary;
       });
     } else if (shouldThemeForError) {
