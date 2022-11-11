@@ -253,7 +253,7 @@ class _State extends State<MaterialTextField> {
       focusedBorder: focusedBorder?.copyWith(
         borderSide: focusedBorder.borderSide.copyWith(
           color: () {
-            if (shouldThemeForError && !isHovered) {
+            if (shouldThemeForError) {
               return Theme.of(context).colorScheme.error;
             }
             return borderColor;
