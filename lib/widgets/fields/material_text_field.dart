@@ -251,7 +251,7 @@ class _State extends State<MaterialTextField> {
         color: decorationColor,
       ),
       focusedBorder: focusedBorder?.copyWith(
-        borderSide: enabledBorder?.borderSide.copyWith(
+        borderSide: focusedBorder.borderSide.copyWith(
           color: () {
             if (shouldThemeForError && !isHovered) {
               return Theme.of(context).colorScheme.error;
