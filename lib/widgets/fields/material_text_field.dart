@@ -227,6 +227,8 @@ class _State extends State<MaterialTextField> {
   InputDecoration get decoration {
     final enabledBorder = widget.decoration.enabledBorder ??
         Theme.of(context).inputDecorationTheme.enabledBorder;
+    final focusedBorder = widget.decoration.focusedBorder ??
+        Theme.of(context).inputDecorationTheme.focusedBorder;
     return widget.decoration.copyWith(
       counter: widget.counter,
       counterStyle: counterStyle?.copyWith(
@@ -247,6 +249,16 @@ class _State extends State<MaterialTextField> {
       errorText: widget.errorText,
       floatingLabelStyle: floatingLabelStyle?.copyWith(
         color: decorationColor,
+      ),
+      focusedBorder: focusedBorder?.copyWith(
+        borderSide: enabledBorder?.borderSide.copyWith(
+          color: () {
+            if (shouldThemeForError && !isHovered) {
+              return Theme.of(context).colorScheme.error;
+            }
+            return borderColor;
+          }(),
+        ),
       ),
       helperStyle: helperStyle?.copyWith(
         color: supportingDecorationColor,
