@@ -194,6 +194,7 @@ class _State extends State<MaterialTextField> {
         }
         return Theme.of(context).colorScheme.onSurface.withOpacity(0.38);
       }(),
+      decoration: widget.decoration.counterStyle?.decoration,
       decorationColor: widget.decoration.counterStyle?.decorationColor,
       decorationStyle: widget.decoration.counterStyle?.decorationStyle,
       decorationThickness: widget.decoration.counterStyle?.decorationThickness,
@@ -315,6 +316,7 @@ class _State extends State<MaterialTextField> {
       background: widget.decoration.errorStyle?.background,
       backgroundColor: widget.decoration.errorStyle?.backgroundColor,
       color: widget.decoration.errorStyle?.color,
+      decoration: widget.decoration.errorStyle?.decoration,
       decorationColor: widget.decoration.errorStyle?.decorationColor,
       decorationStyle: widget.decoration.errorStyle?.decorationStyle,
       decorationThickness: widget.decoration.errorStyle?.decorationThickness,
@@ -358,6 +360,7 @@ class _State extends State<MaterialTextField> {
         }
         return Theme.of(context).colorScheme.onSurface.withOpacity(0.38);
       }(),
+      decoration: widget.decoration.floatingLabelStyle?.decoration,
       decorationColor: widget.decoration.floatingLabelStyle?.decorationColor,
       decorationStyle: widget.decoration.floatingLabelStyle?.decorationStyle,
       decorationThickness:
@@ -404,6 +407,7 @@ class _State extends State<MaterialTextField> {
         }
         return Theme.of(context).colorScheme.onSurface.withOpacity(0.38);
       }(),
+      decoration: widget.decoration.helperStyle?.decoration,
       decorationColor: widget.decoration.helperStyle?.decorationColor,
       decorationStyle: widget.decoration.helperStyle?.decorationStyle,
       decorationThickness: widget.decoration.helperStyle?.decorationThickness,
@@ -447,6 +451,7 @@ class _State extends State<MaterialTextField> {
         }
         return Theme.of(context).colorScheme.onSurface.withOpacity(0.38);
       }(),
+      decoration: widget.decoration.hintStyle?.decoration,
       decorationColor: widget.decoration.hintStyle?.decorationColor,
       decorationStyle: widget.decoration.hintStyle?.decorationStyle,
       decorationThickness: widget.decoration.hintStyle?.decorationThickness,
@@ -484,6 +489,7 @@ class _State extends State<MaterialTextField> {
         }
         return Theme.of(context).colorScheme.onSurface.withOpacity(0.38);
       }(),
+      decoration: widget.decoration.labelStyle?.decoration,
       decorationColor: widget.decoration.labelStyle?.decorationColor,
       decorationStyle: widget.decoration.labelStyle?.decorationStyle,
       decorationThickness: widget.decoration.labelStyle?.decorationThickness,
@@ -521,6 +527,7 @@ class _State extends State<MaterialTextField> {
         }
         return Theme.of(context).colorScheme.onSurface.withOpacity(0.38);
       }(),
+      decoration: widget.decoration.prefixStyle?.decoration,
       decorationColor: widget.decoration.prefixStyle?.decorationColor,
       decorationStyle: widget.decoration.prefixStyle?.decorationStyle,
       decorationThickness: widget.decoration.prefixStyle?.decorationThickness,
@@ -581,6 +588,7 @@ class _State extends State<MaterialTextField> {
         }
         return Theme.of(context).colorScheme.onSurface.withOpacity(0.38);
       }(),
+      decoration: widget.style?.decoration,
       decorationColor: widget.style?.decorationColor,
       decorationStyle: widget.style?.decorationStyle,
       decorationThickness: widget.style?.decorationThickness,
@@ -618,6 +626,7 @@ class _State extends State<MaterialTextField> {
         }
         return Theme.of(context).colorScheme.onSurface.withOpacity(0.38);
       }(),
+      decoration: widget.decoration.suffixStyle?.decoration,
       decorationColor: widget.decoration.suffixStyle?.decorationColor,
       decorationStyle: widget.decoration.suffixStyle?.decorationStyle,
       decorationThickness: widget.decoration.suffixStyle?.decorationThickness,

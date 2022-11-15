@@ -67,6 +67,7 @@ class HeadlineText extends StatelessWidget {
       background: this.style?.background,
       backgroundColor: this.style?.backgroundColor,
       color: this.style?.color,
+      decoration: this.style?.decoration,
       decorationColor: this.style?.decorationColor,
       decorationStyle: this.style?.decorationStyle,
       decorationThickness: this.style?.decorationThickness,

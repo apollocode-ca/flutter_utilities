@@ -63,6 +63,7 @@ class _State extends State<MaterialOutlinedButton> {
       background: textStyle?.background,
       backgroundColor: textStyle?.backgroundColor,
       color: textStyle?.color,
+      decoration: textStyle?.decoration,
       decorationColor: textStyle?.decorationColor,
       decorationStyle: textStyle?.decorationStyle,
       decorationThickness: textStyle?.decorationThickness,
