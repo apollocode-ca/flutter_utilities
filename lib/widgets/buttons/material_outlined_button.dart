@@ -119,8 +119,12 @@ class _State extends State<MaterialOutlinedButton> {
       child: Builder(
         builder: (context) {
           if (widget.shouldShowLoadingAnimation) {
-            return Loading(
-              size: childSize.height,
+            return Container(
+              alignment: Alignment.center,
+              constraints: BoxConstraints.tight(childSize),
+              child: Loading(
+                size: childSize.height,
+              ),
             );
           }
           return ChildSizeProvider(
