@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class DropdownField<T> extends StatefulWidget {
+  final TextEditingController? controller;
   final bool editable;
   final bool isError;
   final String label;
@@ -18,6 +19,7 @@ class DropdownField<T> extends StatefulWidget {
   final List<T> suggestions;
 
   const DropdownField({
+    this.controller,
     this.editable = false,
     this.isError = false,
     required this.label,
@@ -33,9 +35,10 @@ class DropdownField<T> extends StatefulWidget {
 }
 
 class _State<T> extends State<DropdownField<T>> {
+  late final TextEditingController textFieldController;
+
   final focusNode = FocusNode();
   final link = LayerLink();
-  final textFieldController = TextEditingController();
   final textFieldFocusNode = FocusNode();
 
   var focusedSuggestionIndex = -1;
@@ -165,6 +168,7 @@ class _State<T> extends State<DropdownField<T>> {
   void initState() {
     super.initState();
     focusNode.addListener(onFocusChange);
+    textFieldController = widget.controller ?? TextEditingController();
     textFieldFocusNode.addListener(onTextFieldFocusChange);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       fieldSize = context.size;
@@ -176,7 +180,9 @@ class _State<T> extends State<DropdownField<T>> {
     focusNode.removeListener(onFocusChange);
     textFieldFocusNode.removeListener(onTextFieldFocusChange);
     focusNode.dispose();
-    textFieldController.dispose();
+    if (widget.controller == null) {
+      textFieldController.dispose();
+    }
     textFieldFocusNode.dispose();
     super.dispose();
   }
