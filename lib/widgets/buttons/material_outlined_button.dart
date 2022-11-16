@@ -1,4 +1,6 @@
 import 'package:apollocode_flutter_utilities/helpers/dimensions_helper.dart';
+import 'package:apollocode_flutter_utilities/widgets/layout/child_size_provider.dart';
+import 'package:apollocode_flutter_utilities/widgets/loading.dart';
 import 'package:flutter/material.dart';
 
 class MaterialOutlinedButton extends StatefulWidget {
@@ -11,6 +13,7 @@ class MaterialOutlinedButton extends StatefulWidget {
   final void Function(bool value)? onHover;
   final void Function()? onLongPressed;
   final void Function()? onPressed;
+  final bool shouldShowLoadingAnimation;
   final MaterialStatesController? statesController;
   final ButtonStyle? style;
 
@@ -23,6 +26,7 @@ class MaterialOutlinedButton extends StatefulWidget {
     this.onHover,
     this.onLongPressed,
     required this.onPressed,
+    this.shouldShowLoadingAnimation = false,
     this.statesController,
     this.style,
     required this.child,
@@ -34,6 +38,8 @@ class MaterialOutlinedButton extends StatefulWidget {
 }
 
 class _State extends State<MaterialOutlinedButton> {
+  var childSize = Size.zero;
+
   TextStyle? get responsiveTextStyle {
     final textTheme = Theme.of(context).textTheme;
     final helper = widget.helper;
@@ -88,6 +94,12 @@ class _State extends State<MaterialOutlinedButton> {
     );
   }
 
+  void onChildBuildDone(Size size) {
+    setState(() {
+      childSize = size;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return OutlinedButton(
@@ -104,7 +116,19 @@ class _State extends State<MaterialOutlinedButton> {
           return getTextStyleFor(states);
         }),
       ),
-      child: widget.child,
+      child: Builder(
+        builder: (context) {
+          if (widget.shouldShowLoadingAnimation) {
+            return Loading(
+              size: childSize.height,
+            );
+          }
+          return ChildSizeProvider(
+            onBuildDone: onChildBuildDone,
+            child: widget.child,
+          );
+        },
+      ),
     );
   }
 }
