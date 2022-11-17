@@ -168,10 +168,10 @@ class MaterialTextField extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<MaterialTextField> createState() => _State();
+  State<MaterialTextField> createState() => MaterialTextFieldState();
 }
 
-class _State extends State<MaterialTextField> {
+class MaterialTextFieldState extends State<MaterialTextField> {
   late final FocusNode focusNode;
 
   var isError = false;
