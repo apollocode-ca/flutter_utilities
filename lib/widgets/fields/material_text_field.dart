@@ -168,10 +168,10 @@ class MaterialTextField extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<MaterialTextField> createState() => MaterialTextFieldState();
+  State<MaterialTextField> createState() => _State();
 }
 
-class MaterialTextFieldState extends State<MaterialTextField> {
+class _State extends State<MaterialTextField> {
   late final FocusNode focusNode;
 
   var isError = false;
@@ -691,7 +691,14 @@ class MaterialTextFieldState extends State<MaterialTextField> {
     final constraints = Theme.of(context).inputDecorationTheme.constraints;
     return ConstrainedBox(
       constraints: BoxConstraints.tightFor(
-        height: constraints?.maxHeight,
+        height: () {
+          final maxHeight = constraints?.maxHeight as double;
+          if (widget.maxLines > 1) {
+            final labelStyleHeight = labelStyle?.realHeight as double;
+            return maxHeight + (widget.maxLines - 1) * labelStyleHeight;
+          }
+          return maxHeight;
+        }(),
       ),
       child: MouseRegion(
         onEnter: (event) {
