@@ -272,7 +272,7 @@ class _State<T> extends State<DropdownField<T>> {
               }
               return KeyEventResult.ignored;
             },
-            child: Container(
+            child: AnimatedContainer(
               alignment: Alignment.centerLeft,
               constraints: BoxConstraints.tightFor(
                 height: theme.constraints?.maxHeight,
@@ -286,6 +286,7 @@ class _State<T> extends State<DropdownField<T>> {
                 ),
                 borderRadius: enabledBorder.borderRadius,
               ),
+              duration: kThemeAnimationDuration,
               padding: EdgeInsets.only(
                 left: () {
                   if (widget.editable) {
