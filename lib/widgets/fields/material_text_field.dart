@@ -633,6 +633,8 @@ class _State extends State<MaterialTextField> {
       setState(() {
         isHovering = false;
       });
+    } else {
+      setState(() {});
     }
   }
 
