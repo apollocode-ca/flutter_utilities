@@ -164,6 +164,7 @@ class _State<T> extends State<DropdownField<T>> {
         showOverlay();
       }
     } else {
+      setState(() {});
       hideOverlay();
     }
   }
