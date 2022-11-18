@@ -628,15 +628,25 @@ class _State extends State<MaterialTextField> {
     return null;
   }
 
+  void onFocusChange() {
+    if (focusNode.hasFocus) {
+      setState(() {
+        isHovering = false;
+      });
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     focusNode = widget.focusNode ?? FocusNode();
+    focusNode.addListener(onFocusChange);
   }
 
   @override
   void dispose() {
     super.dispose();
+    focusNode.removeListener(onFocusChange);
     if (widget.focusNode == null) {
       focusNode.dispose();
     }
@@ -666,6 +676,13 @@ class _State extends State<MaterialTextField> {
           setState(() {
             isHovering = false;
           });
+        },
+        onHover: (event) {
+          if (!focusNode.hasFocus && !isHovering) {
+            setState(() {
+              isHovering = true;
+            });
+          }
         },
         child: LayoutBuilder(
           builder: (context, constraints) {
