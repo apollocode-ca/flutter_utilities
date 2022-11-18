@@ -42,9 +42,8 @@ class _State<T> extends State<DropdownField<T>> {
   final textFieldFocusNode = FocusNode();
 
   var focusedSuggestionIndex = -1;
-  var isHovered = false;
+  var isHovering = false;
 
-  Color? decorationColor;
   Size? fieldSize;
   OverlayEntry? overlayEntry;
   T? selectedSuggestion;
@@ -54,6 +53,22 @@ class _State<T> extends State<DropdownField<T>> {
       return 'dropdown_arrow_up';
     }
     return 'dropdown_arrow_down';
+  }
+
+  Color get errorColor {
+    return Theme.of(context).colorScheme.error;
+  }
+
+  Color get errorHoveredColor {
+    return Theme.of(context).colorScheme.onErrorContainer;
+  }
+
+  Color get focusedColor {
+    return Theme.of(context).colorScheme.primary;
+  }
+
+  Color get hoveredColor {
+    return Theme.of(context).colorScheme.onSurface;
   }
 
   OverlayEntry createOverlay() {
@@ -125,25 +140,9 @@ class _State<T> extends State<DropdownField<T>> {
   }
 
   void onFocusChange() {
-    if (focusNode.hasFocus) {
-      setState(() {
-        if (!widget.isError) {
-          decorationColor = Theme.of(context).colorScheme.primary;
-        }
-      });
-      if (!textFieldFocusNode.hasFocus) {
-        showOverlay();
-      }
+    if (focusNode.hasFocus && !textFieldFocusNode.hasFocus) {
+      showOverlay();
     } else {
-      if (widget.isError) {
-        setState(() {
-          decorationColor = Theme.of(context).colorScheme.error;
-        });
-      } else {
-        setState(() {
-          decorationColor = null;
-        });
-      }
       hideOverlay();
     }
   }
@@ -212,25 +211,13 @@ class _State<T> extends State<DropdownField<T>> {
             return SystemMouseCursors.basic;
           }(),
           onEnter: (event) {
-            if (widget.isError) {
-              setState(() {
-                isHovered = true;
-                decorationColor =
-                    Theme.of(context).colorScheme.onErrorContainer;
-              });
-            } else if (!focusNode.hasFocus) {
-              setState(() {
-                isHovered = true;
-                decorationColor = Theme.of(context).colorScheme.onSurface;
-              });
-            }
+            setState(() {
+              isHovering = true;
+            });
           },
           onExit: (event) {
             setState(() {
-              isHovered = false;
-              if (!focusNode.hasFocus) {
-                decorationColor = null;
-              }
+              isHovering = false;
             });
           },
           child: Focus(
@@ -265,13 +252,19 @@ class _State<T> extends State<DropdownField<T>> {
                 border: Border.fromBorderSide(
                   enabledBorder.borderSide.copyWith(
                     color: () {
-                      if (widget.isError) {
-                        if (isHovered && !focusNode.hasFocus) {
-                          return decorationColor;
-                        }
-                        return theme.errorBorder?.borderSide.color;
+                      if (widget.isError && isHovering) {
+                        return errorHoveredColor;
                       }
-                      return decorationColor;
+                      if (widget.isError) {
+                        return errorColor;
+                      }
+                      if (focusNode.hasFocus) {
+                        return focusedColor;
+                      }
+                      if (isHovering) {
+                        return hoveredColor;
+                      }
+                      return null;
                     }(),
                     width: focusNode.hasFocus ? 2 : null,
                   ),
@@ -350,13 +343,19 @@ class _State<T> extends State<DropdownField<T>> {
                           widget.label,
                           style: theme.labelStyle?.copyWith(
                             color: () {
-                              if (widget.isError) {
-                                if (isHovered) {
-                                  return decorationColor;
-                                }
-                                return theme.errorBorder?.borderSide.color;
+                              if (widget.isError && isHovering) {
+                                return errorHoveredColor;
                               }
-                              return decorationColor;
+                              if (widget.isError) {
+                                return errorColor;
+                              }
+                              if (focusNode.hasFocus) {
+                                return focusedColor;
+                              }
+                              if (isHovering) {
+                                return hoveredColor;
+                              }
+                              return null;
                             }(),
                           ),
                         );
