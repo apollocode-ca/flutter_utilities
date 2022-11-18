@@ -178,7 +178,7 @@ class _State extends State<MaterialTextField> {
   var isHovering = false;
 
   Color? get borderColor {
-    if (shouldThemeForError && isHovering) {
+    if (shouldThemeForError && isHovering && !focusNode.hasFocus) {
       return errorHoveredColor;
     }
     if (shouldThemeForError) {
@@ -288,7 +288,7 @@ class _State extends State<MaterialTextField> {
   }
 
   Color? get decorationColor {
-    if (shouldThemeForError && isHovering) {
+    if (shouldThemeForError && isHovering && !focusNode.hasFocus) {
       return errorHoveredColor;
     }
     if (shouldThemeForError) {
