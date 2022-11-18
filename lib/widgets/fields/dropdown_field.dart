@@ -140,8 +140,13 @@ class _State<T> extends State<DropdownField<T>> {
   }
 
   void onFocusChange() {
-    if (focusNode.hasFocus && !textFieldFocusNode.hasFocus) {
-      showOverlay();
+    if (focusNode.hasFocus) {
+      setState(() {
+        isHovering = false;
+      });
+      if (!textFieldFocusNode.hasFocus) {
+        showOverlay();
+      }
     } else {
       hideOverlay();
     }
@@ -219,6 +224,13 @@ class _State<T> extends State<DropdownField<T>> {
             setState(() {
               isHovering = false;
             });
+          },
+          onHover: (event) {
+            if (!focusNode.hasFocus && !isHovering) {
+              setState(() {
+                isHovering = true;
+              });
+            }
           },
           child: Focus(
             focusNode: focusNode,
