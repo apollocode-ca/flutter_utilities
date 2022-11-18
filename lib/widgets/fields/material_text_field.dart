@@ -175,25 +175,26 @@ class _State extends State<MaterialTextField> {
   late final FocusNode focusNode;
 
   var isError = false;
-  var isHovered = false;
+  var isHovering = false;
 
-  Color? borderColor;
-  Color? decorationColor;
-  Color? supportingDecorationColor;
+  Color? get borderColor {
+    if (shouldThemeForError && isHovering) {
+      return errorHoveredColor;
+    }
+    if (shouldThemeForError) {
+      return errorColor;
+    }
+    if (isHovering) {
+      return hoveredColor;
+    }
+    return null;
+  }
 
   TextStyle? get counterStyle {
     return responsiveStyle?.copyWith(
       background: widget.decoration.counterStyle?.background,
       backgroundColor: widget.decoration.counterStyle?.backgroundColor,
-      color: () {
-        if (shouldThemeForError) {
-          return Theme.of(context).colorScheme.error;
-        }
-        if (widget.enabled) {
-          return widget.decoration.counterStyle?.color;
-        }
-        return Theme.of(context).colorScheme.onSurface.withOpacity(0.38);
-      }(),
+      color: widget.decoration.counterStyle?.color,
       decoration: widget.decoration.counterStyle?.decoration,
       decorationColor: widget.decoration.counterStyle?.decorationColor,
       decorationStyle: widget.decoration.counterStyle?.decorationStyle,
@@ -233,17 +234,12 @@ class _State extends State<MaterialTextField> {
     return widget.decoration.copyWith(
       counter: widget.counter,
       counterStyle: counterStyle?.copyWith(
-        color: supportingDecorationColor,
+        color: supportingTextColor,
       ),
       counterText: widget.counterText,
       enabledBorder: enabledBorder?.copyWith(
         borderSide: enabledBorder.borderSide.copyWith(
-          color: () {
-            if (shouldThemeForError && !isHovered) {
-              return Theme.of(context).colorScheme.error;
-            }
-            return borderColor;
-          }(),
+          color: borderColor,
         ),
       ),
       errorStyle: errorStyle,
@@ -253,16 +249,11 @@ class _State extends State<MaterialTextField> {
       ),
       focusedBorder: focusedBorder?.copyWith(
         borderSide: focusedBorder.borderSide.copyWith(
-          color: () {
-            if (shouldThemeForError) {
-              return Theme.of(context).colorScheme.error;
-            }
-            return borderColor;
-          }(),
+          color: borderColor,
         ),
       ),
       helperStyle: helperStyle?.copyWith(
-        color: supportingDecorationColor,
+        color: supportingTextColor,
       ),
       helperText: widget.helperText,
       hintStyle: hintStyle?.copyWith(
@@ -270,12 +261,7 @@ class _State extends State<MaterialTextField> {
       ),
       hintText: widget.hintText,
       icon: widget.icon,
-      iconColor: () {
-        if (widget.enabled) {
-          return null;
-        }
-        return Theme.of(context).colorScheme.onSurface.withOpacity(0.38);
-      }(),
+      iconColor: decorationColor,
       label: widget.label,
       labelStyle: labelStyle?.copyWith(
         color: decorationColor,
@@ -283,32 +269,50 @@ class _State extends State<MaterialTextField> {
       labelText: widget.labelText,
       prefix: widget.prefix,
       prefixIcon: widget.prefixIcon,
-      prefixIconColor: () {
-        if (widget.enabled) {
-          return null;
-        }
-        return Theme.of(context).colorScheme.onSurface.withOpacity(0.38);
-      }(),
+      prefixIconColor: decorationColor,
       prefixStyle: prefixStyle?.copyWith(
         color: decorationColor,
       ),
       prefixText: widget.prefixText,
       suffix: widget.suffix,
       suffixIcon: widget.suffixIcon,
-      suffixIconColor: () {
-        if (widget.enabled) {
-          return null;
-        }
-        if (shouldThemeForError) {
-          return decorationColor ?? Theme.of(context).colorScheme.error;
-        }
-        return Theme.of(context).colorScheme.onSurface.withOpacity(0.38);
-      }(),
+      suffixIconColor: decorationColor,
       suffixStyle: suffixStyle?.copyWith(
         color: decorationColor,
       ),
       suffixText: widget.suffixText,
     );
+  }
+
+  Color? get decorationColor {
+    if (shouldThemeForError && isHovering) {
+      return errorHoveredColor;
+    }
+    if (shouldThemeForError) {
+      return errorColor;
+    }
+    if (focusNode.hasFocus) {
+      return focusedColor;
+    }
+    if (isHovering) {
+      return hoveredColor;
+    }
+    if (!widget.enabled) {
+      return disabledColor;
+    }
+    return null;
+  }
+
+  Color get disabledColor {
+    return Theme.of(context).colorScheme.onSurface.withOpacity(0.38);
+  }
+
+  Color get errorColor {
+    return Theme.of(context).colorScheme.error;
+  }
+
+  Color get errorHoveredColor {
+    return Theme.of(context).colorScheme.onErrorContainer;
   }
 
   TextStyle? get errorStyle {
@@ -351,15 +355,7 @@ class _State extends State<MaterialTextField> {
     return responsiveStyle?.copyWith(
       background: widget.decoration.floatingLabelStyle?.background,
       backgroundColor: widget.decoration.floatingLabelStyle?.backgroundColor,
-      color: () {
-        if (shouldThemeForError) {
-          return Theme.of(context).colorScheme.error;
-        }
-        if (widget.enabled) {
-          return widget.decoration.floatingLabelStyle?.color;
-        }
-        return Theme.of(context).colorScheme.onSurface.withOpacity(0.38);
-      }(),
+      color: widget.decoration.floatingLabelStyle?.color,
       decoration: widget.decoration.floatingLabelStyle?.decoration,
       decorationColor: widget.decoration.floatingLabelStyle?.decorationColor,
       decorationStyle: widget.decoration.floatingLabelStyle?.decorationStyle,
@@ -394,19 +390,15 @@ class _State extends State<MaterialTextField> {
     );
   }
 
+  Color get focusedColor {
+    return Theme.of(context).colorScheme.primary;
+  }
+
   TextStyle? get helperStyle {
     return responsiveStyle?.copyWith(
       background: widget.decoration.helperStyle?.background,
       backgroundColor: widget.decoration.helperStyle?.backgroundColor,
-      color: () {
-        if (shouldThemeForError) {
-          return Theme.of(context).colorScheme.error;
-        }
-        if (widget.enabled) {
-          return widget.decoration.helperStyle?.color;
-        }
-        return Theme.of(context).colorScheme.onSurface.withOpacity(0.38);
-      }(),
+      color: widget.decoration.helperStyle?.color,
       decoration: widget.decoration.helperStyle?.decoration,
       decorationColor: widget.decoration.helperStyle?.decorationColor,
       decorationStyle: widget.decoration.helperStyle?.decorationStyle,
@@ -442,15 +434,7 @@ class _State extends State<MaterialTextField> {
     return responsiveStyle?.copyWith(
       background: widget.decoration.hintStyle?.background,
       backgroundColor: widget.decoration.hintStyle?.backgroundColor,
-      color: () {
-        if (shouldThemeForError) {
-          return Theme.of(context).colorScheme.error;
-        }
-        if (widget.enabled) {
-          return widget.decoration.hintStyle?.color;
-        }
-        return Theme.of(context).colorScheme.onSurface.withOpacity(0.38);
-      }(),
+      color: widget.decoration.hintStyle?.color,
       decoration: widget.decoration.hintStyle?.decoration,
       decorationColor: widget.decoration.hintStyle?.decorationColor,
       decorationStyle: widget.decoration.hintStyle?.decorationStyle,
@@ -476,19 +460,15 @@ class _State extends State<MaterialTextField> {
     );
   }
 
+  Color get hoveredColor {
+    return Theme.of(context).colorScheme.onSurface;
+  }
+
   TextStyle? get labelStyle {
     return responsiveStyle?.copyWith(
       background: widget.decoration.labelStyle?.background,
       backgroundColor: widget.decoration.labelStyle?.backgroundColor,
-      color: () {
-        if (shouldThemeForError) {
-          return Theme.of(context).colorScheme.error;
-        }
-        if (widget.enabled) {
-          return widget.decoration.labelStyle?.color;
-        }
-        return Theme.of(context).colorScheme.onSurface.withOpacity(0.38);
-      }(),
+      color: widget.decoration.labelStyle?.color,
       decoration: widget.decoration.labelStyle?.decoration,
       decorationColor: widget.decoration.labelStyle?.decorationColor,
       decorationStyle: widget.decoration.labelStyle?.decorationStyle,
@@ -518,15 +498,7 @@ class _State extends State<MaterialTextField> {
     return responsiveStyle?.copyWith(
       background: widget.decoration.prefixStyle?.background,
       backgroundColor: widget.decoration.prefixStyle?.backgroundColor,
-      color: () {
-        if (shouldThemeForError) {
-          return Theme.of(context).colorScheme.error;
-        }
-        if (widget.enabled) {
-          return widget.decoration.prefixStyle?.color;
-        }
-        return Theme.of(context).colorScheme.onSurface.withOpacity(0.38);
-      }(),
+      color: widget.decoration.prefixStyle?.color,
       decoration: widget.decoration.prefixStyle?.decoration,
       decorationColor: widget.decoration.prefixStyle?.decorationColor,
       decorationStyle: widget.decoration.prefixStyle?.decorationStyle,
@@ -586,7 +558,7 @@ class _State extends State<MaterialTextField> {
         if (widget.enabled) {
           return widget.style?.color;
         }
-        return Theme.of(context).colorScheme.onSurface.withOpacity(0.38);
+        return disabledColor;
       }(),
       decoration: widget.style?.decoration,
       decorationColor: widget.style?.decorationColor,
@@ -617,15 +589,7 @@ class _State extends State<MaterialTextField> {
     return responsiveStyle?.copyWith(
       background: widget.decoration.suffixStyle?.background,
       backgroundColor: widget.decoration.suffixStyle?.backgroundColor,
-      color: () {
-        if (shouldThemeForError) {
-          return Theme.of(context).colorScheme.error;
-        }
-        if (widget.enabled) {
-          return widget.decoration.suffixStyle?.color;
-        }
-        return Theme.of(context).colorScheme.onSurface.withOpacity(0.38);
-      }(),
+      color: widget.decoration.suffixStyle?.color,
       decoration: widget.decoration.suffixStyle?.decoration,
       decorationColor: widget.decoration.suffixStyle?.decorationColor,
       decorationStyle: widget.decoration.suffixStyle?.decorationStyle,
@@ -651,36 +615,25 @@ class _State extends State<MaterialTextField> {
     );
   }
 
-  void onFocusChange() {
-    if (focusNode.hasFocus && !shouldThemeForError) {
-      setState(() {
-        borderColor = Theme.of(context).colorScheme.primary;
-        decorationColor = Theme.of(context).colorScheme.primary;
-      });
-    } else if (shouldThemeForError) {
-      setState(() {
-        borderColor = Theme.of(context).colorScheme.error;
-        decorationColor = Theme.of(context).colorScheme.error;
-      });
-    } else {
-      setState(() {
-        borderColor = null;
-        decorationColor = null;
-      });
+  Color? get supportingTextColor {
+    if (shouldThemeForError) {
+      return errorColor;
     }
+    if (!widget.enabled) {
+      return disabledColor;
+    }
+    return null;
   }
 
   @override
   void initState() {
     super.initState();
     focusNode = widget.focusNode ?? FocusNode();
-    focusNode.addListener(onFocusChange);
   }
 
   @override
   void dispose() {
     super.dispose();
-    focusNode.removeListener(onFocusChange);
     if (widget.focusNode == null) {
       focusNode.dispose();
     }
@@ -702,33 +655,13 @@ class _State extends State<MaterialTextField> {
       ),
       child: MouseRegion(
         onEnter: (event) {
-          if (shouldThemeForError && !focusNode.hasFocus) {
-            setState(() {
-              isHovered = true;
-              borderColor = Theme.of(context).colorScheme.onErrorContainer;
-              decorationColor = Theme.of(context).colorScheme.onErrorContainer;
-              supportingDecorationColor = Theme.of(context).colorScheme.error;
-            });
-          } else {
-            final onSurface = Theme.of(context).colorScheme.onSurface;
-            setState(() {
-              isHovered = true;
-              if (!focusNode.hasFocus) {
-                borderColor = onSurface;
-                decorationColor = onSurface;
-                supportingDecorationColor = onSurface;
-              }
-            });
-          }
+          setState(() {
+            isHovering = true;
+          });
         },
         onExit: (event) {
           setState(() {
-            isHovered = false;
-            if (!focusNode.hasFocus) {
-              borderColor = null;
-              decorationColor = null;
-              supportingDecorationColor = null;
-            }
+            isHovering = false;
           });
         },
         child: LayoutBuilder(
@@ -743,7 +676,7 @@ class _State extends State<MaterialTextField> {
                 controller: widget.controller,
                 cursorColor: () {
                   if (shouldThemeForError) {
-                    return Theme.of(context).colorScheme.error;
+                    return errorColor;
                   }
                   return widget.cursorColor;
                 }(),
@@ -819,7 +752,7 @@ class _State extends State<MaterialTextField> {
               controller: widget.controller,
               cursorColor: () {
                 if (shouldThemeForError) {
-                  return Theme.of(context).colorScheme.error;
+                  return errorColor;
                 }
                 return widget.cursorColor;
               }(),
