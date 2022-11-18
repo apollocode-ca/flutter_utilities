@@ -184,6 +184,9 @@ class _State extends State<MaterialTextField> {
     if (shouldThemeForError) {
       return errorColor;
     }
+    if (focusNode.hasFocus) {
+      return focusedColor;
+    }
     if (isHovering) {
       return hoveredColor;
     }
