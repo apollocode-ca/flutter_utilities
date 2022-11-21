@@ -2,7 +2,7 @@ import 'package:apollocode_flutter_utilities/managers/banner_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web3/flutter_web3.dart';
 
-class MetamaskService {
+class MetamaskHelper {
   final String networkError;
   final int networkId;
   final String noAccountError;
@@ -12,7 +12,7 @@ class MetamaskService {
 
   late final BannerManager _bannerManager;
 
-  MetamaskService({
+  MetamaskHelper({
     Color? bannerBackgroundColor,
     Color? bannerErrorColor,
     Color? bannerIconColor,
