@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 class DropdownField<T> extends StatefulWidget {
   final TextEditingController? controller;
   final bool editable;
+  final T? initialValue;
   final bool isError;
   final String label;
   final void Function(T suggestion)? onChange;
@@ -21,6 +22,7 @@ class DropdownField<T> extends StatefulWidget {
   const DropdownField({
     this.controller,
     this.editable = false,
+    this.initialValue,
     this.isError = false,
     required this.label,
     this.onChange,
@@ -188,8 +190,23 @@ class _State<T> extends State<DropdownField<T>> {
   @override
   void initState() {
     super.initState();
+    if (widget.editable && T != String) {
+      throw TypeError();
+    }
+    selectedSuggestion = widget.initialValue;
     focusNode.addListener(onFocusChange);
-    textFieldController = widget.controller ?? TextEditingController();
+    textFieldController = () {
+      final controller = widget.controller;
+      if (controller != null) {
+        return controller;
+      }
+      if (widget.editable) {
+        return TextEditingController(
+          text: widget.initialValue.toString(),
+        );
+      }
+      return TextEditingController();
+    }();
     textFieldFocusNode.addListener(onTextFieldFocusChange);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       fieldSize = context.size;
@@ -210,9 +227,6 @@ class _State<T> extends State<DropdownField<T>> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.editable && T != String) {
-      throw TypeError();
-    }
     final theme = Theme.of(context).inputDecorationTheme;
     final enabledBorder = theme.enabledBorder as OutlineInputBorder;
     return CompositedTransformTarget(
