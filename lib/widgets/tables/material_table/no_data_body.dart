@@ -24,6 +24,7 @@ class NoDataBody extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           ErrorIcon(
+            color: Theme.of(context).colorScheme.error,
             constraints: BoxConstraints.tight(
               Size.square(
                 labelStyle?.realHeight as double,

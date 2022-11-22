@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 class ErrorIcon extends StatelessWidget {
-  final BoxConstraints? constraints;
   final Color? color;
+  final BoxConstraints? constraints;
 
   const ErrorIcon({
-    this.constraints,
     this.color,
+    this.constraints,
     Key? key,
   }) : super(key: key);
 
