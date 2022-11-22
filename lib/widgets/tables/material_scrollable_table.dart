@@ -12,7 +12,7 @@ class MaterialScrollableTable<T> extends StatelessWidget {
   final bool isLoading;
   final Widget Function(
     ColumnData column,
-    T item,
+    int index,
     TextStyle currentStyle,
   ) itemCellBuilder;
   final String noDataLabel;

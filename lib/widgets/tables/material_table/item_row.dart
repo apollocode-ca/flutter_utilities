@@ -5,7 +5,7 @@ import 'package:flutter/material.dart' hide TableCell;
 class ItemRow<T> extends StatefulWidget {
   final Widget Function(
     ColumnData column,
-    T item,
+    int index,
     TextStyle currentTextStyle,
   ) cellBuilder;
   final List<ColumnData> columns;
@@ -124,7 +124,7 @@ class _State<T> extends State<ItemRow<T>> {
                       column: column,
                       child: widget.cellBuilder(
                         column,
-                        widget.item,
+                        widget.index,
                         TextStyle(
                           color: foregroundColor,
                         ),
@@ -136,7 +136,7 @@ class _State<T> extends State<ItemRow<T>> {
                   column: column,
                   child: widget.cellBuilder(
                     column,
-                    widget.item,
+                    widget.index,
                     TextStyle(
                       color: foregroundColor,
                     ),
