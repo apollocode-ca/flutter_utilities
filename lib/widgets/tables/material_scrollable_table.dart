@@ -56,20 +56,6 @@ class MaterialScrollableTable<T> extends StatelessWidget {
                     labelText: noDataLabel,
                   );
                 }
-                return ItemRow<T>(
-                  cellBuilder: itemCellBuilder,
-                  columns: columns,
-                  index: 0,
-                  item: items.first,
-                  onTap: onTap,
-                  shouldShowOverlayColor: () {
-                    final shouldShowOverlayColor = this.shouldShowOverlayColor;
-                    if (shouldShowOverlayColor != null) {
-                      return shouldShowOverlayColor(items.first);
-                    }
-                    return true;
-                  }(),
-                );
                 return ListView.builder(
                   itemCount: items.length,
                   itemBuilder: (context, index) {
