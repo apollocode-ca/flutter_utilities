@@ -214,6 +214,22 @@ class _State<T> extends State<DropdownField<T>> {
   }
 
   @override
+  void didUpdateWidget(covariant DropdownField<T> oldWidget) {
+    final initialValue = widget.initialValue;
+    if (oldWidget.initialValue != initialValue) {
+      if (widget.editable) {
+        final initialTextValue = initialValue.toString();
+        if (textFieldController.text != initialTextValue) {
+          textFieldController.text = initialTextValue;
+        }
+      } else if (selectedSuggestion != initialValue) {
+        selectedSuggestion = initialValue;
+      }
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
   void dispose() {
     focusNode.removeListener(onFocusChange);
     textFieldFocusNode.removeListener(onTextFieldFocusChange);
