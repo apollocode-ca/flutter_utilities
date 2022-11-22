@@ -58,6 +58,7 @@ class MaterialScrollableTable<T> extends StatelessWidget {
                 }
                 return ListView.builder(
                   itemCount: items.length,
+                  shrinkWrap: true,
                   itemBuilder: (context, index) {
                     final item = items[index];
                     return ItemRow(
