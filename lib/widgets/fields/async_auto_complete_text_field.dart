@@ -24,7 +24,11 @@ class AsyncAutoCompleteTextField<T> extends StatefulWidget {
   final TextStyle? style;
 
   AsyncAutoCompleteTextField({
-    required this.fieldDecoration,
+    this.fieldDecoration = const InputDecoration(
+      constraints: BoxConstraints.expand(
+        height: 40,
+      ),
+    ),
     required this.loading,
     required this.maxSuggestions,
     required this.onOverlayItemSubmit,
