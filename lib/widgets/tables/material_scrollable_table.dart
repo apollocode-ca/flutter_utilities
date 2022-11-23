@@ -19,7 +19,7 @@ class MaterialScrollableTable<T> extends StatelessWidget {
     TextStyle currentStyle,
   ) itemCellBuilder;
   final String noDataLabel;
-  final void Function(T item)? onTap;
+  final void Function(T item)? onRowTap;
   final bool Function(int index)? shouldShowOverlayColor;
 
   const MaterialScrollableTable({
@@ -29,7 +29,7 @@ class MaterialScrollableTable<T> extends StatelessWidget {
     this.items = const [],
     required this.itemCellBuilder,
     required this.noDataLabel,
-    this.onTap,
+    this.onRowTap,
     this.shouldShowOverlayColor,
     Key? key,
   }) : super(key: key);
@@ -69,7 +69,7 @@ class MaterialScrollableTable<T> extends StatelessWidget {
                       columns: columns,
                       index: index,
                       item: item,
-                      onTap: onTap,
+                      onTap: onRowTap,
                       shouldShowOverlayColor: () {
                         final shouldShowOverlayColor =
                             this.shouldShowOverlayColor;
