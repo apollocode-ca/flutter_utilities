@@ -8,7 +8,10 @@ import 'package:flutter/material.dart';
 class MaterialScrollableTable<T> extends StatelessWidget {
   final List<ColumnData> columns;
   final List<T> items;
-  final Widget? Function(ColumnData column) headingCellBuilder;
+  final Widget? Function(
+    ColumnData column,
+    TextStyle currentStyle,
+  ) headingCellBuilder;
   final bool isLoading;
   final Widget Function(
     ColumnData column,

@@ -3,7 +3,10 @@ import 'package:apollocode_flutter_utilities/widgets/tables/material_table/table
 import 'package:flutter/material.dart' hide TableCell;
 
 class HeadingRow extends StatelessWidget {
-  final Widget? Function(ColumnData column) cellBuilder;
+  final Widget? Function(
+    ColumnData column,
+    TextStyle currentStyle,
+  ) cellBuilder;
   final List<ColumnData> columns;
 
   const HeadingRow({
@@ -31,13 +34,25 @@ class HeadingRow extends StatelessWidget {
               return Expanded(
                 child: TableCell(
                   column: column,
-                  child: cellBuilder(column),
+                  child: cellBuilder(
+                    column,
+                    TextStyle(
+                      color: Theme.of(context).colorScheme.onPrimary,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
                 ),
               );
             }
             return TableCell(
               column: column,
-              child: cellBuilder(column),
+              child: cellBuilder(
+                column,
+                TextStyle(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
             );
           }),
         ],
