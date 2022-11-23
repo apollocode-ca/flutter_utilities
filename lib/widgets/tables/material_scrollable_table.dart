@@ -17,7 +17,7 @@ class MaterialScrollableTable<T> extends StatelessWidget {
   ) itemCellBuilder;
   final String noDataLabel;
   final void Function(T item)? onTap;
-  final bool Function(T item)? shouldShowOverlayColor;
+  final bool Function(int index)? shouldShowOverlayColor;
 
   const MaterialScrollableTable({
     required this.columns,
@@ -58,7 +58,7 @@ class MaterialScrollableTable<T> extends StatelessWidget {
                 }
                 return ListView.builder(
                   itemCount: items.length,
-                  shrinkWrap: true,
+                  padding: EdgeInsets.zero,
                   itemBuilder: (context, index) {
                     final item = items[index];
                     return ItemRow(
@@ -71,7 +71,7 @@ class MaterialScrollableTable<T> extends StatelessWidget {
                         final shouldShowOverlayColor =
                             this.shouldShowOverlayColor;
                         if (shouldShowOverlayColor != null) {
-                          return shouldShowOverlayColor(item);
+                          return shouldShowOverlayColor(index);
                         }
                         return true;
                       }(),

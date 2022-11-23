@@ -63,10 +63,17 @@ class _State<T> extends State<ItemRow<T>> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onLongPressDown: (details) {
+      onHorizontalDragEnd: (details) {
         setState(() {
-          isPressing = true;
+          isPressing = false;
         });
+      },
+      onLongPressDown: (details) {
+        if (widget.shouldShowOverlayColor) {
+          setState(() {
+            isPressing = true;
+          });
+        }
       },
       onLongPressUp: () {
         setState(() {
@@ -78,6 +85,9 @@ class _State<T> extends State<ItemRow<T>> {
         if (onTap != null) {
           onTap(widget.item);
         }
+        setState(() {
+          isPressing = false;
+        });
       },
       child: MouseRegion(
         cursor: MaterialStateMouseCursor.clickable,
