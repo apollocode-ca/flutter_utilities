@@ -125,13 +125,32 @@ class _State<T> extends State<ItemRow<T>> {
           padding: const EdgeInsets.symmetric(
             horizontal: 24,
           ),
-          child: Row(
-            children: [
-              ...widget.columns.map((column) {
+          child: Builder(
+            builder: (context) {
+              final cells = <Widget>[];
+              for (var index = 0; index < widget.columns.length; index++) {
+                final column = widget.columns[index];
                 if (column.width == null) {
-                  return Expanded(
-                    child: TableCell(
+                  cells.add(
+                    Expanded(
+                      child: TableCell(
+                        column: column,
+                        index: index,
+                        child: widget.cellBuilder(
+                          column,
+                          widget.index,
+                          TextStyle(
+                            color: foregroundColor,
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                } else {
+                  cells.add(
+                    TableCell(
                       column: column,
+                      index: index,
                       child: widget.cellBuilder(
                         column,
                         widget.index,
@@ -142,18 +161,11 @@ class _State<T> extends State<ItemRow<T>> {
                     ),
                   );
                 }
-                return TableCell(
-                  column: column,
-                  child: widget.cellBuilder(
-                    column,
-                    widget.index,
-                    TextStyle(
-                      color: foregroundColor,
-                    ),
-                  ),
-                );
-              }),
-            ],
+              }
+              return Row(
+                children: cells,
+              );
+            },
           ),
         ),
       ),

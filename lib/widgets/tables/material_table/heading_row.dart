@@ -27,13 +27,32 @@ class HeadingRow extends StatelessWidget {
       padding: const EdgeInsets.symmetric(
         horizontal: 24,
       ),
-      child: Row(
-        children: [
-          ...columns.map((column) {
+      child: Builder(
+        builder: (context) {
+          final cells = <Widget>[];
+          for (var index = 0; index < columns.length; index++) {
+            final column = columns[index];
             if (column.width == null) {
-              return Expanded(
-                child: TableCell(
+              cells.add(
+                Expanded(
+                  child: TableCell(
+                    column: column,
+                    index: index,
+                    child: cellBuilder(
+                      column,
+                      TextStyle(
+                        color: Theme.of(context).colorScheme.onPrimary,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            } else {
+              cells.add(
+                TableCell(
                   column: column,
+                  index: index,
                   child: cellBuilder(
                     column,
                     TextStyle(
@@ -44,18 +63,11 @@ class HeadingRow extends StatelessWidget {
                 ),
               );
             }
-            return TableCell(
-              column: column,
-              child: cellBuilder(
-                column,
-                TextStyle(
-                  color: Theme.of(context).colorScheme.onPrimary,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            );
-          }),
-        ],
+          }
+          return Row(
+            children: cells,
+          );
+        },
       ),
     );
   }

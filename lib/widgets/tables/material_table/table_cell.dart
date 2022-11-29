@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 class TableCell extends StatelessWidget {
   final Widget? child;
   final ColumnData column;
+  final int index;
 
   const TableCell({
-    required this.child,
     required this.column,
+    required this.index,
+    required this.child,
     Key? key,
   }) : super(key: key);
 
@@ -19,7 +21,7 @@ class TableCell extends StatelessWidget {
         width: column.width,
       ),
       margin: () {
-        if (column.index == 0) {
+        if (index == 0) {
           return null;
         }
         return const EdgeInsets.only(
