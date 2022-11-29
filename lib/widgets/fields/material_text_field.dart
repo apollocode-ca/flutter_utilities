@@ -237,7 +237,7 @@ class _State extends State<MaterialTextField> {
     return widget.decoration.copyWith(
       counter: widget.counter,
       counterStyle: counterStyle?.copyWith(
-        color: supportingTextColor,
+        color: widget.enabled ? supportingTextColor : null,
       ),
       counterText: widget.counterText,
       enabledBorder: enabledBorder?.copyWith(
@@ -248,7 +248,7 @@ class _State extends State<MaterialTextField> {
       errorStyle: errorStyle,
       errorText: widget.errorText,
       floatingLabelStyle: floatingLabelStyle?.copyWith(
-        color: decorationColor,
+        color: widget.enabled ? decorationColor : null,
       ),
       focusedBorder: focusedBorder?.copyWith(
         borderSide: focusedBorder.borderSide.copyWith(
@@ -256,32 +256,32 @@ class _State extends State<MaterialTextField> {
         ),
       ),
       helperStyle: helperStyle?.copyWith(
-        color: supportingTextColor,
+        color: widget.enabled ? supportingTextColor : null,
       ),
       helperText: widget.helperText,
       hintStyle: hintStyle?.copyWith(
-        color: decorationColor,
+        color: widget.enabled ? decorationColor : null,
       ),
       hintText: widget.hintText,
       icon: widget.icon,
       iconColor: decorationColor,
       label: widget.label,
       labelStyle: labelStyle?.copyWith(
-        color: decorationColor,
+        color: widget.enabled ? decorationColor : null,
       ),
       labelText: widget.labelText,
       prefix: widget.prefix,
       prefixIcon: widget.prefixIcon,
       prefixIconColor: decorationColor,
       prefixStyle: prefixStyle?.copyWith(
-        color: decorationColor,
+        color: widget.enabled ? decorationColor : null,
       ),
       prefixText: widget.prefixText,
       suffix: widget.suffix,
       suffixIcon: widget.suffixIcon,
       suffixIconColor: decorationColor,
       suffixStyle: suffixStyle?.copyWith(
-        color: decorationColor,
+        color: widget.enabled ? decorationColor : null,
       ),
       suffixText: widget.suffixText,
     );
