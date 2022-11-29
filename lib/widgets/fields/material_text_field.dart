@@ -237,7 +237,7 @@ class _State extends State<MaterialTextField> {
     return widget.decoration.copyWith(
       counter: widget.counter,
       counterStyle: counterStyle?.copyWith(
-        color: widget.enabled ? supportingTextColor : null,
+        color: supportingTextColor,
       ),
       counterText: widget.counterText,
       enabledBorder: enabledBorder?.copyWith(
@@ -248,7 +248,7 @@ class _State extends State<MaterialTextField> {
       errorStyle: errorStyle,
       errorText: widget.errorText,
       floatingLabelStyle: floatingLabelStyle?.copyWith(
-        color: widget.enabled ? decorationColor : null,
+        color: decorationColor,
       ),
       focusedBorder: focusedBorder?.copyWith(
         borderSide: focusedBorder.borderSide.copyWith(
@@ -256,38 +256,41 @@ class _State extends State<MaterialTextField> {
         ),
       ),
       helperStyle: helperStyle?.copyWith(
-        color: widget.enabled ? supportingTextColor : null,
+        color: supportingTextColor,
       ),
       helperText: widget.helperText,
       hintStyle: hintStyle?.copyWith(
-        color: widget.enabled ? decorationColor : null,
+        color: decorationColor,
       ),
       hintText: widget.hintText,
       icon: widget.icon,
       iconColor: decorationColor,
       label: widget.label,
       labelStyle: labelStyle?.copyWith(
-        color: widget.enabled ? decorationColor : null,
+        color: decorationColor,
       ),
       labelText: widget.labelText,
       prefix: widget.prefix,
       prefixIcon: widget.prefixIcon,
       prefixIconColor: decorationColor,
       prefixStyle: prefixStyle?.copyWith(
-        color: widget.enabled ? decorationColor : null,
+        color: decorationColor,
       ),
       prefixText: widget.prefixText,
       suffix: widget.suffix,
       suffixIcon: widget.suffixIcon,
       suffixIconColor: decorationColor,
       suffixStyle: suffixStyle?.copyWith(
-        color: widget.enabled ? decorationColor : null,
+        color: decorationColor,
       ),
       suffixText: widget.suffixText,
     );
   }
 
   Color? get decorationColor {
+    if (!widget.enabled) {
+      return disabledColor;
+    }
     if (shouldThemeForError && isHovering && !focusNode.hasFocus) {
       return errorHoveredColor;
     }
@@ -299,9 +302,6 @@ class _State extends State<MaterialTextField> {
     }
     if (isHovering) {
       return hoveredColor;
-    }
-    if (!widget.enabled) {
-      return disabledColor;
     }
     return null;
   }
@@ -619,11 +619,11 @@ class _State extends State<MaterialTextField> {
   }
 
   Color? get supportingTextColor {
-    if (shouldThemeForError) {
-      return errorColor;
-    }
     if (!widget.enabled) {
       return disabledColor;
+    }
+    if (shouldThemeForError) {
+      return errorColor;
     }
     return null;
   }
