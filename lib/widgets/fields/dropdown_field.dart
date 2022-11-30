@@ -57,6 +57,10 @@ class _State<T> extends State<DropdownField<T>> {
     return 'dropdown_arrow_down';
   }
 
+  Color get disabledColor {
+    return Theme.of(context).colorScheme.onSurface.withOpacity(0.38);
+  }
+
   Color get errorColor {
     return Theme.of(context).colorScheme.error;
   }
@@ -66,6 +70,9 @@ class _State<T> extends State<DropdownField<T>> {
   }
 
   Color? get decorationColor {
+    if (widget.suggestions.isEmpty) {
+      return disabledColor;
+    }
     if (widget.isError && isHovering && !focusNode.hasFocus) {
       return errorHoveredColor;
     }
