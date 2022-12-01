@@ -113,7 +113,7 @@ class _State<T> extends State<MaterialScrollableTable<T>> {
 
   Widget getRow(T item, int index) {
     return ItemRow(
-      isDragging: !isRowDragging[index],
+      isDragging: isRowDragging[index],
       cellBuilder: widget.itemCellBuilder,
       columns: widget.columns,
       index: index,
