@@ -122,7 +122,7 @@ class _State<T> extends State<MaterialScrollableTable<T>> {
       shouldShowOverlayColor: () {
         final shouldShowOverlayColor = widget.shouldShowOverlayColor;
         if (shouldShowOverlayColor != null) {
-          return shouldShowOverlayColor(index);
+          return shouldShowOverlayColor(index) || index != startRowIndex;
         }
         return true;
       }(),
