@@ -12,7 +12,7 @@ dependencies:
   apollocode_dart_utilities:
     git: https://github.com/apollocode-ca/dart_utilities
   another_flushbar: ^1.12.29
-  collection: ^1.17.0
+  collection: ^1.16.0
   date_time_picker: ^2.1.0
   eventify: ^1.0.1
   firebase_auth: ^4.1.0
