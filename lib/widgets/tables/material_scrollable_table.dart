@@ -50,12 +50,11 @@ class MaterialScrollableTable<T> extends StatefulWidget {
 class _State<T> extends State<MaterialScrollableTable<T>> {
   static const listEquality = ListEquality();
 
+  var currentlyDraggedRowOffset = Offset.zero;
+  var currentRowIndex = -1;
   var itemsBeforeDrag = <T>[];
   var items = <T>[];
-
-  int? startRowIndex;
-  int? oldRowIndex;
-  Offset? currentlyDraggedRowOffset;
+  var startRowIndex = -1;
 
   double get rowHeight {
     final rowHeight = Theme.of(context).dataTableTheme.dataRowHeight;
@@ -86,25 +85,26 @@ class _State<T> extends State<MaterialScrollableTable<T>> {
                 child: getRow(item, index),
                 onDragStarted: () {
                   setState(() {
+                    currentRowIndex = index;
                     itemsBeforeDrag = List.from(items);
                     startRowIndex = index;
-                    oldRowIndex = index;
                   });
                 },
                 onDragUpdate: (details) {
-                  print(details.delta.dy);
-                  if (details.delta.dy > rowHeight / 2 ||
-                      details.delta.dy < -(rowHeight / 2)) {
-                    setState(() {
-                      final newRowIndex =
-                          oldRowIndex! - (details.delta.dy / rowHeight).round();
-                      final itemSwapt = items[oldRowIndex!];
-                      items[oldRowIndex!] = items[newRowIndex];
+                  setState(() {
+                    currentlyDraggedRowOffset.translate(0, details.delta.dy);
+                    if (currentlyDraggedRowOffset.dy > rowHeight / 2 ||
+                        currentlyDraggedRowOffset.dy < -(rowHeight / 2)) {
+                      final newRowIndex = (currentRowIndex -
+                              (details.delta.dy / rowHeight).round())
+                          .clamp(0, items.length - 1)
+                          .toInt();
+                      final itemSwapt = items[currentRowIndex];
+                      items[currentRowIndex] = items[newRowIndex];
                       items[newRowIndex] = itemSwapt;
-                      oldRowIndex = newRowIndex;
-                      currentlyDraggedRowOffset = details.delta;
-                    });
-                  }
+                      currentRowIndex = newRowIndex;
+                    }
+                  });
                 },
               );
             }
@@ -137,19 +137,6 @@ class _State<T> extends State<MaterialScrollableTable<T>> {
         return true;
       }(),
     );
-  }
-
-  void onDragEnd() {
-    final onRowDrag = widget.onRowDrag;
-    final currentlyDraggedRowOffset = this.currentlyDraggedRowOffset;
-    final startRowIndex = this.startRowIndex;
-    if (onRowDrag != null &&
-        currentlyDraggedRowOffset != null &&
-        startRowIndex != null) {
-      final newRowIndex =
-          startRowIndex - (currentlyDraggedRowOffset.dy / rowHeight).round();
-      onRowDrag(startRowIndex, newRowIndex);
-    }
   }
 
   @override
@@ -199,11 +186,14 @@ class _State<T> extends State<MaterialScrollableTable<T>> {
                           return rows;
                         },
                         onAccept: (data) {
-                          onDragEnd();
+                          final onRowDrag = widget.onRowDrag;
+                          if (onRowDrag != null) {
+                            onRowDrag(startRowIndex, currentRowIndex);
+                          }
                           setState(() {
-                            startRowIndex = null;
-                            oldRowIndex = null;
-                            currentlyDraggedRowOffset = null;
+                            currentlyDraggedRowOffset = Offset.zero;
+                            startRowIndex = -1;
+                            currentRowIndex = -1;
                             itemsBeforeDrag = <T>[];
                           });
                         },
