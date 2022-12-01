@@ -97,15 +97,15 @@ class _State<T> extends State<MaterialScrollableTable<T>> {
                 },
                 onDragUpdate: (details) {
                   setState(() {
-                    if (details.delta.dy > rowHeight / 2) {
-                      final newRowIndex =
-                          oldRowIndex! + (details.delta.dy / rowHeight).round();
+                    if (details.localPosition.dy > rowHeight / 2) {
+                      final newRowIndex = oldRowIndex! +
+                          (details.localPosition.dy / rowHeight).round();
                       final itemSwapt = items[oldRowIndex!];
                       items[oldRowIndex!] = items[newRowIndex];
                       items[newRowIndex] = itemSwapt;
                       oldRowIndex = newRowIndex;
                     }
-                    currentlyDraggedRowOffset = details.delta;
+                    currentlyDraggedRowOffset = details.localPosition;
                   });
                 },
               );
