@@ -8,14 +8,12 @@ import 'package:flutter/material.dart';
 
 class MaterialScrollableTable<T> extends StatefulWidget {
   final bool canDrag;
-  final bool Function(int index)? canTapRow;
   final List<ColumnData> columns;
   final List<T> items;
   final Widget? Function(
     ColumnData column,
     TextStyle currentStyle,
   ) headingCellBuilder;
-  final bool Function(int index)? isDraggingRow;
   final bool isLoading;
   final Widget Function(
     ColumnData column,
@@ -29,10 +27,8 @@ class MaterialScrollableTable<T> extends StatefulWidget {
 
   const MaterialScrollableTable({
     this.canDrag = false,
-    this.canTapRow,
     required this.columns,
     required this.headingCellBuilder,
-    this.isDraggingRow,
     this.isLoading = false,
     this.items = const [],
     required this.itemCellBuilder,
@@ -49,6 +45,8 @@ class MaterialScrollableTable<T> extends StatefulWidget {
 
 class _State<T> extends State<MaterialScrollableTable<T>> {
   static const listEquality = ListEquality();
+
+  final isRowDragging = <bool>[];
 
   var currentlyDraggedRowOffset = Offset.zero;
   var currentRowIndex = -1;
@@ -72,11 +70,6 @@ class _State<T> extends State<MaterialScrollableTable<T>> {
         final item = items[index];
         return Builder(
           builder: (context) {
-            var isDragging = false;
-            final isDraggingRow = widget.isDraggingRow;
-            if (isDraggingRow != null) {
-              isDragging = isDraggingRow(index);
-            }
             if (widget.canDrag) {
               return Draggable(
                 axis: Axis.vertical,
@@ -86,6 +79,7 @@ class _State<T> extends State<MaterialScrollableTable<T>> {
                 onDragStarted: () {
                   setState(() {
                     currentRowIndex = index;
+                    isRowDragging[index] = true;
                     itemsBeforeDrag = List.from(items);
                     startRowIndex = index;
                   });
@@ -101,9 +95,8 @@ class _State<T> extends State<MaterialScrollableTable<T>> {
                       final newRowIndex = (currentRowIndex + indexDelta)
                           .clamp(0, items.length - 1)
                           .toInt();
-                      final itemSwapt = items[currentRowIndex];
-                      items[currentRowIndex] = items[newRowIndex];
-                      items[newRowIndex] = itemSwapt;
+                      items.swap(currentRowIndex, newRowIndex);
+                      isRowDragging.swap(currentRowIndex, newRowIndex);
                       currentRowIndex = newRowIndex;
                       currentlyDraggedRowOffset = Offset.zero;
                     }
@@ -120,13 +113,7 @@ class _State<T> extends State<MaterialScrollableTable<T>> {
 
   Widget getRow(T item, int index) {
     return ItemRow(
-      canTap: () {
-        final canTapRow = widget.canTapRow;
-        if (canTapRow != null) {
-          return canTapRow(index);
-        }
-        return true;
-      }(),
+      isDragging: !isRowDragging[index],
       cellBuilder: widget.itemCellBuilder,
       columns: widget.columns,
       index: index,
@@ -142,16 +129,24 @@ class _State<T> extends State<MaterialScrollableTable<T>> {
     );
   }
 
+  onItemsChange() {
+    items = widget.items;
+    for (var i = 0; i < items.length; i++) {
+      isRowDragging.add(false);
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    items = widget.items;
+    onItemsChange();
   }
 
   @override
   void didUpdateWidget(covariant MaterialScrollableTable<T> oldWidget) {
     if (!listEquality.equals(oldWidget.items, widget.items)) {
-      items = widget.items;
+      isRowDragging.clear();
+      onItemsChange();
     }
     super.didUpdateWidget(oldWidget);
   }
@@ -195,14 +190,22 @@ class _State<T> extends State<MaterialScrollableTable<T>> {
                           }
                           setState(() {
                             currentlyDraggedRowOffset = Offset.zero;
-                            startRowIndex = -1;
                             currentRowIndex = -1;
+                            isRowDragging.remove(true);
+                            isRowDragging.add(false);
                             itemsBeforeDrag = <T>[];
+                            startRowIndex = -1;
                           });
                         },
                         onLeave: (data) {
                           setState(() {
+                            currentlyDraggedRowOffset = Offset.zero;
+                            currentRowIndex = -1;
+                            isRowDragging.remove(true);
+                            isRowDragging.add(false);
                             items = List.from(itemsBeforeDrag);
+                            itemsBeforeDrag = <T>[];
+                            startRowIndex = -1;
                           });
                         },
                         onWillAccept: (data) {

@@ -3,7 +3,6 @@ import 'package:apollocode_flutter_utilities/widgets/tables/material_table/table
 import 'package:flutter/material.dart' hide TableCell;
 
 class ItemRow<T> extends StatefulWidget {
-  final bool canTap;
   final Widget Function(
     ColumnData column,
     int index,
@@ -11,15 +10,16 @@ class ItemRow<T> extends StatefulWidget {
   ) cellBuilder;
   final List<ColumnData> columns;
   final int index;
+  final bool isDragging;
   final T item;
   final void Function(T item)? onTap;
   final bool shouldShowOverlayColor;
 
   const ItemRow({
-    this.canTap = true,
     required this.cellBuilder,
     required this.columns,
     required this.index,
+    this.isDragging = false,
     required this.item,
     this.onTap,
     this.shouldShowOverlayColor = true,
@@ -39,6 +39,13 @@ class _State<T> extends State<ItemRow<T>> {
       return Theme.of(context).colorScheme.surface;
     }
     return Theme.of(context).colorScheme.surfaceVariant;
+  }
+
+  Color get draggedColor {
+    if (widget.index.isOdd) {
+      return Theme.of(context).colorScheme.onSurface.withOpacity(0.16);
+    }
+    return Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.16);
   }
 
   Color get foregroundColor {
@@ -71,7 +78,7 @@ class _State<T> extends State<ItemRow<T>> {
         });
       },
       onLongPressDown: (details) {
-        if (widget.shouldShowOverlayColor) {
+        if (widget.shouldShowOverlayColor && !widget.isDragging) {
           setState(() {
             isPressing = true;
           });
@@ -83,7 +90,7 @@ class _State<T> extends State<ItemRow<T>> {
         });
       },
       onTap: () {
-        if (widget.canTap) {
+        if (!widget.isDragging) {
           final onTap = widget.onTap;
           if (onTap != null) {
             onTap(widget.item);
@@ -116,6 +123,9 @@ class _State<T> extends State<ItemRow<T>> {
           foregroundDecoration: BoxDecoration(
             color: () {
               if (widget.shouldShowOverlayColor) {
+                if (widget.isDragging) {
+                  return draggedColor;
+                }
                 if (isPressing) {
                   return pressedColor;
                 }
