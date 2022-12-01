@@ -78,7 +78,7 @@ class _State<T> extends State<MaterialScrollableTable<T>> {
             if (isDraggingRow != null) {
               isDragging = isDraggingRow(index);
             }
-            if (widget.canDrag && isDragging) {
+            if (widget.canDrag) {
               return Draggable(
                 axis: Axis.vertical,
                 feedback: Container(),
