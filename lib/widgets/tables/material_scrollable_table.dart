@@ -92,8 +92,8 @@ class _State<T> extends State<MaterialScrollableTable<T>> {
                 },
                 onDragUpdate: (details) {
                   setState(() {
-                    currentlyDraggedRowOffset.translate(0, details.delta.dy);
-                    print(currentlyDraggedRowOffset);
+                    currentlyDraggedRowOffset = currentlyDraggedRowOffset
+                        .translate(0, details.delta.dy);
                     if (currentlyDraggedRowOffset.dy > rowHeight / 2 ||
                         currentlyDraggedRowOffset.dy < -(rowHeight / 2)) {
                       final newRowIndex = (currentRowIndex -
