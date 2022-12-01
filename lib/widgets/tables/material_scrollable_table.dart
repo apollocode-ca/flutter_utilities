@@ -81,6 +81,7 @@ class _State<T> extends State<MaterialScrollableTable<T>> {
             if (widget.canDrag) {
               return Draggable(
                 axis: Axis.vertical,
+                data: index,
                 feedback: Container(),
                 child: getRow(item, index),
                 onDragEnd: (details) {
