@@ -162,7 +162,7 @@ class _State<T> extends State<MaterialScrollableTable<T>> {
 
   @override
   void didUpdateWidget(covariant MaterialScrollableTable<T> oldWidget) {
-    if (listEquality.equals(oldWidget.items, widget.items)) {
+    if (!listEquality.equals(oldWidget.items, widget.items)) {
       items = widget.items;
     }
     super.didUpdateWidget(oldWidget);
