@@ -84,11 +84,6 @@ class _State<T> extends State<MaterialScrollableTable<T>> {
                 data: index,
                 feedback: Container(),
                 child: getRow(item, index),
-                onDragEnd: (details) {
-                  setState(() {
-                    currentlyDraggedRowOffset = details.offset;
-                  });
-                },
                 onDragStarted: () {
                   setState(() {
                     itemsBeforeDrag = List.from(items);
