@@ -92,6 +92,7 @@ class _State<T> extends State<MaterialScrollableTable<T>> {
                   });
                 },
                 onDragUpdate: (details) {
+                  print(details.delta.dy);
                   if (details.delta.dy > rowHeight / 2 ||
                       details.delta.dy < -(rowHeight / 2)) {
                     setState(() {
