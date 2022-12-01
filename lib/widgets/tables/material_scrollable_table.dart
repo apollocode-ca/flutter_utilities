@@ -96,8 +96,9 @@ class _State<T> extends State<MaterialScrollableTable<T>> {
                         .translate(0, details.delta.dy);
                     if (currentlyDraggedRowOffset.dy > rowHeight / 2 ||
                         currentlyDraggedRowOffset.dy < -(rowHeight / 2)) {
-                      final newRowIndex = (currentRowIndex -
-                              (details.delta.dy / rowHeight).round())
+                      final indexDelta =
+                          (currentlyDraggedRowOffset.dy / rowHeight).round();
+                      final newRowIndex = (currentRowIndex + indexDelta)
                           .clamp(0, items.length - 1)
                           .toInt();
                       final itemSwapt = items[currentRowIndex];
