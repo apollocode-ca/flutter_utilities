@@ -6,6 +6,7 @@ import 'package:apollocode_flutter_utilities/widgets/tables/material_table/no_da
 import 'package:flutter/material.dart';
 
 class MaterialScrollableTable<T> extends StatelessWidget {
+  final bool Function(int index)? canTapRow;
   final List<ColumnData> columns;
   final List<T> items;
   final Widget? Function(
@@ -23,6 +24,7 @@ class MaterialScrollableTable<T> extends StatelessWidget {
   final bool Function(int index)? shouldShowOverlayColor;
 
   const MaterialScrollableTable({
+    this.canTapRow,
     required this.columns,
     required this.headingCellBuilder,
     this.isLoading = false,
@@ -65,6 +67,13 @@ class MaterialScrollableTable<T> extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final item = items[index];
                     return ItemRow(
+                      canTap: () {
+                        final canTapRow = this.canTapRow;
+                        if (canTapRow != null) {
+                          return canTapRow(index);
+                        }
+                        return true;
+                      }(),
                       cellBuilder: itemCellBuilder,
                       columns: columns,
                       index: index,

@@ -3,6 +3,7 @@ import 'package:apollocode_flutter_utilities/widgets/tables/material_table/table
 import 'package:flutter/material.dart' hide TableCell;
 
 class ItemRow<T> extends StatefulWidget {
+  final bool canTap;
   final Widget Function(
     ColumnData column,
     int index,
@@ -15,6 +16,7 @@ class ItemRow<T> extends StatefulWidget {
   final bool shouldShowOverlayColor;
 
   const ItemRow({
+    this.canTap = true,
     required this.cellBuilder,
     required this.columns,
     required this.index,
@@ -81,9 +83,11 @@ class _State<T> extends State<ItemRow<T>> {
         });
       },
       onTap: () {
-        final onTap = widget.onTap;
-        if (onTap != null) {
-          onTap(widget.item);
+        if (widget.canTap) {
+          final onTap = widget.onTap;
+          if (onTap != null) {
+            onTap(widget.item);
+          }
         }
         setState(() {
           isPressing = false;
