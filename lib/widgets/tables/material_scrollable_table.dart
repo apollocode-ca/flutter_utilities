@@ -105,6 +105,7 @@ class _State<T> extends State<MaterialScrollableTable<T>> {
                       items[currentRowIndex] = items[newRowIndex];
                       items[newRowIndex] = itemSwapt;
                       currentRowIndex = newRowIndex;
+                      currentlyDraggedRowOffset = Offset.zero;
                     }
                   });
                 },
