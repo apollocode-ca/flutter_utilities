@@ -87,13 +87,16 @@ class _State<T> extends State<ItemRow<T>> {
   @override
   Widget build(BuildContext context) {
     if (widget.isDragging && widget.tableKey == null) {
-      return Container(
-        constraints: BoxConstraints.tightFor(
-          height: Theme.of(context).dataTableTheme.dataRowHeight,
-          width: widget.tableKey?.widgetBounds?.width,
-        ),
-        decoration: BoxDecoration(
-          color: backgroundColor,
+      return MouseRegion(
+        cursor: SystemMouseCursors.grabbing,
+        child: Container(
+          constraints: BoxConstraints.tightFor(
+            height: Theme.of(context).dataTableTheme.dataRowHeight,
+            width: widget.tableKey?.widgetBounds?.width,
+          ),
+          decoration: BoxDecoration(
+            color: backgroundColor,
+          ),
         ),
       );
     }
