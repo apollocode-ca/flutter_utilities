@@ -1,3 +1,4 @@
+import 'package:apollocode_flutter_utilities/extensions/global_key_extension.dart';
 import 'package:apollocode_flutter_utilities/models/column_data.dart';
 import 'package:apollocode_flutter_utilities/widgets/tables/material_table/heading_row.dart';
 import 'package:apollocode_flutter_utilities/widgets/tables/material_table/item_row.dart';
@@ -79,6 +80,7 @@ class MaterialScrollableTableState<T>
     extends State<MaterialScrollableTable<T>> {
   static const _listEquality = ListEquality();
 
+  final key = GlobalKey();
   final isRowDragging = <bool>[];
 
   var _currentlyDraggedRowOffset = Offset.zero;
@@ -107,10 +109,7 @@ class MaterialScrollableTableState<T>
               return Draggable(
                 axis: Axis.vertical,
                 data: index,
-                feedback: Transform.scale(
-                  scale: 1.1,
-                  child: _getRow(item, index),
-                ),
+                feedback: _getRow(item, index, key.widgetBounds?.width),
                 child: _getRow(item, index),
                 onDragStarted: () {
                   setState(() {
@@ -147,7 +146,7 @@ class MaterialScrollableTableState<T>
     );
   }
 
-  Widget _getRow(T item, int index) {
+  Widget _getRow(T item, int index, [double? width]) {
     return ItemRow(
       cellBuilder: widget.itemCellBuilder,
       columns: widget.columns,
@@ -163,6 +162,7 @@ class MaterialScrollableTableState<T>
         }
         return true;
       }(),
+      width: width,
     );
   }
 
@@ -198,6 +198,7 @@ class MaterialScrollableTableState<T>
           borderRadius: BorderRadius.circular(24),
           color: Theme.of(context).colorScheme.surfaceVariant,
         ),
+        key: key,
         child: Column(
           children: [
             HeadingRow(

@@ -16,6 +16,7 @@ class ItemRow<T> extends StatefulWidget {
   final T item;
   final void Function(T item)? onTap;
   final bool shouldShowOverlayColor;
+  final double? width;
 
   const ItemRow({
     required this.cellBuilder,
@@ -26,6 +27,7 @@ class ItemRow<T> extends StatefulWidget {
     required this.item,
     this.onTap,
     this.shouldShowOverlayColor = true,
+    this.width,
     Key? key,
   }) : super(key: key);
 
@@ -134,6 +136,7 @@ class _State<T> extends State<ItemRow<T>> {
         child: AnimatedContainer(
           constraints: BoxConstraints.tightFor(
             height: Theme.of(context).dataTableTheme.dataRowHeight,
+            width: widget.width,
           ),
           decoration: BoxDecoration(
             color: backgroundColor,
