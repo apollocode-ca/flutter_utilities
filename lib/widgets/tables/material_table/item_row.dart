@@ -4,6 +4,7 @@ import 'package:flutter/material.dart' hide TableCell;
 
 class ItemRow<T> extends StatefulWidget {
   final Widget Function(
+    BuildContext context,
     ColumnData column,
     int index,
     TextStyle currentTextStyle,
@@ -89,7 +90,9 @@ class _State<T> extends State<ItemRow<T>> {
         });
       },
       onLongPressDown: (details) {
-        if (widget.shouldShowOverlayColor && !widget.isAnyRowDragging && !widget.isDragging) {
+        if (widget.shouldShowOverlayColor &&
+            !widget.isAnyRowDragging &&
+            !widget.isDragging) {
           setState(() {
             isPressing = true;
           });
@@ -167,6 +170,7 @@ class _State<T> extends State<ItemRow<T>> {
                         column: column,
                         index: index,
                         child: widget.cellBuilder(
+                          context,
                           column,
                           widget.index,
                           TextStyle(
@@ -182,6 +186,7 @@ class _State<T> extends State<ItemRow<T>> {
                       column: column,
                       index: index,
                       child: widget.cellBuilder(
+                        context,
                         column,
                         widget.index,
                         TextStyle(

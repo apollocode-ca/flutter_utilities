@@ -4,6 +4,7 @@ import 'package:flutter/material.dart' hide TableCell;
 
 class HeadingRow extends StatelessWidget {
   final Widget? Function(
+    BuildContext context,
     ColumnData column,
     TextStyle currentStyle,
   ) cellBuilder;
@@ -39,6 +40,7 @@ class HeadingRow extends StatelessWidget {
                     column: column,
                     index: index,
                     child: cellBuilder(
+                      context,
                       column,
                       TextStyle(
                         color: Theme.of(context).colorScheme.onPrimary,
@@ -54,6 +56,7 @@ class HeadingRow extends StatelessWidget {
                   column: column,
                   index: index,
                   child: cellBuilder(
+                    context,
                     column,
                     TextStyle(
                       color: Theme.of(context).colorScheme.onPrimary,
