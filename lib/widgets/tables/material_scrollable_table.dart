@@ -80,14 +80,19 @@ class MaterialScrollableTableState<T>
     extends State<MaterialScrollableTable<T>> {
   static const _listEquality = ListEquality();
 
-  final key = GlobalKey();
   final isRowDragging = <bool>[];
+
+  final _key = GlobalKey();
 
   var _currentlyDraggedRowOffset = Offset.zero;
   var _currentRowIndex = -1;
   var _itemsBeforeDrag = <T>[];
   var _items = <T>[];
   var _startRowIndex = -1;
+
+  double? get width {
+    return _key.widgetBounds?.width;
+  }
 
   double get _rowHeight {
     final rowHeight = Theme.of(context).dataTableTheme.dataRowHeight;
@@ -109,7 +114,11 @@ class MaterialScrollableTableState<T>
               return Draggable(
                 axis: Axis.vertical,
                 data: index,
-                feedback: _getRow(item, index, key.widgetBounds?.width),
+                feedback: _getRow(
+                  item,
+                  index,
+                  isFeedback: true,
+                ),
                 child: _getRow(item, index),
                 onDragStarted: () {
                   setState(() {
@@ -146,13 +155,14 @@ class MaterialScrollableTableState<T>
     );
   }
 
-  Widget _getRow(T item, int index, [double? width]) {
+  Widget _getRow(T item, int index, {bool isFeedback = false}) {
     return ItemRow(
       cellBuilder: widget.itemCellBuilder,
       columns: widget.columns,
       index: index,
       isAnyRowDragging: isRowDragging.any((isDragging) => isDragging),
       isDragging: isRowDragging[index],
+      isFeedback: isFeedback,
       item: item,
       onTap: widget.onRowTap,
       shouldShowOverlayColor: () {
@@ -162,7 +172,6 @@ class MaterialScrollableTableState<T>
         }
         return true;
       }(),
-      width: width,
     );
   }
 
@@ -198,7 +207,7 @@ class MaterialScrollableTableState<T>
           borderRadius: BorderRadius.circular(24),
           color: Theme.of(context).colorScheme.surfaceVariant,
         ),
-        key: key,
+        key: _key,
         child: Column(
           children: [
             HeadingRow(
