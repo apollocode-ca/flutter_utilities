@@ -1,5 +1,5 @@
+import 'package:apollocode_flutter_utilities/extensions/global_key_extension.dart';
 import 'package:apollocode_flutter_utilities/models/column_data.dart';
-import 'package:apollocode_flutter_utilities/widgets/tables/material_scrollable_table.dart';
 import 'package:apollocode_flutter_utilities/widgets/tables/material_table/table_cell.dart';
 import 'package:flutter/material.dart' hide TableCell;
 
@@ -14,10 +14,10 @@ class ItemRow<T> extends StatefulWidget {
   final int index;
   final bool isAnyRowDragging;
   final bool isDragging;
-  final bool isFeedback;
   final T item;
   final void Function(T item)? onTap;
   final bool shouldShowOverlayColor;
+  final GlobalKey? tableKey;
 
   const ItemRow({
     required this.cellBuilder,
@@ -25,10 +25,10 @@ class ItemRow<T> extends StatefulWidget {
     required this.index,
     this.isAnyRowDragging = false,
     this.isDragging = false,
-    this.isFeedback = false,
     required this.item,
     this.onTap,
     this.shouldShowOverlayColor = true,
+    this.tableKey,
     Key? key,
   }) : super(key: key);
 
@@ -137,12 +137,7 @@ class _State<T> extends State<ItemRow<T>> {
         child: AnimatedContainer(
           constraints: BoxConstraints.tightFor(
             height: Theme.of(context).dataTableTheme.dataRowHeight,
-            width: () {
-              if (widget.isFeedback) {
-                return MaterialScrollableTable.maybeOf<T>(context)?.width;
-              }
-              return null;
-            }(),
+            width: widget.tableKey?.widgetBounds?.width,
           ),
           decoration: BoxDecoration(
             color: backgroundColor,

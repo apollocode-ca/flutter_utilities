@@ -117,7 +117,7 @@ class MaterialScrollableTableState<T>
                 feedback: _getRow(
                   item,
                   index,
-                  isFeedback: true,
+                  withTableKey: true,
                 ),
                 child: _getRow(item, index),
                 onDragStarted: () {
@@ -155,14 +155,13 @@ class MaterialScrollableTableState<T>
     );
   }
 
-  Widget _getRow(T item, int index, {bool isFeedback = false}) {
+  Widget _getRow(T item, int index, {bool withTableKey = false}) {
     return ItemRow(
       cellBuilder: widget.itemCellBuilder,
       columns: widget.columns,
       index: index,
       isAnyRowDragging: isRowDragging.any((isDragging) => isDragging),
       isDragging: isRowDragging[index],
-      isFeedback: isFeedback,
       item: item,
       onTap: widget.onRowTap,
       shouldShowOverlayColor: () {
@@ -171,6 +170,12 @@ class MaterialScrollableTableState<T>
           return shouldShowOverlayColor(index);
         }
         return true;
+      }(),
+      tableKey: () {
+        if (withTableKey) {
+          return _key;
+        }
+        return null;
       }(),
     );
   }
