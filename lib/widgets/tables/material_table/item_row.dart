@@ -101,7 +101,12 @@ class _State<T> extends State<ItemRow<T>> {
         });
       },
       child: MouseRegion(
-        cursor: MaterialStateMouseCursor.clickable,
+        cursor: () {
+          if (widget.isDragging) {
+            return SystemMouseCursors.grabbing;
+          }
+          return MaterialStateMouseCursor.clickable;
+        }(),
         onEnter: (event) {
           setState(() {
             isHovering = true;
@@ -122,10 +127,10 @@ class _State<T> extends State<ItemRow<T>> {
           duration: kThemeChangeDuration,
           foregroundDecoration: BoxDecoration(
             color: () {
+              if (widget.isDragging) {
+                return draggedColor;
+              }
               if (widget.shouldShowOverlayColor) {
-                if (widget.isDragging) {
-                  return draggedColor;
-                }
                 if (isPressing) {
                   return pressedColor;
                 }
