@@ -41,6 +41,12 @@ class MaterialScrollableTable<T> extends StatefulWidget {
     Key? key,
   }) : super(key: key);
 
+  static MaterialScrollableTableState<T>? maybeOf<T>(BuildContext context) {
+    final inherited =
+        context.dependOnInheritedWidgetOfExactType<_Inherited<T>>();
+    return inherited?.state;
+  }
+
   static MaterialScrollableTableState<T> of<T>(BuildContext context) {
     final inherited =
         context.dependOnInheritedWidgetOfExactType<_Inherited<T>>();
