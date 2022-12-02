@@ -39,22 +39,47 @@ class MaterialScrollableTable<T> extends StatefulWidget {
     Key? key,
   }) : super(key: key);
 
+  static MaterialScrollableTableState<T> of<T>(BuildContext context) {
+    final inherited =
+        context.dependOnInheritedWidgetOfExactType<_Inherited<T>>();
+    if (inherited == null) {
+      throw StateError('No MaterialScrollableTable ancestor found');
+    }
+    return inherited.state;
+  }
+
   @override
-  State<MaterialScrollableTable<T>> createState() => _State<T>();
+  State<MaterialScrollableTable<T>> createState() =>
+      MaterialScrollableTableState<T>();
 }
 
-class _State<T> extends State<MaterialScrollableTable<T>> {
-  static const listEquality = ListEquality();
+class _Inherited<T> extends InheritedWidget {
+  const _Inherited({
+    required super.child,
+    required this.state,
+  });
+
+  final MaterialScrollableTableState<T> state;
+
+  @override
+  bool updateShouldNotify(covariant _Inherited oldWidget) {
+    return oldWidget.state != state;
+  }
+}
+
+class MaterialScrollableTableState<T>
+    extends State<MaterialScrollableTable<T>> {
+  static const _listEquality = ListEquality();
 
   final isRowDragging = <bool>[];
 
-  var currentlyDraggedRowOffset = Offset.zero;
-  var currentRowIndex = -1;
-  var itemsBeforeDrag = <T>[];
-  var items = <T>[];
-  var startRowIndex = -1;
+  var _currentlyDraggedRowOffset = Offset.zero;
+  var _currentRowIndex = -1;
+  var _itemsBeforeDrag = <T>[];
+  var _items = <T>[];
+  var _startRowIndex = -1;
 
-  double get rowHeight {
+  double get _rowHeight {
     final rowHeight = Theme.of(context).dataTableTheme.dataRowHeight;
     if (rowHeight != null) {
       return rowHeight;
@@ -62,12 +87,12 @@ class _State<T> extends State<MaterialScrollableTable<T>> {
     throw StateError('dataRowHeight must be set in the DataTableTheme');
   }
 
-  Widget get rows {
+  Widget get _rows {
     return ListView.builder(
-      itemCount: items.length,
+      itemCount: _items.length,
       padding: EdgeInsets.zero,
       itemBuilder: (context, index) {
-        final item = items[index];
+        final item = _items[index];
         return Builder(
           builder: (context) {
             if (widget.canDrag) {
@@ -75,43 +100,43 @@ class _State<T> extends State<MaterialScrollableTable<T>> {
                 axis: Axis.vertical,
                 data: index,
                 feedback: Container(),
-                child: getRow(item, index),
+                child: _getRow(item, index),
                 onDragStarted: () {
                   setState(() {
-                    currentRowIndex = index;
+                    _currentRowIndex = index;
                     isRowDragging[index] = true;
-                    itemsBeforeDrag = List.from(items);
-                    startRowIndex = index;
+                    _itemsBeforeDrag = List.from(_items);
+                    _startRowIndex = index;
                   });
                 },
                 onDragUpdate: (details) {
                   setState(() {
-                    currentlyDraggedRowOffset = currentlyDraggedRowOffset
+                    _currentlyDraggedRowOffset = _currentlyDraggedRowOffset
                         .translate(0, details.delta.dy);
-                    if (currentlyDraggedRowOffset.dy > rowHeight ||
-                        currentlyDraggedRowOffset.dy < -rowHeight) {
+                    if (_currentlyDraggedRowOffset.dy > _rowHeight ||
+                        _currentlyDraggedRowOffset.dy < -_rowHeight) {
                       final indexDelta =
-                          (currentlyDraggedRowOffset.dy / rowHeight).round();
-                      final newRowIndex = (currentRowIndex + indexDelta)
-                          .clamp(0, items.length - 1)
+                          (_currentlyDraggedRowOffset.dy / _rowHeight).round();
+                      final newRowIndex = (_currentRowIndex + indexDelta)
+                          .clamp(0, _items.length - 1)
                           .toInt();
-                      items.swap(currentRowIndex, newRowIndex);
-                      isRowDragging.swap(currentRowIndex, newRowIndex);
-                      currentRowIndex = newRowIndex;
-                      currentlyDraggedRowOffset = Offset.zero;
+                      _items.swap(_currentRowIndex, newRowIndex);
+                      isRowDragging.swap(_currentRowIndex, newRowIndex);
+                      _currentRowIndex = newRowIndex;
+                      _currentlyDraggedRowOffset = Offset.zero;
                     }
                   });
                 },
               );
             }
-            return getRow(item, index);
+            return _getRow(item, index);
           },
         );
       },
     );
   }
 
-  Widget getRow(T item, int index) {
+  Widget _getRow(T item, int index) {
     return ItemRow(
       cellBuilder: widget.itemCellBuilder,
       columns: widget.columns,
@@ -130,9 +155,9 @@ class _State<T> extends State<MaterialScrollableTable<T>> {
     );
   }
 
-  onItemsChange() {
-    items = widget.items;
-    for (var i = 0; i < items.length; i++) {
+  _onItemsChange() {
+    _items = widget.items;
+    for (var i = 0; i < _items.length; i++) {
       isRowDragging.add(false);
     }
   }
@@ -140,87 +165,90 @@ class _State<T> extends State<MaterialScrollableTable<T>> {
   @override
   void initState() {
     super.initState();
-    onItemsChange();
+    _onItemsChange();
   }
 
   @override
   void didUpdateWidget(covariant MaterialScrollableTable<T> oldWidget) {
-    if (!listEquality.equals(oldWidget.items, widget.items)) {
+    if (!_listEquality.equals(oldWidget.items, widget.items)) {
       isRowDragging.clear();
-      onItemsChange();
+      _onItemsChange();
     }
     super.didUpdateWidget(oldWidget);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      clipBehavior: Clip.antiAlias,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(24),
-        color: Theme.of(context).colorScheme.surfaceVariant,
-      ),
-      child: Column(
-        children: [
-          HeadingRow(
-            cellBuilder: widget.headingCellBuilder,
-            columns: widget.columns,
-          ),
-          Expanded(
-            child: Builder(
-              builder: (context) {
-                if (widget.isLoading) {
-                  return const LoadingBody();
-                }
-                if (items.isEmpty) {
-                  return NoDataBody(
-                    labelText: widget.noDataLabel,
-                  );
-                }
-                return Builder(
-                  builder: (context) {
-                    if (widget.canDrag) {
-                      return DragTarget(
-                        builder: (context, candidateData, rejectedData) {
-                          return rows;
-                        },
-                        onAccept: (data) {
-                          final onRowDrag = widget.onRowDrag;
-                          if (onRowDrag != null) {
-                            onRowDrag(startRowIndex, currentRowIndex);
-                          }
-                          setState(() {
-                            currentlyDraggedRowOffset = Offset.zero;
-                            currentRowIndex = -1;
-                            isRowDragging.remove(true);
-                            isRowDragging.add(false);
-                            itemsBeforeDrag = <T>[];
-                            startRowIndex = -1;
-                          });
-                        },
-                        onLeave: (data) {
-                          setState(() {
-                            currentlyDraggedRowOffset = Offset.zero;
-                            currentRowIndex = -1;
-                            isRowDragging.remove(true);
-                            isRowDragging.add(false);
-                            items = List.from(itemsBeforeDrag);
-                            itemsBeforeDrag = <T>[];
-                            startRowIndex = -1;
-                          });
-                        },
-                        onWillAccept: (data) {
-                          return true;
-                        },
-                      );
-                    }
-                    return rows;
-                  },
-                );
-              },
+    return _Inherited<T>(
+      state: this,
+      child: Container(
+        clipBehavior: Clip.antiAlias,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(24),
+          color: Theme.of(context).colorScheme.surfaceVariant,
+        ),
+        child: Column(
+          children: [
+            HeadingRow(
+              cellBuilder: widget.headingCellBuilder,
+              columns: widget.columns,
             ),
-          ),
-        ],
+            Expanded(
+              child: Builder(
+                builder: (context) {
+                  if (widget.isLoading) {
+                    return const LoadingBody();
+                  }
+                  if (_items.isEmpty) {
+                    return NoDataBody(
+                      labelText: widget.noDataLabel,
+                    );
+                  }
+                  return Builder(
+                    builder: (context) {
+                      if (widget.canDrag) {
+                        return DragTarget(
+                          builder: (context, candidateData, rejectedData) {
+                            return _rows;
+                          },
+                          onAccept: (data) {
+                            final onRowDrag = widget.onRowDrag;
+                            if (onRowDrag != null) {
+                              onRowDrag(_startRowIndex, _currentRowIndex);
+                            }
+                            setState(() {
+                              _currentlyDraggedRowOffset = Offset.zero;
+                              _currentRowIndex = -1;
+                              isRowDragging.remove(true);
+                              isRowDragging.add(false);
+                              _itemsBeforeDrag = <T>[];
+                              _startRowIndex = -1;
+                            });
+                          },
+                          onLeave: (data) {
+                            setState(() {
+                              _currentlyDraggedRowOffset = Offset.zero;
+                              _currentRowIndex = -1;
+                              isRowDragging.remove(true);
+                              isRowDragging.add(false);
+                              _items = List.from(_itemsBeforeDrag);
+                              _itemsBeforeDrag = <T>[];
+                              _startRowIndex = -1;
+                            });
+                          },
+                          onWillAccept: (data) {
+                            return true;
+                          },
+                        );
+                      }
+                      return _rows;
+                    },
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
