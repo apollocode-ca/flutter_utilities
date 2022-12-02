@@ -139,7 +139,7 @@ class _State<T> extends State<ItemRow<T>> {
             height: Theme.of(context).dataTableTheme.dataRowHeight,
             width: () {
               if (widget.isFeedback) {
-                return MaterialScrollableTable.maybeOf(context)?.width;
+                return MaterialScrollableTable.maybeOf<T>(context)?.width;
               }
               return null;
             }(),
