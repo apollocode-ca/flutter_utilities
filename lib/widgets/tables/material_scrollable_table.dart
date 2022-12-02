@@ -101,7 +101,7 @@ class MaterialScrollableTableState<T>
               return Draggable(
                 axis: Axis.vertical,
                 data: index,
-                feedback: Container(),
+                feedback: _getRow(item, index),
                 child: _getRow(item, index),
                 onDragStarted: () {
                   setState(() {
