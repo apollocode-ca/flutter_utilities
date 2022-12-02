@@ -10,6 +10,7 @@ class ItemRow<T> extends StatefulWidget {
   ) cellBuilder;
   final List<ColumnData> columns;
   final int index;
+  final bool isAnyRowDragging;
   final bool isDragging;
   final T item;
   final void Function(T item)? onTap;
@@ -19,6 +20,7 @@ class ItemRow<T> extends StatefulWidget {
     required this.cellBuilder,
     required this.columns,
     required this.index,
+    this.isAnyRowDragging = false,
     this.isDragging = false,
     required this.item,
     this.onTap,
@@ -71,7 +73,7 @@ class _State<T> extends State<ItemRow<T>> {
 
   @override
   void didUpdateWidget(covariant ItemRow<T> oldWidget) {
-    if (widget.shouldShowOverlayColor) {
+    if (widget.isAnyRowDragging) {
       isHovering = false;
       isPressing = false;
     }
@@ -87,7 +89,7 @@ class _State<T> extends State<ItemRow<T>> {
         });
       },
       onLongPressDown: (details) {
-        if (widget.shouldShowOverlayColor && !widget.isDragging) {
+        if (widget.shouldShowOverlayColor && !widget.isAnyRowDragging && !widget.isDragging) {
           setState(() {
             isPressing = true;
           });
@@ -139,7 +141,7 @@ class _State<T> extends State<ItemRow<T>> {
               if (widget.isDragging) {
                 return draggedColor;
               }
-              if (widget.shouldShowOverlayColor) {
+              if (widget.shouldShowOverlayColor && !widget.isAnyRowDragging) {
                 if (isPressing) {
                   return pressedColor;
                 }
