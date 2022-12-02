@@ -126,7 +126,7 @@ class _State<T> extends State<ItemRow<T>> {
       },
       child: MouseRegion(
         cursor: () {
-          if (widget.isDragging) {
+          if (widget.isAnyRowDragging) {
             return SystemMouseCursors.grabbing;
           }
           return MaterialStateMouseCursor.clickable;
