@@ -86,6 +86,17 @@ class _State<T> extends State<ItemRow<T>> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.isDragging && widget.tableKey == null) {
+      return Container(
+        constraints: BoxConstraints.tightFor(
+          height: Theme.of(context).dataTableTheme.dataRowHeight,
+          width: widget.tableKey?.widgetBounds?.width,
+        ),
+        decoration: BoxDecoration(
+          color: backgroundColor,
+        ),
+      );
+    }
     return GestureDetector(
       onHorizontalDragEnd: (details) {
         setState(() {
@@ -93,9 +104,7 @@ class _State<T> extends State<ItemRow<T>> {
         });
       },
       onLongPressDown: (details) {
-        if (widget.shouldShowOverlayColor &&
-            !widget.isAnyRowDragging &&
-            !widget.isDragging) {
+        if (widget.shouldShowOverlayColor && !widget.isAnyRowDragging) {
           setState(() {
             isPressing = true;
           });
@@ -107,11 +116,9 @@ class _State<T> extends State<ItemRow<T>> {
         });
       },
       onTap: () {
-        if (!widget.isDragging) {
-          final onTap = widget.onTap;
-          if (onTap != null) {
-            onTap(widget.item);
-          }
+        final onTap = widget.onTap;
+        if (onTap != null) {
+          onTap(widget.item);
         }
         setState(() {
           isPressing = false;
