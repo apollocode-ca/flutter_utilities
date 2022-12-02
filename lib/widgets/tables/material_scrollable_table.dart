@@ -123,9 +123,9 @@ class _State<T> extends State<MaterialScrollableTable<T>> {
         final isAnyRowDragging = isRowDragging.any((isDragging) => isDragging);
         final shouldShowOverlayColor = widget.shouldShowOverlayColor;
         if (shouldShowOverlayColor != null) {
-          return shouldShowOverlayColor(index) || isAnyRowDragging;
+          return shouldShowOverlayColor(index) || !isAnyRowDragging;
         }
-        return isAnyRowDragging;
+        return !isAnyRowDragging;
       }(),
     );
   }
