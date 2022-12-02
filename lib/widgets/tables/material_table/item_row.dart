@@ -70,6 +70,15 @@ class _State<T> extends State<ItemRow<T>> {
   }
 
   @override
+  void didUpdateWidget(covariant ItemRow<T> oldWidget) {
+    if (widget.shouldShowOverlayColor) {
+      isHovering = false;
+      isPressing = false;
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onHorizontalDragEnd: (details) {
