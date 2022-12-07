@@ -12,6 +12,10 @@ class MetamaskNotifier extends ChangeNotifier {
     return _isConnected;
   }
 
+  bool get isNotConnected {
+    return !_isConnected;
+  }
+
   set address(String value) {
     _address = value;
     notifyListeners();
