@@ -34,44 +34,44 @@ class MetamaskHelper {
     );
   }
 
-  void connectWallet(BuildContext context, void Function(String) callback) {
+  Future<String?> connectWallet(BuildContext context) async {
     if (Ethereum.isSupported) {
-      ethereum?.getChainId().then((networkId) {
-        if (networkId != this.networkId) {
+      final networkId = await ethereum?.getChainId();
+      if (networkId != this.networkId) {
+        _bannerManager.showErrorBanner(
+          context: context,
+          message: networkError,
+        );
+        return Future.value();
+      }
+      try {
+        final addresses = await ethereum?.requestAccount();
+        if (addresses == null || addresses.isEmpty) {
           _bannerManager.showErrorBanner(
             context: context,
-            message: networkError,
+            message: noAccountError,
           );
-        } else {
-          try {
-            ethereum?.requestAccount().then((addresses) {
-              if (addresses.isEmpty) {
-                _bannerManager.showErrorBanner(
-                  context: context,
-                  message: noAccountError,
-                );
-              } else {
-                callback(addresses.first);
-              }
-            });
-          } on EthereumException {
-            _bannerManager.showErrorBanner(
-              context: context,
-              message: walletRequestError,
-            );
-          } on EthereumUserRejected {
-            _bannerManager.showErrorBanner(
-              context: context,
-              message: walletRejectedError,
-            );
-          }
+          return Future.value();
         }
-      });
-    } else {
-      _bannerManager.showErrorBanner(
-        context: context,
-        message: noWalletError,
-      );
+        return addresses.first;
+      } on EthereumException {
+        _bannerManager.showErrorBanner(
+          context: context,
+          message: walletRequestError,
+        );
+        return Future.value();
+      } on EthereumUserRejected {
+        _bannerManager.showErrorBanner(
+          context: context,
+          message: walletRejectedError,
+        );
+        return Future.value();
+      }
     }
+    _bannerManager.showErrorBanner(
+      context: context,
+      message: noWalletError,
+    );
+    return Future.value();
   }
 }
