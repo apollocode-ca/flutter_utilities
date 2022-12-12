@@ -1,3 +1,4 @@
+import 'package:apollocode_flutter_utilities/models/cloneable.dart';
 import 'package:apollocode_flutter_utilities/widgets/loading.dart';
 import 'package:apollocode_flutter_utilities/widgets/not_found.dart';
 import 'package:collection/collection.dart';
@@ -6,12 +7,85 @@ import 'package:apollocode_flutter_utilities/extensions/async_snapshot_extension
 
 export 'package:apollocode_flutter_utilities/extensions/async_snapshot_extension.dart';
 
+/// Protects a front-end route from inexistant needed data.
+///
+/// Provides a simple way to fetch data needed by a front-end route and to
+/// display the current state of the data (already fetched, loading, not found
+/// and successfully fetched).
+///
+/// The generic type T of the data contained in the Guard can be:
+///
+///  * **Cloneable<T>**
+///  * **List**
+///  * **Set**
+///  * **Map**
+///
+/// Any other type will throw an [UnsupportedError] when the data will be
+/// fetched by the Guard.
+///
+/// Only the [body] of the route and the data [future] are needed for the Guard
+/// to work as expected, but [onDataAlreadyFetched], [onDataFetched],
+/// [onDataLoading] and [onDataNotFound] can be optionally used to personalize
+/// how the Guard should work.
 class Guard<T> extends StatefulWidget {
+  /// The body of the guarded route.
   final Widget body;
+
+  /// The data future.
   final Future<T> future;
+
+  /// Executed when the data has been already fetched by the guard.
+  ///
+  /// The return type can be:
+  ///
+  ///  * **Widget**: if you want to change the default widget used when the data
+  ///     has already been fetched.
+  ///  * **T**: if you want to alter in any way the data in the Guard (but if
+  ///     you want to clear the data, use instead [GuardState.clear]).
+  ///  * **void**: if you only want to run any extra processes when the Guard is
+  ///     rebuilding.
+  ///
+  /// Any other return type will be ignored.
   final dynamic Function(T object)? onDataAlreadyFetched;
+
+  /// Executed when the data has been successfully fetched.
+  ///
+  /// Is happening when the Guard is building for the first time or when the
+  /// data has been cleared.
+  ///
+  /// The return type can be:
+  ///
+  ///  * **Widget**: if you want to change the default widget used when the data
+  ///     has been successfully fetched.
+  ///  * **T**: if you want to alter in any way the data in the Guard.
+  ///  * **void**: if you only want to run any extra processes after the data
+  ///     has been successfully fetched.
+  ///
+  /// Any other return type will be ignored.
   final dynamic Function(T object)? onDataFetched;
+
+  /// Executed when the data is loading.
+  ///
+  /// The return type can be:
+  ///
+  ///  * **Widget**: if you want to change the default widget used when the data
+  ///     is loading.
+  ///  * **void**: if you only want to run any extra processes while the data is
+  ///     loading.
+  ///
+  /// Any other return type will be ignored.
   final dynamic Function()? onDataLoading;
+
+  /// Executed when the data has not been found.
+  ///
+  /// The return type can be:
+  ///
+  /// * **Widget**: if you want to change the default widget used when the data
+  ///     has not been found.
+  /// * **void**: if you only want to run any extra processes when the data has
+  ///     not been found.
+  ///
+  /// Any other return type will be ignored.
   final dynamic Function()? onDataNotFound;
 
   const Guard({
@@ -24,12 +98,67 @@ class Guard<T> extends StatefulWidget {
     Key? key,
   }) : super(key: key);
 
+  /// Access the data inside the [Guard], using the [context].
+  ///
+  /// The data is a copy of what's inside the [GuardState].
+  ///
+  /// You can use the following line to get a copy of the T data in any widget
+  /// that has a [Guard] of T as ancestor:
+  ///
+  /// ```dart
+  /// final t = Guard.of<T>(context);
+  /// ```
+  ///
+  /// A [StateError] will throw if there is no [Guard] of T ancestor for the
+  /// widget that tries to access the T data.
+  ///
+  /// An [UnsupportedError] will throw if the data can't be copied, which
+  /// generally means that the type of data is not supported by the [Guard].
   static T of<T>(BuildContext context) {
     final guard = context.dependOnInheritedWidgetOfExactType<_Inherited<T>>();
     if (guard == null) {
       throw StateError('No Guard<$T> ancestor found');
     }
-    return guard.object;
+    final data = guard.data;
+    if (data is Cloneable<T>) {
+      return data.clone();
+    }
+    if (data is List) {
+      return List.from(data) as T;
+    }
+    if (data is Set) {
+      return Set.from(data) as T;
+    }
+    if (data is Map) {
+      return Map.from(data) as T;
+    }
+    throw UnsupportedError(
+      '$T is unsupported by the Guard. Only Cloneable<$T>, List, Set and Map '
+      'are supported.',
+    );
+  }
+
+  /// Access the state of the [Guard], using the [context].
+  ///
+  /// You can use the following line to get the state of the [Guard] in any
+  /// widget that has a [Guard] as ancestor:
+  ///
+  /// ```dart
+  /// final state = Guard.stateOf<T>(context);
+  /// ```
+  ///
+  /// A [StateError] will throw if there is no [Guard] ancestor for the widget
+  /// that tries to access the state.
+  ///
+  /// Use the state of the Guard to access its public methods.
+  ///
+  /// If you rather want to access the data in the state, use [Guard.of].
+  static GuardState<T> stateOf<T>(BuildContext context) {
+    final guard = context.dependOnInheritedWidgetOfExactType<_Inherited<T>>();
+    if (guard == null) {
+      throw StateError('No Guard<$T> ancestor found');
+    }
+    return guard.state;
   }
 
   @override
@@ -37,91 +166,152 @@ class Guard<T> extends StatefulWidget {
 }
 
 class GuardState<T> extends State<Guard<T>> {
-  T? object;
+  static const _collectionEquality = DeepCollectionEquality();
 
-  Widget onDataAlreadyFetched(T object) {
+  T? _data;
+
+  /// Clears the data contained in the [GuardState].
+  ///
+  /// A [setState] is done to trigger a rebuild of the entire [Guard], which
+  /// will trigger a new data fetching.
+  ///
+  /// Can be used with the following line:
+  ///
+  /// ```dart
+  /// Guard.stateOf<T>(context).clear();
+  /// ```
+  void clear() {
+    setState(() {
+      _data = null;
+    });
+  }
+
+  Widget _onDataAlreadyFetched(T data) {
     final function = widget.onDataAlreadyFetched;
+    var dataToPass = data;
     if (function != null) {
-      final result = function(object);
+      final result = function(dataToPass);
       if (result is Widget) {
         return result;
       }
+      if (result is T) {
+        dataToPass = result;
+      }
     }
+    _data = dataToPass;
     return _Inherited(
-      object: object,
+      data: dataToPass,
+      state: this,
       child: widget.body,
     );
   }
 
-  void onDataFetched(T object) {
-    final function = widget.onDataFetched;
-    if (function != null) {
-      function(object);
+  Widget _onDataFetched(T data) {
+    if (data is! Cloneable<T> ||
+        data is! List ||
+        data is! Set ||
+        data is! Map) {
+      throw UnsupportedError(
+        'The data has been successfully fetched, but $T cannot be managed by'
+        'the Guard. The data type must be "Cloneable<$T>", "List", "Set" or '
+        '"Map".',
+      );
     }
+    final function = widget.onDataFetched;
+    var dataToPass = data;
+    if (function != null) {
+      final result = function(dataToPass);
+      if (result is Widget) {
+        _data = dataToPass;
+        return result;
+      }
+      if (result is T) {
+        dataToPass = result;
+      }
+    }
+    _data = dataToPass;
+    return _Inherited(
+      data: dataToPass,
+      state: this,
+      child: widget.body,
+    );
   }
 
-  void onDataLoading() {
+  Widget _onDataLoading() {
     final function = widget.onDataLoading;
     if (function != null) {
-      function();
+      final result = function();
+      if (result is Widget) {
+        return result;
+      }
     }
+    return const Loading();
   }
 
-  void onDataNotFound() {
+  Widget _onDataNotFound() {
     final function = widget.onDataNotFound;
     if (function != null) {
-      function();
+      final result = function();
+      if (result is Widget) {
+        return result;
+      }
     }
+    return const NotFound();
   }
 
   @override
   Widget build(BuildContext context) {
-    final object = this.object;
-    if (object != null) {
-      onDataAlreadyFetched(object);
-      return _Inherited(
-        object: object,
-        child: widget.body,
-      );
+    final data = _data;
+    if (data != null) {
+      return _onDataAlreadyFetched(data);
     }
     return FutureBuilder<T>(
       future: widget.future,
       builder: (context, snapshot) {
         if (snapshot.isLoading) {
-          onDataLoading();
-          return const Loading();
+          return _onDataLoading();
         }
-        final object = snapshot.data;
-        if (object == null) {
-          onDataNotFound();
-          return const NotFound();
+        final data = snapshot.data;
+        if (data == null) {
+          return _onDataNotFound();
         }
-        this.object = object;
-        onDataFetched(object);
-        return _Inherited(
-          object: object,
-          child: widget.body,
-        );
+        return _onDataFetched(data);
       },
     );
+  }
+
+  @override
+  bool operator ==(Object? other) {
+    if (identical(other, this)) {
+      return true;
+    }
+    if (other is! GuardState<T>) {
+      return false;
+    }
+    if (_data is List || _data is Set || _data is Map) {
+      return _collectionEquality.equals(other._data, _data);
+    }
+    return other._data == _data;
+  }
+
+  @override
+  int get hashCode {
+    return _data.hashCode;
   }
 }
 
 class _Inherited<T> extends InheritedWidget {
-  static const collectionEquality = DeepCollectionEquality();
-
-  final T object;
+  final T data;
+  final GuardState<T> state;
 
   const _Inherited({
-    required this.object,
+    required this.data,
+    required this.state,
     required super.child,
   });
 
   @override
   bool updateShouldNotify(covariant _Inherited<T> oldWidget) {
-    if (object is Iterable || object is Map) {
-      collectionEquality.equals(oldWidget.object, object);
-    }
-    return oldWidget.object != object;
+    return oldWidget.state != state;
   }
 }
