@@ -15,7 +15,7 @@ export 'package:apollocode_flutter_utilities/extensions/async_snapshot_extension
 ///
 /// The generic type T of the data contained in the Guard can be:
 ///
-///  * **Cloneable<T>**
+///  * **Cloneable**
 ///  * **List**
 ///  * **Set**
 ///  * **Map**
@@ -117,11 +117,11 @@ class Guard<T> extends StatefulWidget {
   static T of<T>(BuildContext context) {
     final guard = context.dependOnInheritedWidgetOfExactType<_Inherited<T>>();
     if (guard == null) {
-      throw StateError('No Guard<$T> ancestor found');
+      throw StateError('No "Guard<$T>" ancestor found');
     }
     final data = guard.data;
-    if (data is Cloneable<T>) {
-      return data.clone();
+    if (data is Cloneable) {
+      return data.copyWith() as T;
     }
     if (data is List) {
       return List.from(data) as T;
@@ -133,8 +133,8 @@ class Guard<T> extends StatefulWidget {
       return Map.from(data) as T;
     }
     throw UnsupportedError(
-      '$T is unsupported by the Guard. Only Cloneable<$T>, List, Set and Map '
-      'are supported.',
+      '"$T" is unsupported by the Guard. Only Cloneable, List, Set and Map are '
+      'supported.',
     );
   }
 
@@ -156,7 +156,7 @@ class Guard<T> extends StatefulWidget {
   static GuardState<T> stateOf<T>(BuildContext context) {
     final guard = context.dependOnInheritedWidgetOfExactType<_Inherited<T>>();
     if (guard == null) {
-      throw StateError('No Guard<$T> ancestor found');
+      throw StateError('No "Guard<$T>" ancestor found');
     }
     return guard.state;
   }
@@ -320,15 +320,14 @@ class _DataFetchedHandler<T> {
     required this.replaceData,
     required this.state,
   }) {
-    final isNotCloneable = data is! Cloneable<T>;
+    final isNotCloneable = data is! Cloneable;
     final isNotList = data is! List;
     final isNotSet = data is! Set;
     final isNotMap = data is! Map;
     if (isNotCloneable && isNotList && isNotSet && isNotMap) {
       throw UnsupportedError(
         'The data has been successfully fetched, but $T cannot be managed by '
-        'the Guard. The data type must be "Cloneable<$T>", "List", "Set" or '
-        '"Map".',
+        'the Guard. The data type must be "Cloneable", "List", "Set" or "Map".',
       );
     }
   }
