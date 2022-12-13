@@ -123,18 +123,22 @@ class Guard<T> extends StatefulWidget {
     if (data is Cloneable) {
       return data.copyWith() as T;
     }
-    if (data is List) {
+    if (data is List<Cloneable>) {
       return List.from(data) as T;
     }
-    if (data is Set) {
+    if (data is Set<Cloneable>) {
       return Set.from(data) as T;
     }
-    if (data is Map) {
+    if (data is Map<Cloneable, dynamic>) {
+      return Map.from(data) as T;
+    }
+    if (data is Map<dynamic, Cloneable>) {
       return Map.from(data) as T;
     }
     throw UnsupportedError(
-      '"$T" is unsupported by the Guard. Only Cloneable, List, Set and Map are '
-      'supported.',
+      '"$T" is unsupported by the Guard. Only "Cloneable", "List<Cloneable>", '
+      '"Set<Cloneable>", "Map<Cloneable, dynamic>" and '
+      '"Map<dynamic, Cloneable>" are supported.',
     );
   }
 
@@ -321,13 +325,16 @@ class _DataFetchedHandler<T> {
     required this.state,
   }) {
     final isNotCloneable = data is! Cloneable;
-    final isNotList = data is! List;
-    final isNotSet = data is! Set;
-    final isNotMap = data is! Map;
+    final isNotList = data is! List<Cloneable>;
+    final isNotSet = data is! Set<Cloneable>;
+    final isNotMap =
+        data is! Map<Cloneable, dynamic> && data is! Map<dynamic, Cloneable>;
     if (isNotCloneable && isNotList && isNotSet && isNotMap) {
       throw UnsupportedError(
         'The data has been successfully fetched, but $T cannot be managed by '
-        'the Guard. The data type must be "Cloneable", "List", "Set" or "Map".',
+        'the Guard. The data type must be "Cloneable", "List<Cloneable>", '
+        '"Set<Cloneable>" "Map<Cloneable, dynamic>" or '
+        '"Map<dynamic, Cloneable>".',
       );
     }
   }
