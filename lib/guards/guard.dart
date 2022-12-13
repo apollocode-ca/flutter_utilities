@@ -1,4 +1,4 @@
-import 'package:apollocode_flutter_utilities/models/cloneable.dart';
+import 'package:apollocode_dart_utilities/apollocode_dart_utilities.dart';
 import 'package:apollocode_flutter_utilities/widgets/loading.dart';
 import 'package:apollocode_flutter_utilities/widgets/not_found.dart';
 import 'package:collection/collection.dart';
