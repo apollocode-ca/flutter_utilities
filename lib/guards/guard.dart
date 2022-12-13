@@ -324,7 +324,7 @@ class _DataFetchedHandler<T> {
     final isNotList = data is! List;
     final isNotSet = data is! Set;
     final isNotMap = data is! Map;
-    if (isNotCloneable || isNotList || isNotSet || isNotMap) {
+    if (isNotCloneable && isNotList && isNotSet && isNotMap) {
       throw UnsupportedError(
         'The data has been successfully fetched, but $T cannot be managed by '
         'the Guard. The data type must be "Cloneable<$T>", "List", "Set" or '
