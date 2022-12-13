@@ -46,7 +46,7 @@ class Guard<T> extends StatefulWidget {
   ///     rebuilding.
   ///
   /// Any other return type will be ignored.
-  final dynamic Function(T object)? onDataAlreadyFetched;
+  final dynamic Function(T data)? onDataAlreadyFetched;
 
   /// Executed when the data has been successfully fetched.
   ///
@@ -62,7 +62,7 @@ class Guard<T> extends StatefulWidget {
   ///     has been successfully fetched.
   ///
   /// Any other return type will be ignored.
-  final dynamic Function(T object)? onDataFetched;
+  final dynamic Function(T data)? onDataFetched;
 
   /// Executed when the data is loading.
   ///
@@ -186,96 +186,43 @@ class GuardState<T> extends State<Guard<T>> {
     });
   }
 
-  Widget _onDataAlreadyFetched(T data) {
-    final function = widget.onDataAlreadyFetched;
-    var dataToPass = data;
-    if (function != null) {
-      final result = function(dataToPass);
-      if (result is Widget) {
-        return result;
-      }
-      if (result is T) {
-        dataToPass = result;
-      }
-    }
-    _data = dataToPass;
-    return _Inherited(
-      data: dataToPass,
-      state: this,
-      child: widget.body,
-    );
-  }
-
-  Widget _onDataFetched(T data) {
-    if (data is! Cloneable<T> ||
-        data is! List ||
-        data is! Set ||
-        data is! Map) {
-      throw UnsupportedError(
-        'The data has been successfully fetched, but $T cannot be managed by'
-        'the Guard. The data type must be "Cloneable<$T>", "List", "Set" or '
-        '"Map".',
-      );
-    }
-    final function = widget.onDataFetched;
-    var dataToPass = data;
-    if (function != null) {
-      final result = function(dataToPass);
-      if (result is Widget) {
-        _data = dataToPass;
-        return result;
-      }
-      if (result is T) {
-        dataToPass = result;
-      }
-    }
-    _data = dataToPass;
-    return _Inherited(
-      data: dataToPass,
-      state: this,
-      child: widget.body,
-    );
-  }
-
-  Widget _onDataLoading() {
-    final function = widget.onDataLoading;
-    if (function != null) {
-      final result = function();
-      if (result is Widget) {
-        return result;
-      }
-    }
-    return const Loading();
-  }
-
-  Widget _onDataNotFound() {
-    final function = widget.onDataNotFound;
-    if (function != null) {
-      final result = function();
-      if (result is Widget) {
-        return result;
-      }
-    }
-    return const NotFound();
+  void _replaceData(T data) {
+    _data = data;
   }
 
   @override
   Widget build(BuildContext context) {
     final data = _data;
     if (data != null) {
-      return _onDataAlreadyFetched(data);
+      return _DataAlreadyFetchedHandler<T>(
+        body: widget.body,
+        data: data,
+        externCall: widget.onDataAlreadyFetched,
+        replaceData: _replaceData,
+        state: this,
+      )();
     }
     return FutureBuilder<T>(
       future: widget.future,
       builder: (context, snapshot) {
         if (snapshot.isLoading) {
-          return _onDataLoading();
+          return _DataLoadingHandler(
+            externCall: widget.onDataLoading,
+          )();
         }
         final data = snapshot.data;
         if (data == null) {
-          return _onDataNotFound();
+          return _DataNotFoundHandler(
+            externCall: widget.onDataNotFound,
+          )();
         }
-        return _onDataFetched(data);
+        return _DataFetchedHandler<T>(
+          body: widget.body,
+          data: data,
+          externCall: widget.onDataFetched,
+          replaceData: _replaceData,
+          state: this,
+        )();
       },
     );
   }
@@ -313,5 +260,155 @@ class _Inherited<T> extends InheritedWidget {
   @override
   bool updateShouldNotify(covariant _Inherited<T> oldWidget) {
     return oldWidget.state != state;
+  }
+}
+
+class _DataAlreadyFetchedHandler<T> {
+  final Widget body;
+  final dynamic Function(T data)? externCall;
+  final void Function(T data) replaceData;
+  final GuardState<T> state;
+
+  late T data;
+
+  _DataAlreadyFetchedHandler({
+    required this.body,
+    required this.data,
+    required this.externCall,
+    required this.replaceData,
+    required this.state,
+  });
+
+  Widget call() {
+    final externCall = this.externCall;
+    var child = body;
+    if (externCall != null) {
+      final result = externCall(data);
+      child = _handle(result);
+    }
+    replaceData(data);
+    return _Inherited(
+      data: data,
+      state: state,
+      child: child,
+    );
+  }
+
+  Widget _handle(dynamic result) {
+    if (result is Widget) {
+      return result;
+    }
+    if (result is T) {
+      data = result;
+    }
+    return body;
+  }
+}
+
+class _DataFetchedHandler<T> {
+  final Widget body;
+  final dynamic Function(T data)? externCall;
+  final void Function(T data) replaceData;
+  final GuardState<T> state;
+
+  late T data;
+
+  _DataFetchedHandler({
+    required this.body,
+    required this.data,
+    required this.externCall,
+    required this.replaceData,
+    required this.state,
+  }) {
+    final isNotCloneable = data is! Cloneable<T>;
+    final isNotList = data is! List;
+    final isNotSet = data is! Set;
+    final isNotMap = data is! Map;
+    if (isNotCloneable || isNotList || isNotSet || isNotMap) {
+      throw UnsupportedError(
+        'The data has been successfully fetched, but $T cannot be managed by'
+        'the Guard. The data type must be "Cloneable<$T>", "List", "Set" or '
+        '"Map".',
+      );
+    }
+  }
+
+  Widget call() {
+    final externCall = this.externCall;
+    var child = body;
+    if (externCall != null) {
+      final result = externCall(data);
+      child = _handle(result);
+    }
+    replaceData(data);
+    return _Inherited(
+      data: data,
+      state: state,
+      child: child,
+    );
+  }
+
+  Widget _handle(dynamic result) {
+    if (result is Widget) {
+      return result;
+    }
+    if (result is T) {
+      data = result;
+    }
+    return body;
+  }
+}
+
+class _DataLoadingHandler {
+  static const defaultChild = Loading();
+
+  final dynamic Function()? externCall;
+
+  const _DataLoadingHandler({
+    required this.externCall,
+  });
+
+  Widget call() {
+    final externCall = this.externCall;
+    Widget child = defaultChild;
+    if (externCall != null) {
+      final result = externCall();
+      child = _handle(result);
+    }
+    return child;
+  }
+
+  Widget _handle(dynamic result) {
+    if (result is Widget) {
+      return result;
+    }
+    return defaultChild;
+  }
+}
+
+class _DataNotFoundHandler {
+  static const defaultChild = NotFound();
+
+  final dynamic Function()? externCall;
+
+  const _DataNotFoundHandler({
+    required this.externCall,
+  });
+
+  Widget call() {
+    final externCall = this.externCall;
+    Widget child = defaultChild;
+    if (externCall != null) {
+      final result = externCall();
+      child = _handle(result);
+    }
+    return child;
+  }
+
+  Widget _handle(dynamic result) {
+    if (result is Widget) {
+      return result;
+    }
+    return defaultChild;
   }
 }
