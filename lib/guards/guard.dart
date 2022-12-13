@@ -124,16 +124,16 @@ class Guard<T> extends StatefulWidget {
       return data.copyWith() as T;
     }
     if (data is List<Cloneable>) {
-      return List.from(data) as T;
+      return List<Cloneable>.from(data) as T;
     }
     if (data is Set<Cloneable>) {
-      return Set.from(data) as T;
+      return Set<Cloneable>.from(data) as T;
     }
     if (data is Map<Cloneable, dynamic>) {
-      return Map.from(data) as T;
+      return Map<Cloneable, dynamic>.from(data) as T;
     }
     if (data is Map<dynamic, Cloneable>) {
-      return Map.from(data) as T;
+      return Map<dynamic, Cloneable>.from(data) as T;
     }
     throw UnsupportedError(
       '"$T" is unsupported by the Guard. Only "Cloneable", "List<Cloneable>", '
