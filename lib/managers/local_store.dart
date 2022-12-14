@@ -69,6 +69,9 @@ class LocalStoreManager {
 
   T? getValue<T>(String key) {
     var fromStorage = _storage[key];
+    if (fromStorage == null) {
+      return null;
+    }
     var decoder = _decoders[T];
     if (decoder == null) {
       throw StateError('Unknown decoder');
