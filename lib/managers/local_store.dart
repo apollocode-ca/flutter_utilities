@@ -2,13 +2,13 @@ import 'dart:convert';
 
 import 'package:apollocode_dart_utilities/apollocode_dart_utilities.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter/material.dart';
 
 class LocalStoreManager {
   static late LocalStoreManager _instance;
   static var _isInitialized = false;
 
   static late Map<String, dynamic> _storage;
+  static late Map<Type, Function(Map<String, dynamic>)> _decoders;
 
   static LocalStoreManager get instance {
     if (_isInitialized) {
@@ -21,15 +21,15 @@ class LocalStoreManager {
 
   LocalStoreManager._();
 
-  static initialize() async {
+  static initialize(Map<Type, Function(Map<String, dynamic>)> decoders) async {
     if (!_isInitialized) {
       _instance = LocalStoreManager._();
+      _decoders = decoders;
       final prefs = await SharedPreferences.getInstance();
       String? storageString = prefs.getString("local_store");
       try {
         Map<String, dynamic> storage =
             (storageString != null) ? jsonDecode(storageString) : {};
-
         _storage = storage;
       } catch (_) {
         _storage = {};
@@ -39,11 +39,30 @@ class LocalStoreManager {
   }
 
   static List<T> getValues<T extends Entity>(String key) {
-    return _storage[key] ?? <T>[];
+    var fromStorage = _storage[key];
+    var decoder = _decoders[T];
+    assert(decoder != null, 'Unknown decoder');
+    assert(fromStorage is List || fromStorage == null,
+        'Value isn\'t a list or a null');
+
+    var decodedData = <T>[];
+
+    for (var i = 0; i < (fromStorage as List).length; i++) {
+      if (fromStorage[i] is T) {
+        decodedData.add(fromStorage[i]);
+      } else {
+        decodedData.add(decoder!(fromStorage[i]));
+      }
+    }
+
+    return decodedData;
   }
 
   static T? getValue<T extends Entity>(String key) {
-    return _storage[key];
+    var fromStorage = _storage[key];
+    var decoder = _decoders[T];
+    assert(decoder != null, 'Unknown decoder');
+    return (fromStorage is T) ? fromStorage : decoder!(fromStorage);
   }
 
   static setValues<T extends Entity>(String key, List<T> values) {
