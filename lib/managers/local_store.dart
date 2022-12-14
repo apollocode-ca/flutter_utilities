@@ -21,7 +21,7 @@ class LocalStoreManager {
 
   LocalStoreManager._();
 
-  static void initialize() async {
+  static initialize() async {
     if (!_isInitialized) {
       _instance = LocalStoreManager._();
       final prefs = await SharedPreferences.getInstance();
