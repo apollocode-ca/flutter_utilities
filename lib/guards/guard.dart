@@ -124,7 +124,9 @@ class Guard<T> extends StatefulWidget {
       return data.copyWith() as T;
     }
     if (data is List<Cloneable>) {
-      return List<Cloneable>.from(data) as T;
+      return data.copyWith((element) {
+        return element.copyWith();
+      }) as T;
     }
     if (data is Set<Cloneable>) {
       return Set<Cloneable>.from(data) as T;
