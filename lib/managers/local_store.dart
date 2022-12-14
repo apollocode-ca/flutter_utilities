@@ -19,8 +19,12 @@ class LocalStoreManager {
     );
   }
 
-  LocalStoreManager._(BuildContext context) {
-    SharedPreferences.getInstance().then((SharedPreferences prefs) {
+  LocalStoreManager._();
+
+  static void initialize() async {
+    if (!_isInitialized) {
+      _instance = LocalStoreManager._();
+      final prefs = await SharedPreferences.getInstance();
       String? storageString = prefs.getString("local_store");
       try {
         Map<String, dynamic> storage =
@@ -30,12 +34,6 @@ class LocalStoreManager {
       } catch (_) {
         _storage = {};
       }
-    });
-  }
-
-  static void initialize(BuildContext context) {
-    if (!_isInitialized) {
-      _instance = LocalStoreManager._(context);
       _isInitialized = true;
     }
   }
