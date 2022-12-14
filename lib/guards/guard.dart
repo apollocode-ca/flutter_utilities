@@ -1,4 +1,5 @@
 import 'package:apollocode_dart_utilities/apollocode_dart_utilities.dart';
+import 'package:apollocode_flutter_utilities/managers/local_store.dart';
 import 'package:apollocode_flutter_utilities/widgets/loading.dart';
 import 'package:apollocode_flutter_utilities/widgets/not_found.dart';
 import 'package:flutter/material.dart';
@@ -21,13 +22,21 @@ export 'package:apollocode_flutter_utilities/extensions/async_snapshot_extension
 /// [onDataLoading] and [onDataNotFound] can be optionally used to personalize
 /// how the Guard should work.
 ///
-/// By default, the data in the Guard is read-only.
+/// By default, the data in the Guard is read-only and is not saved in the local
+/// store.
 class Guard<T extends Cloneable> extends StatefulWidget {
   /// The body of the guarded route.
   final Widget body;
 
   /// The data future.
   final Future<T> future;
+
+  /// The data will be saved in the local store when the data is fetched if the
+  /// key is not null.
+  ///
+  /// If the key is null, the step to save the data in the local store will be
+  /// ignored.
+  final String? localStoreKey;
 
   /// Executed when the data has been already fetched by the guard.
   ///
@@ -89,6 +98,7 @@ class Guard<T extends Cloneable> extends StatefulWidget {
   const Guard({
     required this.body,
     required this.future,
+    this.localStoreKey,
     this.onDataAlreadyFetched,
     this.onDataFetched,
     this.onDataLoading,
@@ -184,8 +194,14 @@ class GuardState<T extends Cloneable> extends State<Guard<T>> {
         state: this,
       )();
     }
+    final localStoreKey = widget.localStoreKey;
+    T? initialData;
+    if (localStoreKey != null) {
+      initialData = LocalStoreManager.instance.getValue(localStoreKey);
+    }
     return FutureBuilder<T>(
       future: widget.future,
+      initialData: initialData,
       builder: (context, snapshot) {
         if (snapshot.isLoading) {
           return _DataLoadingHandler(
@@ -202,6 +218,7 @@ class GuardState<T extends Cloneable> extends State<Guard<T>> {
           body: widget.body,
           data: data,
           externCall: widget.onDataFetched,
+          localStoreKey: widget.localStoreKey,
           readOnly: widget.readOnly,
           replaceData: _replaceData,
           state: this,
@@ -290,6 +307,7 @@ class _DataAlreadyFetchedHandler<T extends Cloneable> {
 class _DataFetchedHandler<T extends Cloneable> {
   final Widget body;
   final dynamic Function(T data)? externCall;
+  final String? localStoreKey;
   final bool readOnly;
   final void Function(T data) replaceData;
   final GuardState<T> state;
@@ -300,6 +318,7 @@ class _DataFetchedHandler<T extends Cloneable> {
     required this.body,
     required this.data,
     required this.externCall,
+    required this.localStoreKey,
     required this.readOnly,
     required this.replaceData,
     required this.state,
@@ -311,6 +330,10 @@ class _DataFetchedHandler<T extends Cloneable> {
     if (externCall != null) {
       final result = externCall(data);
       child = _handle(result);
+    }
+    final localStoreKey = this.localStoreKey;
+    if (localStoreKey != null) {
+      LocalStoreManager.instance.setValue(localStoreKey, data);
     }
     replaceData(data);
     return _Inherited(
