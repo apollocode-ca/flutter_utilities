@@ -1,7 +1,6 @@
 import 'package:apollocode_dart_utilities/apollocode_dart_utilities.dart';
 import 'package:apollocode_flutter_utilities/widgets/loading.dart';
 import 'package:apollocode_flutter_utilities/widgets/not_found.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:apollocode_flutter_utilities/extensions/async_snapshot_extension.dart';
 
@@ -13,21 +12,15 @@ export 'package:apollocode_flutter_utilities/extensions/async_snapshot_extension
 /// display the current state of the data (already fetched, loading, not found
 /// and successfully fetched).
 ///
-/// The generic type T of the data contained in the Guard can be:
-///
-///  * **Cloneable**
-///  * **List**
-///  * **Set**
-///  * **Map**
-///
-/// Any other type will throw an [UnsupportedError] when the data will be
-/// fetched by the Guard.
+/// The generic type T of the data contained in the Guard should be
+/// **Cloneable**. Any other type will throw an [UnsupportedError] when the data
+/// will be fetched by the Guard.
 ///
 /// Only the [body] of the route and the data [future] are needed for the Guard
 /// to work as expected, but [onDataAlreadyFetched], [onDataFetched],
 /// [onDataLoading] and [onDataNotFound] can be optionally used to personalize
 /// how the Guard should work.
-class Guard<T> extends StatefulWidget {
+class Guard<T extends Cloneable> extends StatefulWidget {
   /// The body of the guarded route.
   final Widget body;
 
@@ -111,35 +104,12 @@ class Guard<T> extends StatefulWidget {
   ///
   /// A [StateError] will throw if there is no [Guard] of T ancestor for the
   /// widget that tries to access the T data.
-  ///
-  /// An [UnsupportedError] will throw if the data can't be copied, which
-  /// generally means that the type of data is not supported by the [Guard].
-  static T of<T>(BuildContext context) {
+  static T of<T extends Cloneable>(BuildContext context) {
     final guard = context.dependOnInheritedWidgetOfExactType<_Inherited<T>>();
     if (guard == null) {
       throw StateError('No "Guard<$T>" ancestor found');
     }
-    final data = guard.data;
-    if (data is Cloneable) {
-      return data.copyWith() as T;
-    }
-    if (data is List<Cloneable>) {
-      return data.copyWith() as T;
-    }
-    if (data is Set<Cloneable>) {
-      return Set<Cloneable>.from(data) as T;
-    }
-    if (data is Map<Cloneable, dynamic>) {
-      return Map<Cloneable, dynamic>.from(data) as T;
-    }
-    if (data is Map<dynamic, Cloneable>) {
-      return Map<dynamic, Cloneable>.from(data) as T;
-    }
-    throw UnsupportedError(
-      '"$T" is unsupported by the Guard. Only "Cloneable", "List<Cloneable>", '
-      '"Set<Cloneable>", "Map<Cloneable, dynamic>" and '
-      '"Map<dynamic, Cloneable>" are supported.',
-    );
+    return guard.data.copyWith() as T;
   }
 
   /// Access the state of the [Guard], using the [context].
@@ -157,7 +127,7 @@ class Guard<T> extends StatefulWidget {
   /// Use the state of the Guard to access its public methods.
   ///
   /// If you rather want to access the data in the state, use [Guard.of].
-  static GuardState<T> stateOf<T>(BuildContext context) {
+  static GuardState<T> stateOf<T extends Cloneable>(BuildContext context) {
     final guard = context.dependOnInheritedWidgetOfExactType<_Inherited<T>>();
     if (guard == null) {
       throw StateError('No "Guard<$T>" ancestor found');
@@ -169,9 +139,7 @@ class Guard<T> extends StatefulWidget {
   State<Guard<T>> createState() => GuardState<T>();
 }
 
-class GuardState<T> extends State<Guard<T>> {
-  static const _collectionEquality = DeepCollectionEquality();
-
+class GuardState<T extends Cloneable> extends State<Guard<T>> {
   T? _data;
 
   /// Clears the data contained in the [GuardState].
@@ -236,13 +204,7 @@ class GuardState<T> extends State<Guard<T>> {
     if (identical(other, this)) {
       return true;
     }
-    if (other is! GuardState<T>) {
-      return false;
-    }
-    if (_data is List || _data is Set || _data is Map) {
-      return _collectionEquality.equals(other._data, _data);
-    }
-    return other._data == _data;
+    return other is GuardState<T> && other._data == _data;
   }
 
   @override
@@ -251,7 +213,7 @@ class GuardState<T> extends State<Guard<T>> {
   }
 }
 
-class _Inherited<T> extends InheritedWidget {
+class _Inherited<T extends Cloneable> extends InheritedWidget {
   final T data;
   final GuardState<T> state;
 
@@ -267,7 +229,7 @@ class _Inherited<T> extends InheritedWidget {
   }
 }
 
-class _DataAlreadyFetchedHandler<T> {
+class _DataAlreadyFetchedHandler<T extends Cloneable> {
   final Widget body;
   final dynamic Function(T data)? externCall;
   final void Function(T data) replaceData;
@@ -309,7 +271,7 @@ class _DataAlreadyFetchedHandler<T> {
   }
 }
 
-class _DataFetchedHandler<T> {
+class _DataFetchedHandler<T extends Cloneable> {
   final Widget body;
   final dynamic Function(T data)? externCall;
   final void Function(T data) replaceData;
@@ -323,21 +285,7 @@ class _DataFetchedHandler<T> {
     required this.externCall,
     required this.replaceData,
     required this.state,
-  }) {
-    final isNotCloneable = data is! Cloneable;
-    final isNotList = data is! List<Cloneable>;
-    final isNotSet = data is! Set<Cloneable>;
-    final isNotMap =
-        data is! Map<Cloneable, dynamic> && data is! Map<dynamic, Cloneable>;
-    if (isNotCloneable && isNotList && isNotSet && isNotMap) {
-      throw UnsupportedError(
-        'The data has been successfully fetched, but $T cannot be managed by '
-        'the Guard. The data type must be "Cloneable", "List<Cloneable>", '
-        '"Set<Cloneable>" "Map<Cloneable, dynamic>" or '
-        '"Map<dynamic, Cloneable>".',
-      );
-    }
-  }
+  });
 
   Widget call() {
     final externCall = this.externCall;
