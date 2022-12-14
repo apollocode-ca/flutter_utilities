@@ -44,8 +44,19 @@ class LocalStoreManager {
     return _storage[key] ?? <T>[];
   }
 
+  static T? getValue<T extends Entity>(String key) {
+    return _storage[key];
+  }
+
   static setValues<T extends Entity>(String key, List<T> values) {
     _storage[key] = values;
+    SharedPreferences.getInstance().then((prefs) {
+      prefs.setString("local_store", jsonEncode(_storage));
+    });
+  }
+
+  static setValue<T extends Entity>(String key, T value) {
+    _storage[key] = value;
     SharedPreferences.getInstance().then((prefs) {
       prefs.setString("local_store", jsonEncode(_storage));
     });
