@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:apollocode_dart_utilities/apollocode_dart_utilities.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalStoreManager {
@@ -38,7 +37,7 @@ class LocalStoreManager {
     }
   }
 
-  static List<T> getValues<T extends Entity>(String key) {
+  static List<T> getValues<T>(String key) {
     var fromStorage = _storage[key];
     var decoder = _decoders[T];
     assert(decoder != null, 'Unknown decoder');
@@ -58,21 +57,21 @@ class LocalStoreManager {
     return decodedData;
   }
 
-  static T? getValue<T extends Entity>(String key) {
+  static T? getValue<T>(String key) {
     var fromStorage = _storage[key];
     var decoder = _decoders[T];
     assert(decoder != null, 'Unknown decoder');
     return (fromStorage is T) ? fromStorage : decoder!(fromStorage);
   }
 
-  static setValues<T extends Entity>(String key, List<T> values) {
+  static setValues<T>(String key, List<T> values) {
     _storage[key] = values;
     SharedPreferences.getInstance().then((prefs) {
       prefs.setString("local_store", jsonEncode(_storage));
     });
   }
 
-  static setValue<T extends Entity>(String key, T value) {
+  static setValue<T>(String key, T value) {
     _storage[key] = value;
     SharedPreferences.getInstance().then((prefs) {
       prefs.setString("local_store", jsonEncode(_storage));
