@@ -163,7 +163,7 @@ class GuardState<T extends Cloneable> extends State<Guard<T>> {
 
   /// Clears the data contained in the [GuardState].
   ///
-  /// A [setState] is done to trigger a rebuild of the entire [Guard], which
+  /// A [setState] is done to trigger a [rebuild] of the entire [Guard], which
   /// will trigger a new data fetching.
   ///
   /// Can be used with the following line:
@@ -172,9 +172,25 @@ class GuardState<T extends Cloneable> extends State<Guard<T>> {
   /// Guard.stateOf<T>(context).clear();
   /// ```
   void clear() {
-    setState(() {
+    rebuild(() {
       _data = null;
     });
+  }
+
+  /// Triggers a rebuild of the [Guard].
+  ///
+  /// Useful to rebuild widgets that depend on the data of the [Guard] when this
+  /// data is not read-only.
+  ///
+  /// Can be used with the following line:
+  ///
+  /// ```dart
+  /// Guard.stateOf<T>(context).rebuild(() {
+  ///   // Callback here. Update data or do whatever you want.
+  /// });
+  /// ```
+  void rebuild(void Function() callback) {
+    setState(callback);
   }
 
   void _replaceData(T data) {
