@@ -22,8 +22,7 @@ export 'package:apollocode_flutter_utilities/extensions/async_snapshot_extension
 /// [onDataLoading] and [onDataNotFound] can be optionally used to personalize
 /// how the Guard should work.
 ///
-/// By default, the data in the Guard is read-only and is not saved in the local
-/// store.
+/// By default, the data in the Guard is not saved in the local store.
 class Guard<T extends Cloneable> extends StatefulWidget {
   /// The body of the guarded route.
   final Widget body;
@@ -92,9 +91,6 @@ class Guard<T extends Cloneable> extends StatefulWidget {
   /// Any other return type will be ignored.
   final dynamic Function()? onDataNotFound;
 
-  /// The data in the [Guard] will be read-only if this flag is set to true.
-  final bool readOnly;
-
   const Guard({
     required this.body,
     required this.future,
@@ -103,7 +99,6 @@ class Guard<T extends Cloneable> extends StatefulWidget {
     this.onDataFetched,
     this.onDataLoading,
     this.onDataNotFound,
-    this.readOnly = true,
     Key? key,
   }) : super(key: key);
 
@@ -125,10 +120,7 @@ class Guard<T extends Cloneable> extends StatefulWidget {
     if (guard == null) {
       throw StateError('No "Guard<$T>" ancestor found');
     }
-    if (guard.readOnly) {
-      return guard.data.copyWith() as T;
-    }
-    return guard.data;
+    return guard.data.copyWith() as T;
   }
 
   /// Access the state of the [Guard], using the [context].
@@ -163,7 +155,7 @@ class GuardState<T extends Cloneable> extends State<Guard<T>> {
 
   /// Clears the data contained in the [GuardState].
   ///
-  /// A [setState] is done to trigger a [rebuild] of the entire [Guard], which
+  /// A [setState] is done to trigger an rebuild of the entire [Guard], which
   /// will trigger a new data fetching.
   ///
   /// Can be used with the following line:
@@ -172,25 +164,24 @@ class GuardState<T extends Cloneable> extends State<Guard<T>> {
   /// Guard.stateOf<T>(context).clear();
   /// ```
   void clear() {
-    rebuild(() {
+    setState(() {
       _data = null;
     });
   }
 
-  /// Triggers a rebuild of the [Guard].
+  /// Updates the data contained in the [GuardState].
   ///
-  /// Useful to rebuild widgets that depend on the data of the [Guard] when this
-  /// data is not read-only.
+  /// A [setState] is done to trigger a rebuild of the entire [Guard].
   ///
   /// Can be used with the following line:
   ///
   /// ```dart
-  /// Guard.stateOf<T>(context).rebuild(() {
-  ///   // Callback here. Update data or do whatever you want.
-  /// });
+  /// Guard.stateOf<T>(context).update(data);
   /// ```
-  void rebuild(void Function() callback) {
-    setState(callback);
+  void update(T data) {
+    setState(() {
+      _data = data;
+    });
   }
 
   void _replaceData(T data) {
@@ -205,7 +196,6 @@ class GuardState<T extends Cloneable> extends State<Guard<T>> {
         body: widget.body,
         data: data,
         externCall: widget.onDataAlreadyFetched,
-        readOnly: widget.readOnly,
         replaceData: _replaceData,
         state: this,
       )();
@@ -235,7 +225,6 @@ class GuardState<T extends Cloneable> extends State<Guard<T>> {
           data: data,
           externCall: widget.onDataFetched,
           localStoreKey: widget.localStoreKey,
-          readOnly: widget.readOnly,
           replaceData: _replaceData,
           state: this,
         )();
@@ -259,12 +248,10 @@ class GuardState<T extends Cloneable> extends State<Guard<T>> {
 
 class _Inherited<T extends Cloneable> extends InheritedWidget {
   final T data;
-  final bool readOnly;
   final GuardState<T> state;
 
   const _Inherited({
     required this.data,
-    required this.readOnly,
     required this.state,
     required super.child,
   });
@@ -278,7 +265,6 @@ class _Inherited<T extends Cloneable> extends InheritedWidget {
 class _DataAlreadyFetchedHandler<T extends Cloneable> {
   final Widget body;
   final dynamic Function(T data)? externCall;
-  final bool readOnly;
   final void Function(T data) replaceData;
   final GuardState<T> state;
 
@@ -288,7 +274,6 @@ class _DataAlreadyFetchedHandler<T extends Cloneable> {
     required this.body,
     required this.data,
     required this.externCall,
-    required this.readOnly,
     required this.replaceData,
     required this.state,
   });
@@ -303,7 +288,6 @@ class _DataAlreadyFetchedHandler<T extends Cloneable> {
     replaceData(data);
     return _Inherited(
       data: data,
-      readOnly: readOnly,
       state: state,
       child: child,
     );
@@ -324,7 +308,6 @@ class _DataFetchedHandler<T extends Cloneable> {
   final Widget body;
   final dynamic Function(T data)? externCall;
   final String? localStoreKey;
-  final bool readOnly;
   final void Function(T data) replaceData;
   final GuardState<T> state;
 
@@ -335,7 +318,6 @@ class _DataFetchedHandler<T extends Cloneable> {
     required this.data,
     required this.externCall,
     required this.localStoreKey,
-    required this.readOnly,
     required this.replaceData,
     required this.state,
   });
@@ -354,7 +336,6 @@ class _DataFetchedHandler<T extends Cloneable> {
     replaceData(data);
     return _Inherited(
       data: data,
-      readOnly: readOnly,
       state: state,
       child: child,
     );
