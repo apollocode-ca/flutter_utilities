@@ -88,4 +88,14 @@ class LocalStoreManager {
     _storage[key] = value;
     _prefs.setString('local_store', jsonEncode(_storage));
   }
+
+  resetKey(String key) {
+    _storage.remove(key);
+    _prefs.setString('local_store', jsonEncode(_storage));
+  }
+
+  clearStore() {
+    _storage = {};
+    _prefs.setString('local_store', jsonEncode(_storage));
+  }
 }
