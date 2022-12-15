@@ -30,6 +30,15 @@ class Guard<T extends Cloneable> extends StatefulWidget {
   /// The data future.
   final Future<T> future;
 
+  /// Additional verifications done on the data when it has already been
+  /// fetched.
+  ///
+  /// Useful to add conditions that invalidate the data, which can trigger new
+  /// fetches.
+  ///
+  /// By default, the [Guard] only checks if the data exists.
+  final bool Function(T data)? isDataAlreadyFetched;
+
   /// The data will be saved in the local store when the data is fetched if the
   /// key is not null.
   ///
@@ -94,6 +103,7 @@ class Guard<T extends Cloneable> extends StatefulWidget {
   const Guard({
     required this.body,
     required this.future,
+    this.isDataAlreadyFetched,
     this.localStoreKey,
     this.onDataAlreadyFetched,
     this.onDataFetched,
@@ -184,6 +194,14 @@ class GuardState<T extends Cloneable> extends State<Guard<T>> {
     });
   }
 
+  bool _isDataAlreadyFetched(T data) {
+    final isDataAlreadyFetched = widget.isDataAlreadyFetched;
+    if (isDataAlreadyFetched != null) {
+      return isDataAlreadyFetched(data);
+    }
+    return true;
+  }
+
   void _replaceData(T data) {
     _data = data;
   }
@@ -191,7 +209,7 @@ class GuardState<T extends Cloneable> extends State<Guard<T>> {
   @override
   Widget build(BuildContext context) {
     final data = _data;
-    if (data != null) {
+    if (data != null && _isDataAlreadyFetched(data)) {
       return _DataAlreadyFetchedHandler<T>(
         body: widget.body,
         data: data,
