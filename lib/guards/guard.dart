@@ -252,9 +252,6 @@ class GuardState<T extends Cloneable> extends State<Guard<T>> {
 
   @override
   bool operator ==(Object? other) {
-    if (identical(other, this)) {
-      return true;
-    }
     return other is GuardState<T> && other._data == _data;
   }
 
