@@ -162,6 +162,7 @@ class Guard<T extends Cloneable> extends StatefulWidget {
 
 class GuardState<T extends Cloneable> extends State<Guard<T>> {
   T? _data;
+  var _shouldNotify = false;
 
   /// Clears the data contained in the [GuardState].
   ///
@@ -176,6 +177,7 @@ class GuardState<T extends Cloneable> extends State<Guard<T>> {
   void clear() {
     setState(() {
       _data = null;
+      _shouldNotify = true;
     });
   }
 
@@ -188,9 +190,9 @@ class GuardState<T extends Cloneable> extends State<Guard<T>> {
   /// ```dart
   /// Guard.stateOf<T>(context).update(data);
   /// ```
-  void update(T data) {
+  void update() {
     setState(() {
-      _data = data;
+      _shouldNotify = true;
     });
   }
 
@@ -263,17 +265,19 @@ class GuardState<T extends Cloneable> extends State<Guard<T>> {
 
 class _Inherited<T extends Cloneable> extends InheritedWidget {
   final T data;
+  // final bool shouldNotify;
   final GuardState<T> state;
 
   const _Inherited({
     required this.data,
+    // required this.shouldNotify,
     required this.state,
     required super.child,
   });
 
   @override
   bool updateShouldNotify(covariant _Inherited<T> oldWidget) {
-    return oldWidget.state != state;
+    return true;
   }
 }
 
