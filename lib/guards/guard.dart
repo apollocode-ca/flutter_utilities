@@ -186,10 +186,12 @@ class GuardState<T extends Cloneable> extends State<Guard<T>> {
   /// Can be used with the following line:
   ///
   /// ```dart
-  /// Guard.stateOf<T>(context).update();
+  /// Guard.stateOf<T>(context).update(data);
   /// ```
-  void update() {
-    setState(() {});
+  void update(T data) {
+    setState(() {
+      _data = data.copyWith() as T;
+    });
   }
 
   bool _isDataAlreadyFetched(T data) {
