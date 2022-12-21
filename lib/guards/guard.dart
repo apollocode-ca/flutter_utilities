@@ -22,13 +22,22 @@ export 'package:apollocode_flutter_utilities/extensions/async_snapshot_extension
 /// [onDataLoading] and [onDataNotFound] can be optionally used to personalize
 /// how the Guard should work.
 ///
+/// The [future] can return any type of data (even non Cloneable ones). However,
+/// when the [future] returns data that is not of type T, the [dataSetter] must
+/// be provided.
+///
 /// By default, the data in the Guard is not saved in the local store.
 class Guard<T extends Cloneable> extends StatefulWidget {
   /// The body of the guarded route.
   final Widget body;
 
+  /// Optional setter when the future is not the same type than the [Guard].
+  ///
+  /// Must be provided if the future doesn't return T.
+  final T Function(dynamic value)? dataSetter;
+
   /// The data future.
-  final Future<T> future;
+  final Future<dynamic> future;
 
   /// Additional verifications done on the data when it has already been
   /// fetched.
@@ -102,6 +111,7 @@ class Guard<T extends Cloneable> extends StatefulWidget {
 
   const Guard({
     required this.body,
+    this.dataSetter,
     required this.future,
     this.isDataAlreadyFetched,
     this.localStoreKey,
@@ -223,7 +233,7 @@ class GuardState<T extends Cloneable> extends State<Guard<T>> {
     if (localStoreKey != null) {
       initialData = LocalStoreManager.instance.getValue(localStoreKey);
     }
-    return FutureBuilder<T>(
+    return FutureBuilder<dynamic>(
       future: widget.future,
       initialData: initialData,
       builder: (context, snapshot) {
@@ -241,6 +251,7 @@ class GuardState<T extends Cloneable> extends State<Guard<T>> {
         return _DataFetchedHandler<T>(
           body: widget.body,
           data: data,
+          dataSetter: widget.dataSetter,
           externCall: widget.onDataFetched,
           localStoreKey: widget.localStoreKey,
           replaceData: _replaceData,
@@ -321,16 +332,18 @@ class _DataAlreadyFetchedHandler<T extends Cloneable> {
 
 class _DataFetchedHandler<T extends Cloneable> {
   final Widget body;
+  final T Function(dynamic data)? dataSetter;
   final dynamic Function(T data)? externCall;
   final String? localStoreKey;
   final void Function(T data) replaceData;
   final GuardState<T> state;
 
-  late T data;
+  late dynamic data;
 
   _DataFetchedHandler({
     required this.body,
     required this.data,
+    required this.dataSetter,
     required this.externCall,
     required this.localStoreKey,
     required this.replaceData,
@@ -339,10 +352,11 @@ class _DataFetchedHandler<T extends Cloneable> {
 
   Widget call() {
     final externCall = this.externCall;
+    final data = _handleData();
     var child = body;
     if (externCall != null) {
       final result = externCall(data);
-      child = _handle(result);
+      child = _handleResult(result);
     }
     final localStoreKey = this.localStoreKey;
     if (localStoreKey != null) {
@@ -356,7 +370,21 @@ class _DataFetchedHandler<T extends Cloneable> {
     );
   }
 
-  Widget _handle(dynamic result) {
+  T _handleData() {
+    if (data is T) {
+      return data;
+    }
+    final dataSetter = this.dataSetter;
+    if (dataSetter != null) {
+      return dataSetter(data);
+    }
+    throw StateError(
+      'The "dataSetter" property must be provided when the "future" does\'t '
+      'return T.',
+    );
+  }
+
+  Widget _handleResult(dynamic result) {
     if (result is Widget) {
       return result;
     }
