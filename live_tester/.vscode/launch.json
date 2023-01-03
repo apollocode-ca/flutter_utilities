@@ -1,0 +1,16 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Device",
+            "request": "launch",
+            "type": "dart",
+            "deviceId": "chrome",
+            "args": [
+                "--dart-define=API_URL=http://127.0.0.1:3000",
+                "--dart-define=API_VERSION=v1.0",
+                "--dart-define=API_TOKEN=35e964ce-78a6-425f-807f-2d8c176564c7"
+            ]
+        }
+    ]
+}

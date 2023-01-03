@@ -1,0 +1,34 @@
+
+name: Flutter build web
+on:
+  # Trigger the workflow on push or pull request,
+  # but only for the main branch
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:
+  Flutter-Build-Web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: subosito/flutter-action@v1
+        with:
+          channel: 'master'
+      - run: flutter clean
+      - run: flutter pub get
+      - run: flutter build web --dart-define=ENVIRONMENT=${{ secrets.ENVIRONMENT }} --dart-define=BASE_APPLICATION_TOKEN=${{ secrets.BASE_APPLICATION_TOKEN }} --dart-define=BASE_API_VERSION=${{ secrets.BASE_API_VERSION }} --dart-define=BASE_API_URL=${{ secrets.BASE_API_URL }} --dart-define=BASE_WS_URL=${{ secrets.BASE_WS_URL }}
+      - name: Pushes artifacts to prod repo
+        uses: dmnemec/copy_file_to_another_repo_action@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+        with:
+          source_file: 'build/web/'
+          destination_repo: 'apollocode-ca/apollocode_app'
+          destination_folder: '/production/'
+          destination_branch: 'production'
+          user_email: 'etiennebouchard7@gmail.com' 
+          user_name: 'Cobolt77'
+          commit_message: 'Pushing to production'

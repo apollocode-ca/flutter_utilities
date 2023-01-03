@@ -1,0 +1,12 @@
+{
+  "folders": [
+    {
+      "name": "apollocode_flutter_utilities",
+      "path": "."
+    },
+    {
+      "name": "live_tester",
+      "path": "live_tester"
+    }
+  ]
+}

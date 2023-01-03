@@ -1,0 +1,30 @@
+name: live_tester
+description: App on which devs can easily test widgets and other utilities created in the apollocode_flutter_utilities package
+publish_to: 'none'
+version: 1.0.0+0
+environment:
+  sdk: ">=2.18.2 <3.0.0"
+dependencies:
+  apollocode_flutter_utilities:
+    path: ../
+  beamer: ^1.5.3
+  firebase_auth: ^4.1.0
+  firebase_core: ^2.1.1
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  google_fonts: ^3.0.1
+  http: ^0.13.5
+  universal_html: ^2.0.8
+dev_dependencies:
+  flutter_lints: ^2.0.1
+  flutter_test:
+    sdk: flutter
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icons/icon.png"
+flutter:
+  uses-material-design: true
+  generate: true
