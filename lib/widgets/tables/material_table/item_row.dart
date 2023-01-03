@@ -8,7 +8,6 @@ class ItemRow<T> extends StatefulWidget {
     BuildContext context,
     ColumnData column,
     int index,
-    TextStyle currentTextStyle,
   ) cellBuilder;
   final List<ColumnData> columns;
   final int index;
@@ -180,15 +179,17 @@ class _State<T> extends State<ItemRow<T>> {
                 if (column.width == null) {
                   cells.add(
                     Expanded(
-                      child: TableCell(
-                        column: column,
-                        index: index,
-                        child: widget.cellBuilder(
-                          context,
-                          column,
-                          widget.index,
-                          TextStyle(
-                            color: foregroundColor,
+                      child: DefaultTextStyle(
+                        style: TextStyle(
+                          color: foregroundColor,
+                        ),
+                        child: TableCell(
+                          column: column,
+                          index: index,
+                          child: widget.cellBuilder(
+                            context,
+                            column,
+                            widget.index,
                           ),
                         ),
                       ),
@@ -196,15 +197,17 @@ class _State<T> extends State<ItemRow<T>> {
                   );
                 } else {
                   cells.add(
-                    TableCell(
-                      column: column,
-                      index: index,
-                      child: widget.cellBuilder(
-                        context,
-                        column,
-                        widget.index,
-                        TextStyle(
-                          color: foregroundColor,
+                    DefaultTextStyle(
+                      style: TextStyle(
+                        color: foregroundColor,
+                      ),
+                      child: TableCell(
+                        column: column,
+                        index: index,
+                        child: widget.cellBuilder(
+                          context,
+                          column,
+                          widget.index,
                         ),
                       ),
                     ),

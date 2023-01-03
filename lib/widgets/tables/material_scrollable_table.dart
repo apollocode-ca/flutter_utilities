@@ -14,14 +14,12 @@ class MaterialScrollableTable<T> extends StatefulWidget {
   final Widget? Function(
     BuildContext context,
     ColumnData column,
-    TextStyle currentStyle,
   ) headingCellBuilder;
   final bool isLoading;
   final Widget Function(
     BuildContext context,
     ColumnData column,
     int index,
-    TextStyle currentStyle,
   ) itemCellBuilder;
   final String noDataLabel;
   final void Function(int oldIndex, int newIndex)? onRowDrag;

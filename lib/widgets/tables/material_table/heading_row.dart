@@ -3,11 +3,7 @@ import 'package:apollocode_flutter_utilities/widgets/tables/material_table/table
 import 'package:flutter/material.dart' hide TableCell;
 
 class HeadingRow extends StatelessWidget {
-  final Widget? Function(
-    BuildContext context,
-    ColumnData column,
-    TextStyle currentStyle,
-  ) cellBuilder;
+  final Widget? Function(BuildContext context, ColumnData column) cellBuilder;
   final List<ColumnData> columns;
 
   const HeadingRow({
@@ -36,32 +32,30 @@ class HeadingRow extends StatelessWidget {
             if (column.width == null) {
               cells.add(
                 Expanded(
-                  child: TableCell(
-                    column: column,
-                    index: index,
-                    child: cellBuilder(
-                      context,
-                      column,
-                      TextStyle(
-                        color: Theme.of(context).colorScheme.onPrimary,
-                        fontWeight: FontWeight.w500,
-                      ),
+                  child: DefaultTextStyle(
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onPrimary,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    child: TableCell(
+                      column: column,
+                      index: index,
+                      child: cellBuilder(context, column),
                     ),
                   ),
                 ),
               );
             } else {
               cells.add(
-                TableCell(
-                  column: column,
-                  index: index,
-                  child: cellBuilder(
-                    context,
-                    column,
-                    TextStyle(
-                      color: Theme.of(context).colorScheme.onPrimary,
-                      fontWeight: FontWeight.w500,
-                    ),
+                DefaultTextStyle(
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onPrimary,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  child: TableCell(
+                    column: column,
+                    index: index,
+                    child: cellBuilder(context, column),
                   ),
                 ),
               );
