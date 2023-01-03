@@ -155,6 +155,7 @@ class MaterialScrollableTableState<T>
 
   Widget _getRow(T item, int index, {bool withTableKey = false}) {
     return ItemRow(
+      canDrag: widget.canDrag,
       cellBuilder: widget.itemCellBuilder,
       columns: widget.columns,
       index: index,

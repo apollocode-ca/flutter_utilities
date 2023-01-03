@@ -4,6 +4,7 @@ import 'package:apollocode_flutter_utilities/widgets/tables/material_table/table
 import 'package:flutter/material.dart' hide TableCell;
 
 class ItemRow<T> extends StatefulWidget {
+  final bool canDrag;
   final Widget Function(
     BuildContext context,
     ColumnData column,
@@ -19,6 +20,7 @@ class ItemRow<T> extends StatefulWidget {
   final GlobalKey? tableKey;
 
   const ItemRow({
+    this.canDrag = false,
     required this.cellBuilder,
     required this.columns,
     required this.index,
@@ -128,6 +130,9 @@ class _State<T> extends State<ItemRow<T>> {
       },
       child: MouseRegion(
         cursor: () {
+          if (widget.onTap == null && !widget.canDrag) {
+            return MouseCursor.defer;
+          }
           if (widget.isAnyRowDragging) {
             return SystemMouseCursors.grabbing;
           }
@@ -154,6 +159,9 @@ class _State<T> extends State<ItemRow<T>> {
           duration: kThemeChangeDuration,
           foregroundDecoration: BoxDecoration(
             color: () {
+              if (widget.onTap == null && !widget.canDrag) {
+                return null;
+              }
               if (widget.isDragging) {
                 return draggedColor;
               }
