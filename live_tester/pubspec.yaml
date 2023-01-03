@@ -5,6 +5,8 @@ version: 1.0.0+0
 environment:
   sdk: ">=2.18.2 <3.0.0"
 dependencies:
+  apollocode_dart_utilities:
+    git: https://github.com/apollocode-ca/dart_utilities
   apollocode_flutter_utilities:
     path: ../
   beamer: ^1.5.3

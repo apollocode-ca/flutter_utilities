@@ -1,9 +1,11 @@
 import 'package:apollocode_flutter_utilities/extensions/global_key_extension.dart';
 import 'package:apollocode_flutter_utilities/models/column_data.dart';
+import 'package:apollocode_flutter_utilities/models/pagination_data.dart';
 import 'package:apollocode_flutter_utilities/widgets/tables/material_table/heading_row.dart';
 import 'package:apollocode_flutter_utilities/widgets/tables/material_table/item_row.dart';
 import 'package:apollocode_flutter_utilities/widgets/tables/material_table/loading_body.dart';
 import 'package:apollocode_flutter_utilities/widgets/tables/material_table/no_data_body.dart';
+import 'package:apollocode_flutter_utilities/widgets/tables/material_table/pagination_row.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 
@@ -22,8 +24,12 @@ class MaterialScrollableTable<T> extends StatefulWidget {
     int index,
   ) itemCellBuilder;
   final String noDataLabel;
+  final void Function(int itemsPerPage)? onItemsPerPageChanged;
+  final void Function(int page)? onNextPageTap;
+  final void Function(int page)? onPreviousPageTap;
   final void Function(int oldIndex, int newIndex)? onRowDrag;
   final void Function(T item)? onRowTap;
+  final PaginationData<T>? pagination;
   final bool Function(int index)? shouldShowOverlayColor;
 
   const MaterialScrollableTable({
@@ -34,11 +40,15 @@ class MaterialScrollableTable<T> extends StatefulWidget {
     this.items = const [],
     required this.itemCellBuilder,
     required this.noDataLabel,
+    this.onItemsPerPageChanged,
+    this.onNextPageTap,
+    this.onPreviousPageTap,
     this.onRowDrag,
     this.onRowTap,
+    this.pagination,
     this.shouldShowOverlayColor,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   static MaterialScrollableTableState<T>? maybeOf<T>(BuildContext context) {
     final inherited =
@@ -180,7 +190,7 @@ class MaterialScrollableTableState<T>
   }
 
   _onItemsChange() {
-    _items = widget.items;
+    _items = widget.pagination?.paginated.data ?? widget.items;
     for (var i = 0; i < _items.length; i++) {
       isRowDragging.add(false);
     }
@@ -194,7 +204,12 @@ class MaterialScrollableTableState<T>
 
   @override
   void didUpdateWidget(covariant MaterialScrollableTable<T> oldWidget) {
-    if (!_listEquality.equals(oldWidget.items, widget.items)) {
+    final areItemsEqual = _listEquality.equals(oldWidget.items, widget.items);
+    final arePaginatedEqual = _listEquality.equals(
+      oldWidget.pagination?.paginated.data,
+      widget.pagination?.paginated.data,
+    );
+    if (!areItemsEqual || !arePaginatedEqual) {
       isRowDragging.clear();
       _onItemsChange();
     }
@@ -271,6 +286,20 @@ class MaterialScrollableTableState<T>
                   );
                 },
               ),
+            ),
+            Builder(
+              builder: (context) {
+                final pagination = widget.pagination;
+                if (pagination != null) {
+                  return PaginationRow(
+                    onItemsPerPageChanged: widget.onItemsPerPageChanged,
+                    onNextPageTap: widget.onNextPageTap,
+                    onPreviousPageTap: widget.onPreviousPageTap,
+                    pagination: pagination,
+                  );
+                }
+                return const SizedBox();
+              },
             ),
           ],
         ),
