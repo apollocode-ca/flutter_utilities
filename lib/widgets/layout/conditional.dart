@@ -3,12 +3,12 @@ import 'package:apollocode_flutter_utilities/widgets/layout/conditional/recursiv
 import 'package:flutter/material.dart';
 
 class Conditional extends StatelessWidget {
-  final List<Widget> children;
   final List<bool> conditions;
+  final List<Widget> children;
 
   const Conditional({
-    required this.children,
     required this.conditions,
+    required this.children,
     Key? key,
   }) : super(key: key);
 
@@ -18,9 +18,9 @@ class Conditional extends StatelessWidget {
       throw ConditionalError(children, conditions);
     }
     return RecursiveConditional(
-      children: children,
       conditions: conditions,
       index: 0,
+      children: children,
     );
   }
 }

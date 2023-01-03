@@ -6,9 +6,9 @@ class RecursiveConditional extends StatelessWidget {
   final int index;
 
   const RecursiveConditional({
-    required this.children,
     required this.conditions,
     required this.index,
+    required this.children,
     Key? key,
   }) : super(key: key);
 
@@ -39,9 +39,9 @@ class RecursiveConditional extends StatelessWidget {
      * }
     */
     final recursive = RecursiveConditional(
-      children: children,
       conditions: conditions,
       index: index + 1,
+      children: children,
     );
     return recursive.build(context);
   }
