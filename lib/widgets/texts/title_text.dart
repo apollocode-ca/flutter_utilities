@@ -36,8 +36,16 @@ class TitleText extends StatelessWidget {
     this.textHeightBehavior,
     this.textScaleFactor,
     this.textWidthBasis,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
+
+  TextStyle? _getDefaultStyle(BuildContext context) {
+    final style = DefaultTextStyle.of(context).style;
+    if (style != const TextStyle()) {
+      return style;
+    }
+    return null;
+  }
 
   TextStyle? _getResponsiveStyle(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
@@ -62,33 +70,34 @@ class TitleText extends StatelessWidget {
   }
 
   TextStyle? getStyle(BuildContext context) {
-    final style = _getResponsiveStyle(context);
-    return style?.copyWith(
-      background: this.style?.background,
-      backgroundColor: this.style?.backgroundColor,
-      color: this.style?.color,
-      decoration: this.style?.decoration,
-      decorationColor: this.style?.decorationColor,
-      decorationStyle: this.style?.decorationStyle,
-      decorationThickness: this.style?.decorationThickness,
-      debugLabel: this.style?.debugLabel,
-      fontFamily: this.style?.fontFamily,
-      fontFamilyFallback: this.style?.fontFamilyFallback,
-      fontFeatures: this.style?.fontFeatures,
-      fontSize: this.style?.fontSize,
-      fontStyle: this.style?.fontStyle,
-      fontVariations: this.style?.fontVariations,
-      fontWeight: this.style?.fontWeight,
-      foreground: this.style?.foreground,
-      height: this.style?.height,
-      inherit: this.style?.inherit,
-      leadingDistribution: this.style?.leadingDistribution,
-      letterSpacing: this.style?.letterSpacing,
-      locale: this.style?.locale,
-      overflow: this.style?.overflow,
-      shadows: this.style?.shadows,
-      textBaseline: this.style?.textBaseline,
-      wordSpacing: this.style?.wordSpacing,
+    final responsiveStyle = _getResponsiveStyle(context);
+    final style = this.style ?? _getDefaultStyle(context);
+    return responsiveStyle?.copyWith(
+      background: style?.background,
+      backgroundColor: style?.backgroundColor,
+      color: style?.color,
+      decoration: style?.decoration,
+      decorationColor: style?.decorationColor,
+      decorationStyle: style?.decorationStyle,
+      decorationThickness: style?.decorationThickness,
+      debugLabel: style?.debugLabel,
+      fontFamily: style?.fontFamily,
+      fontFamilyFallback: style?.fontFamilyFallback,
+      fontFeatures: style?.fontFeatures,
+      fontSize: style?.fontSize,
+      fontStyle: style?.fontStyle,
+      fontVariations: style?.fontVariations,
+      fontWeight: style?.fontWeight,
+      foreground: style?.foreground,
+      height: style?.height,
+      inherit: style?.inherit,
+      leadingDistribution: style?.leadingDistribution,
+      letterSpacing: style?.letterSpacing,
+      locale: style?.locale,
+      overflow: style?.overflow,
+      shadows: style?.shadows,
+      textBaseline: style?.textBaseline,
+      wordSpacing: style?.wordSpacing,
     );
   }
 
