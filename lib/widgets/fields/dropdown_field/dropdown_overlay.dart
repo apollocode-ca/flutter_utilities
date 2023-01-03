@@ -2,20 +2,14 @@ import 'package:apollocode_flutter_utilities/widgets/fields/dropdown_field/dropd
 import 'package:flutter/material.dart';
 
 class DropdownOverlay<T> extends StatelessWidget {
-  final TextStyle? defaultTextStyle;
   final Size? fieldSize;
   final int focusedSuggestionIndex;
   final LayerLink link;
   final void Function(T suggestion) onChange;
-  final Widget Function(
-    BuildContext context,
-    T suggestion, {
-    TextStyle? currentTextStyle,
-  }) suggestionBuilder;
+  final Widget Function(BuildContext context, T suggestion) suggestionBuilder;
   final List<T> suggestions;
 
   const DropdownOverlay({
-    this.defaultTextStyle,
     this.fieldSize,
     required this.focusedSuggestionIndex,
     required this.link,
@@ -61,7 +55,6 @@ class DropdownOverlay<T> extends StatelessWidget {
                 children: suggestions.map((suggestion) {
                   index++;
                   return DropdownSuggestion(
-                    defaultTextStyle: defaultTextStyle,
                     key: ValueKey(index),
                     fieldSize: fieldSize,
                     hasFocus: focusedSuggestionIndex == index,

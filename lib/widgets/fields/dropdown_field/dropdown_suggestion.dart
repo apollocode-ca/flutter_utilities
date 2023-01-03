@@ -1,19 +1,13 @@
 import 'package:flutter/material.dart';
 
 class DropdownSuggestion<T> extends StatefulWidget {
-  final TextStyle? defaultTextStyle;
   final Size fieldSize;
   final bool hasFocus;
   final void Function(T suggestion) onChange;
   final T suggestion;
-  final Widget Function(
-    BuildContext context,
-    T suggestion, {
-    TextStyle? currentTextStyle,
-  }) suggestionBuilder;
+  final Widget Function(BuildContext context, T suggestion) suggestionBuilder;
 
   const DropdownSuggestion({
-    this.defaultTextStyle,
     required this.fieldSize,
     required this.hasFocus,
     required this.onChange,
@@ -32,6 +26,8 @@ class _State<T> extends State<DropdownSuggestion<T>> {
 
   @override
   Widget build(BuildContext context) {
+    final labelStyle =
+        Theme.of(context).inputDecorationTheme.labelStyle ?? const TextStyle();
     if (widget.hasFocus) {
       final onSurface = Theme.of(context).colorScheme.onSurface;
       decorationColor = onSurface;
@@ -71,12 +67,11 @@ class _State<T> extends State<DropdownSuggestion<T>> {
           padding: const EdgeInsets.symmetric(
             horizontal: 16,
           ),
-          child: widget.suggestionBuilder(
-            context,
-            widget.suggestion,
-            currentTextStyle: widget.defaultTextStyle?.copyWith(
+          child: DefaultTextStyle(
+            style: labelStyle.copyWith(
               color: decorationColor,
             ),
+            child: widget.suggestionBuilder(context, widget.suggestion),
           ),
         ),
       ),

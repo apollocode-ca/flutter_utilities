@@ -12,11 +12,7 @@ class DropdownField<T> extends StatefulWidget {
   final String label;
   final void Function(T suggestion)? onChange;
   final void Function(String value)? onEdit;
-  final Widget Function(
-    BuildContext context,
-    T suggestion, {
-    TextStyle? currentTextStyle,
-  }) suggestionBuilder;
+  final Widget Function(BuildContext context, T suggestion) suggestionBuilder;
   final List<T> suggestions;
 
   const DropdownField({
@@ -101,7 +97,6 @@ class _State<T> extends State<DropdownField<T>> {
       maintainState: true,
       builder: (context) {
         return DropdownOverlay<T>(
-          defaultTextStyle: Theme.of(context).inputDecorationTheme.labelStyle,
           fieldSize: fieldSize,
           focusedSuggestionIndex: focusedSuggestionIndex,
           link: link,
