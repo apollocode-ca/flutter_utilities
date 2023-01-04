@@ -37,6 +37,9 @@ import 'package:flutter/material.dart';
 /// [onPreviousPageTap] callbacks to change data when the pagination
 /// configuration changes.
 ///
+/// By default, the table doesn't have a column of checkboxes. To add one, turn
+/// on the [addCheckboxesColumn] flag.
+///
 /// By default, the table doesn't have any interaction. To add some, provide an
 /// [onRowTap] callback. The [shouldShowOverlayColor] callback can let you
 /// control when a row should display an overlay animation or not.
@@ -46,6 +49,15 @@ import 'package:flutter/material.dart';
 /// been completed. To add an additional behavior after the drag, use the
 /// [onRowDrag] callback.
 class MaterialScrollableTable<T> extends StatefulWidget {
+  /// A flag to show or hide a column of checkboxes with the provided custom
+  /// columns.
+  ///
+  /// By default, the column of checkboxes is hidden.
+  ///
+  /// When the column of checkboxes is shown, it will be the first column of the
+  /// table.
+  final bool addCheckboxesColumn;
+
   /// A flag to enable or disable the dragging behavior on the table rows.
   ///
   /// By default, it's disabled.
@@ -221,6 +233,7 @@ class MaterialScrollableTable<T> extends StatefulWidget {
   final bool Function(int index)? shouldShowOverlayColor;
 
   const MaterialScrollableTable({
+    this.addCheckboxesColumn = false,
     this.canDrag = false,
     required this.columns,
     required this.headingCellBuilder,
@@ -295,6 +308,7 @@ class MaterialScrollableTableState<T>
   /// after a dragging gesture.
   final isRowDragging = <bool>[];
 
+  final _checkboxValues = <bool>[];
   final _key = GlobalKey();
 
   var _currentlyDraggedRowOffset = Offset.zero;
@@ -306,6 +320,21 @@ class MaterialScrollableTableState<T>
   /// The width of the table.
   double? get width {
     return _key.widgetBounds?.width;
+  }
+
+  bool? get _overallCheckboxValue {
+    if (_checkboxValues.isEmpty) {
+      return false;
+    }
+    final isAllSelected = _checkboxValues.every((isSelected) => isSelected);
+    final isAnySelected = _checkboxValues.any((isSelected) => isSelected);
+    if (isAllSelected) {
+      return true;
+    }
+    if (isAnySelected) {
+      return null;
+    }
+    return false;
   }
 
   double get _rowHeight {
@@ -355,6 +384,7 @@ class MaterialScrollableTableState<T>
                           .toInt();
                       _items.swap(_currentRowIndex, newRowIndex);
                       isRowDragging.swap(_currentRowIndex, newRowIndex);
+                      _checkboxValues.swap(_currentRowIndex, newRowIndex);
                       _currentRowIndex = newRowIndex;
                       _currentlyDraggedRowOffset = Offset.zero;
                     }
@@ -371,6 +401,7 @@ class MaterialScrollableTableState<T>
 
   Widget _getRow(T item, int index, {bool withTableKey = false}) {
     return ItemRow(
+      addCheckboxesColumn: widget.addCheckboxesColumn,
       canDrag: widget.canDrag,
       cellBuilder: widget.itemCellBuilder,
       columns: widget.columns,
@@ -395,11 +426,20 @@ class MaterialScrollableTableState<T>
     );
   }
 
-  _onItemsChange() {
+  void _onItemsChange() {
     _items = widget.pagination?.paginated?.data ?? widget.items;
     for (var i = 0; i < _items.length; i++) {
       isRowDragging.add(false);
+      _checkboxValues.add(false);
     }
+  }
+
+  void _onOverallCheckboxTap(bool? value) {
+    setState(() {
+      for (var index = 0; index < _checkboxValues.length; index++) {
+        _checkboxValues[index] = value ?? false;
+      }
+    });
   }
 
   @override
@@ -417,6 +457,7 @@ class MaterialScrollableTableState<T>
     );
     if (!areItemsEqual || !arePaginatedEqual) {
       isRowDragging.clear();
+      _checkboxValues.clear();
       _onItemsChange();
     }
     super.didUpdateWidget(oldWidget);
@@ -468,8 +509,11 @@ class MaterialScrollableTableState<T>
               child: Column(
                 children: [
                   HeadingRow(
+                    addCheckboxesColumn: widget.addCheckboxesColumn,
                     cellBuilder: widget.headingCellBuilder,
+                    checkboxValue: _overallCheckboxValue,
                     columns: widget.columns,
+                    onCheckboxTap: _onOverallCheckboxTap,
                   ),
                   Expanded(
                     child: Builder(

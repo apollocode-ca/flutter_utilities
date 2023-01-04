@@ -1,9 +1,11 @@
 import 'package:apollocode_flutter_utilities/extensions/global_key_extension.dart';
 import 'package:apollocode_flutter_utilities/models/column_data.dart';
 import 'package:apollocode_flutter_utilities/widgets/tables/material_table/table_cell.dart';
+import 'package:apollocode_flutter_utilities/widgets/tables/material_table/table_checkbox.dart';
 import 'package:flutter/material.dart' hide TableCell;
 
 class ItemRow<T> extends StatefulWidget {
+  final bool addCheckboxesColumn;
   final bool canDrag;
   final Widget Function(
     BuildContext context,
@@ -20,6 +22,7 @@ class ItemRow<T> extends StatefulWidget {
   final GlobalKey? tableKey;
 
   const ItemRow({
+    required this.addCheckboxesColumn,
     this.canDrag = false,
     required this.cellBuilder,
     required this.columns,
@@ -182,6 +185,18 @@ class _State<T> extends State<ItemRow<T>> {
           child: Builder(
             builder: (context) {
               final cells = <Widget>[];
+              if (widget.addCheckboxesColumn) {
+                cells.add(
+                  TableCell(
+                    alignment: Alignment.center,
+                    width: 32,
+                    child: TableCheckbox(
+                      checkboxValue: false,
+                      onCheckboxTap: (value) {},
+                    ),
+                  ),
+                );
+              }
               for (var index = 0; index < widget.columns.length; index++) {
                 final column = widget.columns[index];
                 if (column.width == null) {
@@ -194,7 +209,8 @@ class _State<T> extends State<ItemRow<T>> {
                         textAlign: column.textAlign,
                         child: TableCell(
                           column: column,
-                          index: index,
+                          shouldApplyMargin:
+                              index != 0 || widget.addCheckboxesColumn,
                           child: widget.cellBuilder(
                             context,
                             column,
@@ -213,7 +229,8 @@ class _State<T> extends State<ItemRow<T>> {
                       textAlign: column.textAlign,
                       child: TableCell(
                         column: column,
-                        index: index,
+                        shouldApplyMargin:
+                            index != 0 || widget.addCheckboxesColumn,
                         child: widget.cellBuilder(
                           context,
                           column,
