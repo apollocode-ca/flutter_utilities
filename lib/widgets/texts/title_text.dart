@@ -39,6 +39,22 @@ class TitleText extends StatelessWidget {
     super.key,
   });
 
+  TextOverflow? _getDefaultOverflow(BuildContext context) {
+    final overflow = DefaultTextStyle.of(context).overflow;
+    if (overflow != TextOverflow.clip) {
+      return overflow;
+    }
+    return null;
+  }
+
+  bool? _getDefaultSoftWrap(BuildContext context) {
+    final softWrap = DefaultTextStyle.of(context).softWrap;
+    if (!softWrap) {
+      return softWrap;
+    }
+    return null;
+  }
+
   TextStyle? _getDefaultStyle(BuildContext context) {
     final style = DefaultTextStyle.of(context).style;
     if (style != const TextStyle()) {
@@ -67,6 +83,19 @@ class TitleText extends StatelessWidget {
       return textTheme.titleMedium;
     }
     return textTheme.titleSmall;
+  }
+
+  TextHeightBehavior? _getTextHeightBehavior(BuildContext context) {
+    final textHeightBehavior = DefaultTextStyle.of(context).textHeightBehavior;
+    return this.textHeightBehavior ?? textHeightBehavior;
+  }
+
+  TextWidthBasis? _getTextWidthBasis(BuildContext context) {
+    final textWidthBasis = DefaultTextStyle.of(context).textWidthBasis;
+    if (textWidthBasis != TextWidthBasis.parent) {
+      return this.textWidthBasis ?? textWidthBasis;
+    }
+    return this.textWidthBasis;
   }
 
   TextStyle? getStyle(BuildContext context) {
@@ -106,18 +135,18 @@ class TitleText extends StatelessWidget {
     return Text(
       data,
       locale: locale,
-      maxLines: maxLines,
-      overflow: overflow,
+      maxLines: maxLines ?? DefaultTextStyle.of(context).maxLines,
+      overflow: overflow ?? _getDefaultOverflow(context),
       selectionColor: selectionColor,
       semanticsLabel: semanticsLabel,
-      softWrap: softWrap,
+      softWrap: softWrap ?? _getDefaultSoftWrap(context),
       strutStyle: strutStyle,
       style: getStyle(context),
-      textAlign: textAlign,
+      textAlign: textAlign ?? DefaultTextStyle.of(context).textAlign,
       textDirection: textDirection,
-      textHeightBehavior: textHeightBehavior,
+      textHeightBehavior: _getTextHeightBehavior(context),
       textScaleFactor: textScaleFactor,
-      textWidthBasis: textWidthBasis,
+      textWidthBasis: _getTextWidthBasis(context),
     );
   }
 }
