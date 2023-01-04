@@ -112,6 +112,13 @@ class MaterialScrollableTable<T> extends StatefulWidget {
     int index,
   ) itemCellBuilder;
 
+  /// Indicator that shows up in the top-right corner above the table when data
+  /// is loading and the table is not empty.
+  ///
+  /// By default, when this property is not used, an [Icons.autorenew_rounded]
+  /// icon will show up and rotate as long as new data is loading.
+  final Widget? loadingIndicator;
+
   /// The label to display in place of the data rows when there is no data.
   final String noDataLabel;
 
@@ -220,6 +227,7 @@ class MaterialScrollableTable<T> extends StatefulWidget {
     this.isLoading = false,
     this.items = const [],
     required this.itemCellBuilder,
+    this.loadingIndicator,
     required this.noDataLabel,
     this.onItemsPerPageChanged,
     this.onNextPageTap,
@@ -427,14 +435,25 @@ class MaterialScrollableTableState<T>
             children: [
               Container(
                 alignment: Alignment.centerRight,
+                constraints: const BoxConstraints.tightFor(
+                  height: 36,
+                ),
                 padding: const EdgeInsets.only(
                   bottom: 4,
                   right: 24,
                 ),
-                child: const LoadingIndicator(),
+                child: () {
+                  final loadingIndicator = widget.loadingIndicator;
+                  if (loadingIndicator != null) {
+                    return loadingIndicator;
+                  }
+                  return const LoadingIndicator(
+                    size: 32,
+                  );
+                }(),
               ),
               const SizedBox(
-                height: LoadingIndicator.size + 4,
+                height: 36,
               ),
             ],
           ),

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 class LoadingIndicator extends StatefulWidget {
-  static const double size = 32;
+  final double size;
 
   const LoadingIndicator({
+    required this.size,
     super.key,
   });
 
@@ -53,7 +54,7 @@ class _LoadingIndicatorState extends State<LoadingIndicator>
       child: Icon(
         Icons.autorenew_rounded,
         color: Theme.of(context).colorScheme.onBackground,
-        size: LoadingIndicator.size,
+        size: widget.size,
       ),
     );
   }
