@@ -4,9 +4,9 @@ import 'package:apollocode_flutter_utilities/widgets/texts/body_text.dart';
 import 'package:flutter/material.dart';
 
 class PaginationRow extends StatefulWidget {
-  final void Function(int itemsPerPage)? onItemsPerPageChanged;
-  final void Function(int page)? onNextPageTap;
-  final void Function(int page)? onPreviousPageTap;
+  final void Function(int page, int itemsPerPage)? onItemsPerPageChanged;
+  final void Function(int page, int itemsPerPage)? onNextPageTap;
+  final void Function(int page, int itemsPerPage)? onPreviousPageTap;
   final PaginationData pagination;
 
   const PaginationRow({
@@ -33,7 +33,7 @@ class _PaginationRowState extends State<PaginationRow> {
       });
       final callback = widget.onItemsPerPageChanged;
       if (callback != null) {
-        callback(currentItemsPerPage);
+        callback(currentPage, currentItemsPerPage);
       }
     }
   }
@@ -44,7 +44,7 @@ class _PaginationRowState extends State<PaginationRow> {
     });
     final callback = widget.onNextPageTap;
     if (callback != null) {
-      callback(currentPage);
+      callback(currentPage, currentItemsPerPage);
     }
   }
 
@@ -54,7 +54,7 @@ class _PaginationRowState extends State<PaginationRow> {
     });
     final callback = widget.onPreviousPageTap;
     if (callback != null) {
-      callback(currentPage);
+      callback(currentPage, currentItemsPerPage);
     }
   }
 

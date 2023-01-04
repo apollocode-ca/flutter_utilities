@@ -1,3 +1,4 @@
+import 'package:apollocode_dart_utilities/apollocode_dart_utilities.dart';
 import 'package:apollocode_flutter_utilities/extensions/global_key_extension.dart';
 import 'package:apollocode_flutter_utilities/models/column_data.dart';
 import 'package:apollocode_flutter_utilities/models/pagination_data.dart';
@@ -9,27 +10,195 @@ import 'package:apollocode_flutter_utilities/widgets/tables/material_table/pagin
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 
+/// Table that follows the Material theme specifications and the Flutter
+/// [DataTable] sizes.
+///
+/// The table is also scrollable if there is not enough available space to
+/// display all the data rows. As the scrollable region takes as much space as
+/// possible, the table must be fully constrained. In a [Column] for example,
+/// you must constrain the height of the table with [ConstrainedBox], [SizedBox]
+/// or any other container if you want a fixed height. Or you must constrain the
+/// height of the table with [Expanded] if you want the table to take as much
+/// space as possible.
+///
+/// When the table doesn't contain any data, an "empty data" message will be
+/// displayed in place of the data rows.
+///
+/// When the table is loading data, a loading widget will be displayed in place
+/// of the data rows.
+///
+/// By default, the table doesn't have any pagination. To provide a pagination
+/// row (that will be displayed at the bottom of the table), add some
+/// [PaginationData]. Then, use the [onItemsPerPageChanged], [onNextPageTap] and
+/// [onPreviousPageTap] callbacks to change data when the pagination
+/// configuration changes.
+///
+/// By default, the table doesn't have any interaction. To add some, provide an
+/// [onRowTap] callback. The [shouldShowOverlayColor] callback can let you
+/// control when a row should display an overlay animation or not.
+///
+/// You can also enable row dragging with the [canDrag] flag. The table manages
+/// itself the reorder of the data to match the new rows order after a drag has
+/// been completed. To add an additional behavior after the drag, use the
+/// [onRowDrag] callback.
 class MaterialScrollableTable<T> extends StatefulWidget {
+  /// A flag to enable or disable the dragging behavior on the table rows.
+  ///
+  /// By default, it's disabled.
   final bool canDrag;
+
+  /// The list of columns for the table.
+  ///
+  /// To specify the columns, you must use the [ColumnData] mixin with an enum.
+  /// In this enum, you will add every column you want in the table and
+  /// [ColumnData] will enforce you to define every specification needed by the
+  /// table to build correctly.
+  ///
+  /// These specifications are:
+  /// * [AlignmentGeometry]? alignment: the alignment of the content inside the
+  /// column. By default, the alignment is [Alignment.left].
+  /// * [TextAlign]? textAlign: the alignment of any text inside the column. By
+  /// default, the alignment is [TextAlign.start].
+  /// * [double]? width: the width of the column. By default, the column will
+  /// take as much space as possible. If more than one column has a default
+  /// width, each column will take an equaled part of the remaining space.
   final List<ColumnData> columns;
+
+  /// The items to display in the table.
+  ///
+  /// Each item should correspond to a row in the table.
+  ///
+  /// You should use this property only when there is no pagination. When the
+  /// table has pagination, using this property has no effect.
   final List<T> items;
+
+  /// The callback to build each heading cell.
+  ///
+  /// You can return null if you don't want to display anything in the headling
+  /// for a specific column. It's useful if, for example, you have a column for
+  /// a button, you may want to not display anything in the heading of this
+  /// column.
+  ///
+  /// The [BuildContext] and the [ColumnData] are provided by the builder.
   final Widget? Function(
     BuildContext context,
     ColumnData column,
   ) headingCellBuilder;
+
+  /// A flag to display the loading widget when data is loading.
+  ///
+  /// Turn on the flag when your data is loading and turn it off when the future
+  /// is done.
   final bool isLoading;
+
+  /// The callback to build each row cell.
+  ///
+  /// The [BuildContext], the [ColumnData] and the [index] of the row are
+  /// provided by the builder.
   final Widget Function(
     BuildContext context,
     ColumnData column,
     int index,
   ) itemCellBuilder;
+
+  /// The label to display in place of the data rows when there is no data.
   final String noDataLabel;
-  final void Function(int itemsPerPage)? onItemsPerPageChanged;
-  final void Function(int page)? onNextPageTap;
-  final void Function(int page)? onPreviousPageTap;
+
+  /// The callback for when the items per page dropdown value change.
+  ///
+  /// It's useful only when the table has pagination. Defining the callback when
+  /// there is no pagination has no effect.
+  ///
+  /// The new items per page value (the one newly selected with the dropdown) is
+  /// provided by the callback, as well as the current page.
+  final void Function(int page, int itemsPerPage)? onItemsPerPageChanged;
+
+  /// The callback for when the next page will be displayed.
+  ///
+  /// It's useful only when the table has pagination. Defining the callback when
+  /// there is no pagination has no effect.
+  ///
+  /// The new page value is provided by the callback, as well as the current
+  /// items per page value. The page value is not an index, which means that the
+  /// biggest value you can receive is [Paginated.pageCount] and not
+  /// [Paginated.pageCount] - 1.
+  ///
+  /// For example, if the page was 2 before to tap the next page button, the
+  /// page value provided by the callback will be 3.
+  final void Function(int page, int itemsPerPage)? onNextPageTap;
+
+  /// The callback for when the previous page will be displayed.
+  ///
+  /// It's useful only when the table has pagination. Defining the callback when
+  /// there is no pagination has no effect.
+  ///
+  /// The previous page value is provided by the callback, as well as the
+  /// current items per page value. The page value is not an index, which means
+  /// that the lowest value you can receive is 1 and not 0.
+  ///
+  /// For example, if the page was 3 before to tap the previous page button, the
+  /// page value provided by the callback will be 2.
+  final void Function(int page, int itemsPerPage)? onPreviousPageTap;
+
+  /// The callback for when a row has been dragged.
+  ///
+  /// It's useful only when the table has the flag [canDrag] enabled. Defining
+  /// the callback when the dragging behavior is disabled has no effect.
+  ///
+  /// The old index (before the row has been dragged) and the new index (after
+  /// the row has been dragged) are provided by the callback.
   final void Function(int oldIndex, int newIndex)? onRowDrag;
+
+  /// The callback for when a row has been tapped.
+  ///
+  /// When not provided, the table doesn't allow any interaction when the data
+  /// rows and disable any theme animation.
+  ///
+  /// The item of the tapped row is provided by the callback.
   final void Function(T item)? onRowTap;
+
+  /// The pagination data required for the table to display a pagination row at
+  /// its very bottom.
+  ///
+  /// When not provided, the table doesn't display a pagination row.
+  ///
+  /// You must provide:
+  /// * [String] currentPageText: the text to display the current page. The text
+  /// can be anything, but it must contain the "<current>" and the "<total>"
+  /// tokens (without the quotation marks).
+  /// * [String] itemsPerPageText: text to display the current items per page
+  /// value. The text can be anything, but it must contain the "<count>" token
+  /// (without the quotation marks). If the total count of items is lower than
+  /// the current items per page value, it will display the total count of items
+  /// instead.
+  /// * [Paginated<T>] paginated: the data to display in the table with the
+  /// current pagination configuration.
+  ///
+  /// You can optionally provide:
+  /// * [List<int>] itemsPerPageSuggestions: the suggestions to display in the
+  /// items per page dropdown. By default, these suggestions are 5, 10, 25, 50
+  /// and 100. The default value taken by the dropdown will be the middle value
+  /// of the list of suggestions. For example, for 5, 10, 25, 50 and 100, the
+  /// first value taken by the dropdown will be 25. Another example: for 5, 10,
+  /// 20, 50, 100, 200, 500 and 1000, the first value taken by the dropdown will
+  /// be 100.
   final PaginationData<T>? pagination;
+
+  /// The callback for when a row is actually determining if it should display a
+  /// theme animation or not.
+  ///
+  /// When [onRowTap] is not provided, the callback has not effect.
+  ///
+  /// If you always want rows to display a theme animation, don't provide the
+  /// callback or always return true.
+  ///
+  /// If you want a row to not display a theme animation under some conditions,
+  /// use this callback to return false or true depending on these conditions.
+  ///
+  /// The [index] of the row is provided by the callback.
+  ///
+  /// This callback can be useful if, for example, you don't want to display a
+  /// hover animation on a row when hovering a button inside this row.
   final bool Function(int index)? shouldShowOverlayColor;
 
   const MaterialScrollableTable({
@@ -50,12 +219,23 @@ class MaterialScrollableTable<T> extends StatefulWidget {
     super.key,
   });
 
+  /// A getter for the state of the table.
+  ///
+  /// It will return the state or null depending if a [MaterialScrollableTable]
+  /// ancestor has been found or not.
   static MaterialScrollableTableState<T>? maybeOf<T>(BuildContext context) {
     final inherited =
         context.dependOnInheritedWidgetOfExactType<_Inherited<T>>();
     return inherited?.state;
   }
 
+  /// A getter for the state of the table.
+  ///
+  /// It will return the state if a [MaterialScrollableTable] ancestor has been
+  /// found.
+  ///
+  /// It will throw a [StateError] if no [MaterialScrollableTable] ancestor has
+  /// been found.
   static MaterialScrollableTableState<T> of<T>(BuildContext context) {
     final inherited =
         context.dependOnInheritedWidgetOfExactType<_Inherited<T>>();
@@ -84,10 +264,15 @@ class _Inherited<T> extends InheritedWidget {
   }
 }
 
+/// State of the [MaterialScrollableTable].
 class MaterialScrollableTableState<T>
     extends State<MaterialScrollableTable<T>> {
   static const _listEquality = ListEquality();
 
+  /// A list of flags that keeps the draggable state of each row.
+  ///
+  /// This list is always sync with the list of items currently displayed, even
+  /// after a dragging gesture.
   final isRowDragging = <bool>[];
 
   final _key = GlobalKey();
@@ -98,6 +283,7 @@ class MaterialScrollableTableState<T>
   var _items = <T>[];
   var _startRowIndex = -1;
 
+  /// The width of the table.
   double? get width {
     return _key.widgetBounds?.width;
   }
