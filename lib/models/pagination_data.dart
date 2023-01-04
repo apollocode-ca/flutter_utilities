@@ -6,13 +6,13 @@ class PaginationData<T> {
   final String currentPageText;
   final List<int> itemsPerPageSuggestions;
   final String itemsPerPageText;
-  final Paginated<T> paginated;
+  final Paginated<T>? paginated;
 
   PaginationData({
     required this.currentPageText,
     this.itemsPerPageSuggestions = const [5, 10, 25, 50, 100],
     required this.itemsPerPageText,
-    required this.paginated,
+    this.paginated,
   });
 
   String get formattedItemsPerPageText {
@@ -24,10 +24,7 @@ class PaginationData<T> {
         'instead of "items".',
       );
     }
-    return text.replaceAll(
-      '<count>',
-      displayedItems.toString(),
-    );
+    return text.replaceAll('<count>', displayedItems.toString());
   }
 
   int get initialItemsPerPage {
@@ -36,7 +33,9 @@ class PaginationData<T> {
   }
 
   int get displayedItems {
-    return min(paginated.itemCount, paginated.data.length);
+    final itemCount = paginated?.itemCount ?? 0;
+    final dataLength = paginated?.data.length ?? 0;
+    return min(itemCount, dataLength);
   }
 
   String formatCurrentPageText(int currentPage) {
@@ -48,14 +47,10 @@ class PaginationData<T> {
         '"<current> / <total>" instead of "/"',
       );
     }
+    final page = paginated != null ? currentPage : 0;
+    final pageCount = paginated?.pageCount ?? 0;
     return text
-        .replaceAll(
-          '<current>',
-          currentPage.toString(),
-        )
-        .replaceAll(
-          '<total>',
-          paginated.pageCount.toString(),
-        );
+        .replaceAll('<current>', page.toString())
+        .replaceAll('<total>', pageCount.toString());
   }
 }

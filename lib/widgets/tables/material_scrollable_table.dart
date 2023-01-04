@@ -171,8 +171,6 @@ class MaterialScrollableTable<T> extends StatefulWidget {
   /// (without the quotation marks). If the total count of items is lower than
   /// the current items per page value, it will display the total count of items
   /// instead.
-  /// * [Paginated<T>] paginated: the data to display in the table with the
-  /// current pagination configuration.
   ///
   /// You can optionally provide:
   /// * [List<int>] itemsPerPageSuggestions: the suggestions to display in the
@@ -182,6 +180,9 @@ class MaterialScrollableTable<T> extends StatefulWidget {
   /// first value taken by the dropdown will be 25. Another example: for 5, 10,
   /// 20, 50, 100, 200, 500 and 1000, the first value taken by the dropdown will
   /// be 100.
+  /// /// * [Paginated<T>] paginated: the data to display in the table with the
+  /// current pagination configuration. If no data is provided, the table will
+  /// display a [noDataLabel] message instead.
   final PaginationData<T>? pagination;
 
   /// The callback for when a row is actually determining if it should display a
@@ -376,7 +377,7 @@ class MaterialScrollableTableState<T>
   }
 
   _onItemsChange() {
-    _items = widget.pagination?.paginated.data ?? widget.items;
+    _items = widget.pagination?.paginated?.data ?? widget.items;
     for (var i = 0; i < _items.length; i++) {
       isRowDragging.add(false);
     }
@@ -392,8 +393,8 @@ class MaterialScrollableTableState<T>
   void didUpdateWidget(covariant MaterialScrollableTable<T> oldWidget) {
     final areItemsEqual = _listEquality.equals(oldWidget.items, widget.items);
     final arePaginatedEqual = _listEquality.equals(
-      oldWidget.pagination?.paginated.data,
-      widget.pagination?.paginated.data,
+      oldWidget.pagination?.paginated?.data,
+      widget.pagination?.paginated?.data,
     );
     if (!areItemsEqual || !arePaginatedEqual) {
       isRowDragging.clear();

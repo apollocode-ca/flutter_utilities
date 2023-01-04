@@ -138,7 +138,8 @@ class _PaginationRowState extends State<PaginationRow> {
               disabledColor: onPrimary.withOpacity(0.38),
               padding: EdgeInsets.zero,
               onPressed: () {
-                if (currentPage < widget.pagination.paginated.pageCount) {
+                final pageCount = widget.pagination.paginated?.pageCount ?? 0;
+                if (currentPage < pageCount) {
                   return onNextPageTap;
                 }
                 return null;
