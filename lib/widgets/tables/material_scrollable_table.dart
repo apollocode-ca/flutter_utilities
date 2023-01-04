@@ -2,9 +2,11 @@ import 'package:apollocode_dart_utilities/apollocode_dart_utilities.dart';
 import 'package:apollocode_flutter_utilities/extensions/global_key_extension.dart';
 import 'package:apollocode_flutter_utilities/models/column_data.dart';
 import 'package:apollocode_flutter_utilities/models/pagination_data.dart';
+import 'package:apollocode_flutter_utilities/widgets/layout/conditional.dart';
 import 'package:apollocode_flutter_utilities/widgets/tables/material_table/heading_row.dart';
 import 'package:apollocode_flutter_utilities/widgets/tables/material_table/item_row.dart';
 import 'package:apollocode_flutter_utilities/widgets/tables/material_table/loading_body.dart';
+import 'package:apollocode_flutter_utilities/widgets/tables/material_table/loading_indicator.dart';
 import 'package:apollocode_flutter_utilities/widgets/tables/material_table/no_data_body.dart';
 import 'package:apollocode_flutter_utilities/widgets/tables/material_table/pagination_row.dart';
 import 'package:collection/collection.dart';
@@ -24,8 +26,10 @@ import 'package:flutter/material.dart';
 /// When the table doesn't contain any data, an "empty data" message will be
 /// displayed in place of the data rows.
 ///
-/// When the table is loading data, a loading widget will be displayed in place
-/// of the data rows.
+/// When the table is loading data for the first time, a loading widget will be
+/// displayed in place of the data rows. If there is data already in the table
+/// and some other data is loading, a loading indicator will be displayed above
+/// the table in the top-right corner.
 ///
 /// By default, the table doesn't have any pagination. To provide a pagination
 /// row (that will be displayed at the bottom of the table), add some
@@ -85,10 +89,17 @@ class MaterialScrollableTable<T> extends StatefulWidget {
     ColumnData column,
   ) headingCellBuilder;
 
-  /// A flag to display the loading widget when data is loading.
+  /// A flag to display the loading widget or the loading indicator when data
+  /// is loading.
   ///
   /// Turn on the flag when your data is loading and turn it off when the future
   /// is done.
+  ///
+  /// When there is no data in the table, the loading widget will be displayed
+  /// instead of data rows.
+  ///
+  /// When there is data in the table, the loading indicator (above the table
+  /// in the top-right corner) will be displayed.
   final bool isLoading;
 
   /// The callback to build each row cell.
@@ -407,89 +418,113 @@ class MaterialScrollableTableState<T>
   Widget build(BuildContext context) {
     return _Inherited<T>(
       state: this,
-      child: Container(
-        clipBehavior: Clip.antiAlias,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(24),
-          color: Theme.of(context).colorScheme.surfaceVariant,
-        ),
-        key: _key,
-        child: Column(
-          children: [
-            HeadingRow(
-              cellBuilder: widget.headingCellBuilder,
-              columns: widget.columns,
-            ),
-            Expanded(
-              child: Builder(
-                builder: (context) {
-                  if (widget.isLoading) {
-                    return const LoadingBody();
-                  }
-                  if (_items.isEmpty) {
-                    return NoDataBody(
-                      labelText: widget.noDataLabel,
-                    );
-                  }
-                  return Builder(
-                    builder: (context) {
-                      if (widget.canDrag) {
-                        return DragTarget(
-                          builder: (context, candidateData, rejectedData) {
+      child: Column(
+        children: [
+          Conditional(
+            conditions: [
+              widget.isLoading && _items.isNotEmpty,
+            ],
+            children: [
+              Container(
+                alignment: Alignment.centerRight,
+                padding: const EdgeInsets.only(
+                  bottom: 4,
+                  right: 24,
+                ),
+                child: const LoadingIndicator(),
+              ),
+              const SizedBox(
+                height: LoadingIndicator.size + 4,
+              ),
+            ],
+          ),
+          Expanded(
+            child: Container(
+              clipBehavior: Clip.antiAlias,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(24),
+                color: Theme.of(context).colorScheme.surfaceVariant,
+              ),
+              key: _key,
+              child: Column(
+                children: [
+                  HeadingRow(
+                    cellBuilder: widget.headingCellBuilder,
+                    columns: widget.columns,
+                  ),
+                  Expanded(
+                    child: Builder(
+                      builder: (context) {
+                        if (widget.isLoading && _items.isEmpty) {
+                          return const LoadingBody();
+                        }
+                        if (_items.isEmpty) {
+                          return NoDataBody(
+                            labelText: widget.noDataLabel,
+                          );
+                        }
+                        return Builder(
+                          builder: (context) {
+                            if (widget.canDrag) {
+                              return DragTarget(
+                                builder: (context, acceptedData, rejectedData) {
+                                  return _rows;
+                                },
+                                onAccept: (data) {
+                                  final onRowDrag = widget.onRowDrag;
+                                  if (onRowDrag != null) {
+                                    onRowDrag(_startRowIndex, _currentRowIndex);
+                                  }
+                                  setState(() {
+                                    _currentlyDraggedRowOffset = Offset.zero;
+                                    _currentRowIndex = -1;
+                                    isRowDragging.remove(true);
+                                    isRowDragging.add(false);
+                                    _itemsBeforeDrag = <T>[];
+                                    _startRowIndex = -1;
+                                  });
+                                },
+                                onLeave: (data) {
+                                  setState(() {
+                                    _currentlyDraggedRowOffset = Offset.zero;
+                                    _currentRowIndex = -1;
+                                    isRowDragging.remove(true);
+                                    isRowDragging.add(false);
+                                    _items = List.from(_itemsBeforeDrag);
+                                    _itemsBeforeDrag = <T>[];
+                                    _startRowIndex = -1;
+                                  });
+                                },
+                                onWillAccept: (data) {
+                                  return true;
+                                },
+                              );
+                            }
                             return _rows;
                           },
-                          onAccept: (data) {
-                            final onRowDrag = widget.onRowDrag;
-                            if (onRowDrag != null) {
-                              onRowDrag(_startRowIndex, _currentRowIndex);
-                            }
-                            setState(() {
-                              _currentlyDraggedRowOffset = Offset.zero;
-                              _currentRowIndex = -1;
-                              isRowDragging.remove(true);
-                              isRowDragging.add(false);
-                              _itemsBeforeDrag = <T>[];
-                              _startRowIndex = -1;
-                            });
-                          },
-                          onLeave: (data) {
-                            setState(() {
-                              _currentlyDraggedRowOffset = Offset.zero;
-                              _currentRowIndex = -1;
-                              isRowDragging.remove(true);
-                              isRowDragging.add(false);
-                              _items = List.from(_itemsBeforeDrag);
-                              _itemsBeforeDrag = <T>[];
-                              _startRowIndex = -1;
-                            });
-                          },
-                          onWillAccept: (data) {
-                            return true;
-                          },
+                        );
+                      },
+                    ),
+                  ),
+                  Builder(
+                    builder: (context) {
+                      final pagination = widget.pagination;
+                      if (pagination != null) {
+                        return PaginationRow(
+                          onItemsPerPageChanged: widget.onItemsPerPageChanged,
+                          onNextPageTap: widget.onNextPageTap,
+                          onPreviousPageTap: widget.onPreviousPageTap,
+                          pagination: pagination,
                         );
                       }
-                      return _rows;
+                      return const SizedBox();
                     },
-                  );
-                },
+                  ),
+                ],
               ),
             ),
-            Builder(
-              builder: (context) {
-                final pagination = widget.pagination;
-                if (pagination != null) {
-                  return PaginationRow(
-                    onItemsPerPageChanged: widget.onItemsPerPageChanged,
-                    onNextPageTap: widget.onNextPageTap,
-                    onPreviousPageTap: widget.onPreviousPageTap,
-                    pagination: pagination,
-                  );
-                }
-                return const SizedBox();
-              },
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
