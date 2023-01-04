@@ -37,6 +37,7 @@ class HeadingRow extends StatelessWidget {
                       color: Theme.of(context).colorScheme.onPrimary,
                       fontWeight: FontWeight.w500,
                     ),
+                    textAlign: column.textAlign,
                     child: TableCell(
                       column: column,
                       index: index,
@@ -52,6 +53,7 @@ class HeadingRow extends StatelessWidget {
                     color: Theme.of(context).colorScheme.onPrimary,
                     fontWeight: FontWeight.w500,
                   ),
+                  textAlign: column.textAlign,
                   child: TableCell(
                     column: column,
                     index: index,

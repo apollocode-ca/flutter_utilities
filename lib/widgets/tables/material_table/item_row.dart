@@ -191,6 +191,7 @@ class _State<T> extends State<ItemRow<T>> {
                         style: TextStyle(
                           color: foregroundColor,
                         ),
+                        textAlign: column.textAlign,
                         child: TableCell(
                           column: column,
                           index: index,
@@ -209,6 +210,7 @@ class _State<T> extends State<ItemRow<T>> {
                       style: TextStyle(
                         color: foregroundColor,
                       ),
+                      textAlign: column.textAlign,
                       child: TableCell(
                         column: column,
                         index: index,
