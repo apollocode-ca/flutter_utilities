@@ -394,11 +394,20 @@ class _State extends State<MaterialCheckbox> with TickerProviderStateMixin {
   }) {
     switch (state) {
       case CheckboxState.partiallySelected:
-        fadeController.reverse().then((value) {
-          onAnimationDone(
-            externalState: externalState,
-          );
-        });
+        if (externalState == CheckboxState.selected) {
+          fadeController.reverse().then((value) {
+            onAnimationDone(
+              externalState: externalState,
+            );
+            fadeController.forward();
+          });
+        } else {
+          fadeController.reverse().then((value) {
+            onAnimationDone(
+              externalState: externalState,
+            );
+          });
+        }
         break;
       case CheckboxState.selected:
         if (externalState == CheckboxState.partiallySelected) {
@@ -417,19 +426,11 @@ class _State extends State<MaterialCheckbox> with TickerProviderStateMixin {
         }
         break;
       case CheckboxState.unselected:
-        if (widget.tristate) {
-          fadeController.forward().then((value) {
-            onAnimationDone(
-              externalState: externalState,
-            );
-          });
-        } else {
-          fadeController.forward().then((value) {
-            onAnimationDone(
-              externalState: externalState,
-            );
-          });
-        }
+        fadeController.forward().then((value) {
+          onAnimationDone(
+            externalState: externalState,
+          );
+        });
         break;
     }
   }
