@@ -315,7 +315,7 @@ class _State extends State<MaterialCheckbox> with TickerProviderStateMixin {
         }
         return Theme.of(context).colorScheme.primary;
       }
-      return null;
+      return Theme.of(context).colorScheme.surface;
     });
   }
 
