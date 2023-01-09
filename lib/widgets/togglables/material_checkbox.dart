@@ -708,7 +708,7 @@ class _State extends State<MaterialCheckbox> with TickerProviderStateMixin {
               constraints: BoxConstraints.tight(
                 Size.square(widget.splashRadius * 2),
               ),
-              decoration: BoxDecoration(
+              foregroundDecoration: BoxDecoration(
                 color: overlayColor,
                 shape: BoxShape.circle,
               ),
