@@ -37,10 +37,15 @@ import 'package:flutter/material.dart';
 /// A focus node can also be provided to have a deeper control of what happen
 /// when the checkbox gets the focus.
 ///
-/// Finally, the [onChanged] callback can be used to get the new state of the
+/// The [onChanged] callback can be used to get the new state of the
 /// checkbox after the user tapped it. So, for example, if the state of the
 /// checkbox before of being tapped was partially selected, you will get the
 /// state unselected with the callback.
+///
+/// The [onTap] callback can be used to add extra behavior when the user is
+/// tapping the checkkox. For example, if you want to request the focus on a
+/// parent widget (to listen to keyboard, let's say), you can do so with this
+/// callback.
 class MaterialCheckbox extends StatefulWidget {
   /// Background color of the checkbox.
   ///
@@ -160,6 +165,9 @@ class MaterialCheckbox extends StatefulWidget {
   /// is the state after the user tapped on the checkbox (and not before).
   final void Function(CheckboxState state)? onChanged;
 
+  /// A callback for when the checkbox is tapped.
+  final void Function()? onTap;
+
   /// Overlay color of the checkbox.
   ///
   /// The overlay color is the color given to the hovered, focused and pressed
@@ -276,6 +284,7 @@ class MaterialCheckbox extends StatefulWidget {
     this.focusNode,
     this.foregroundColor,
     this.onChanged,
+    this.onTap,
     this.overlayColor,
     this.splashRadius = 20,
     this.state,
@@ -676,6 +685,10 @@ class _State extends State<MaterialCheckbox> with TickerProviderStateMixin {
           }
           return () {
             animateFade();
+            final onTap = widget.onTap;
+            if (onTap != null) {
+              onTap();
+            }
           };
         }(),
         onLongPressCancel: () {
