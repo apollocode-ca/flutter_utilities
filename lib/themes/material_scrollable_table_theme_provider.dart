@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 /// Theme provider for the [MaterialScrollableTable].
 ///
 /// By default, the table has:
+/// * a heading background color of [ColorScheme.primary];
 /// * a heading height of 56; and
 /// * a row height of 52.
 class MaterialScrollableTableThemeProvider
@@ -25,6 +26,8 @@ class MaterialScrollableTableThemeProvider
     ColorScheme colorScheme,
     Brightness brightness,
   ) {
-    return _theme.copyWith();
+    return _theme.copyWith(
+      headingBackgroundColor: colorScheme.primary,
+    );
   }
 }

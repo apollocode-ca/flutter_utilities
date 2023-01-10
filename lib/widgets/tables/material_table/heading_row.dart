@@ -31,6 +31,8 @@ class HeadingRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme =
         Theme.of(context).getExtension<MaterialScrollableTableThemeData>();
+    final backgroundColor =
+        decoration.headingBackgroundColor ?? theme.headingBackgroundColor;
     final height = decoration.headingHeight ?? theme.headingHeight;
     final onPrimary = Theme.of(context).colorScheme.onPrimary;
     return Container(
@@ -38,7 +40,7 @@ class HeadingRow extends StatelessWidget {
         height: height,
       ),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.primary,
+        color: backgroundColor,
       ),
       padding: const EdgeInsets.symmetric(
         horizontal: 24,

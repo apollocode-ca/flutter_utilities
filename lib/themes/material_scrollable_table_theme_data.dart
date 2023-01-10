@@ -10,6 +10,15 @@ import 'package:flutter/material.dart';
 /// [MaterialScrollableTableDecoration] provided to the table.
 class MaterialScrollableTableThemeData
     extends ThemeExtension<MaterialScrollableTableThemeData> {
+  /// The background color of the heading of the table.
+  ///
+  /// By default, the value is [ColorScheme.primary].
+  ///
+  /// This value is overriden by the
+  /// [MaterialScrollableTableDecoration.headingBackgroundColor] value when non
+  /// null.
+  final Color? headingBackgroundColor;
+
   /// The height of the heading of the table.
   ///
   /// By default, the value is 56.
@@ -27,16 +36,20 @@ class MaterialScrollableTableThemeData
   final double rowHeight;
 
   MaterialScrollableTableThemeData({
+    this.headingBackgroundColor,
     required this.headingHeight,
     required this.rowHeight,
   });
 
   @override
   MaterialScrollableTableThemeData copyWith({
+    final Color? headingBackgroundColor,
     final double? headingHeight,
     final double? rowHeight,
   }) {
     return MaterialScrollableTableThemeData(
+      headingBackgroundColor:
+          headingBackgroundColor ?? this.headingBackgroundColor,
       headingHeight: headingHeight ?? this.headingHeight,
       rowHeight: rowHeight ?? this.rowHeight,
     );
@@ -51,6 +64,9 @@ class MaterialScrollableTableThemeData
       return this;
     }
     return MaterialScrollableTableThemeData(
+      headingBackgroundColor:
+          Color.lerp(headingBackgroundColor, other.headingBackgroundColor, t) ??
+              headingBackgroundColor,
       headingHeight:
           lerpDouble(headingHeight, other.headingHeight, t) ?? headingHeight,
       rowHeight: lerpDouble(rowHeight, other.rowHeight, t) ?? rowHeight,
