@@ -1,6 +1,9 @@
+import 'package:apollocode_flutter_utilities/decorations/material_scrollable_table_decoration.dart';
 import 'package:apollocode_flutter_utilities/enums/checkbox_state.dart';
 import 'package:apollocode_flutter_utilities/extensions/global_key_extension.dart';
+import 'package:apollocode_flutter_utilities/extensions/theme_data_extension.dart';
 import 'package:apollocode_flutter_utilities/models/column_data.dart';
+import 'package:apollocode_flutter_utilities/themes/material_scrollable_table_theme_data.dart';
 import 'package:apollocode_flutter_utilities/widgets/tables/material_table/table_cell.dart';
 import 'package:apollocode_flutter_utilities/widgets/tables/material_table/table_checkbox.dart';
 import 'package:flutter/material.dart' hide TableCell;
@@ -15,6 +18,7 @@ class ItemRow<T> extends StatefulWidget {
   ) cellBuilder;
   final CheckboxState checkboxState;
   final List<ColumnData> columns;
+  final MaterialScrollableTableDecoration decoration;
   final int index;
   final bool isAnyRowDragging;
   final bool isDragging;
@@ -31,6 +35,7 @@ class ItemRow<T> extends StatefulWidget {
     required this.cellBuilder,
     required this.checkboxState,
     required this.columns,
+    required this.decoration,
     required this.index,
     this.isAnyRowDragging = false,
     this.isDragging = false,
@@ -86,6 +91,18 @@ class _State<T> extends State<ItemRow<T>> {
     return Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.12);
   }
 
+  double get rowHeight {
+    final rowHeight = widget.decoration.rowHeight;
+    if (rowHeight != null) {
+      return rowHeight;
+    }
+    return theme.rowHeight;
+  }
+
+  MaterialScrollableTableThemeData get theme {
+    return Theme.of(context).getExtension<MaterialScrollableTableThemeData>();
+  }
+
   @override
   void didUpdateWidget(covariant ItemRow<T> oldWidget) {
     if (widget.isAnyRowDragging) {
@@ -102,7 +119,7 @@ class _State<T> extends State<ItemRow<T>> {
         cursor: SystemMouseCursors.grabbing,
         child: Container(
           constraints: BoxConstraints.tightFor(
-            height: Theme.of(context).dataTableTheme.dataRowHeight,
+            height: rowHeight,
             width: widget.tableKey?.widgetBounds?.width,
           ),
           decoration: BoxDecoration(
@@ -160,7 +177,7 @@ class _State<T> extends State<ItemRow<T>> {
         },
         child: AnimatedContainer(
           constraints: BoxConstraints.tightFor(
-            height: Theme.of(context).dataTableTheme.dataRowHeight,
+            height: rowHeight,
             width: widget.tableKey?.widgetBounds?.width,
           ),
           decoration: BoxDecoration(

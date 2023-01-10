@@ -1,10 +1,13 @@
 import 'dart:math';
 
 import 'package:apollocode_dart_utilities/apollocode_dart_utilities.dart';
+import 'package:apollocode_flutter_utilities/decorations/material_scrollable_table_decoration.dart';
 import 'package:apollocode_flutter_utilities/enums/checkbox_state.dart';
 import 'package:apollocode_flutter_utilities/extensions/global_key_extension.dart';
+import 'package:apollocode_flutter_utilities/extensions/theme_data_extension.dart';
 import 'package:apollocode_flutter_utilities/models/column_data.dart';
 import 'package:apollocode_flutter_utilities/models/pagination_data.dart';
+import 'package:apollocode_flutter_utilities/themes/material_scrollable_table_theme_data.dart';
 import 'package:apollocode_flutter_utilities/widgets/layout/conditional.dart';
 import 'package:apollocode_flutter_utilities/widgets/tables/material_table/heading_row.dart';
 import 'package:apollocode_flutter_utilities/widgets/tables/material_table/item_row.dart';
@@ -56,6 +59,10 @@ import 'package:flutter/services.dart';
 /// itself the reorder of the data to match the new rows order after a drag has
 /// been completed. To add an additional behavior after the drag, use the
 /// [onRowDrag] callback.
+///
+/// The table has a theming and dimensions by default, defined in the
+/// [MaterialScrollableTableThemeData]. If you want to override those values to
+/// personalize how the table look, provide a [decoration].
 class MaterialScrollableTable<T> extends StatefulWidget {
   /// A flag to show or hide a column of checkboxes with the provided custom
   /// columns.
@@ -87,6 +94,13 @@ class MaterialScrollableTable<T> extends StatefulWidget {
   /// take as much space as possible. If more than one column has a default
   /// width, each column will take an equaled part of the remaining space.
   final List<ColumnData> columns;
+
+  /// Decoration for the [MaterialScrollableDecoration].
+  ///
+  /// You can use this to personalize how the table looks. The values in this
+  /// class will override the default values defined in the
+  /// [MaterialScrollableTableThemeData].
+  final MaterialScrollableTableDecoration decoration;
 
   /// The items to display in the table.
   ///
@@ -263,6 +277,7 @@ class MaterialScrollableTable<T> extends StatefulWidget {
     this.addCheckboxesColumn = false,
     this.canDrag = false,
     required this.columns,
+    this.decoration = const MaterialScrollableTableDecoration(),
     required this.headingCellBuilder,
     this.isLoading = false,
     this.items = const [],
@@ -382,11 +397,15 @@ class MaterialScrollableTableState<T>
   }
 
   double get _rowHeight {
-    final rowHeight = Theme.of(context).dataTableTheme.dataRowHeight;
+    final rowHeight = widget.decoration.rowHeight;
     if (rowHeight != null) {
       return rowHeight;
     }
-    throw StateError('dataRowHeight must be set in the DataTableTheme');
+    return _theme.rowHeight;
+  }
+
+  MaterialScrollableTableThemeData get _theme {
+    return Theme.of(context).getExtension<MaterialScrollableTableThemeData>();
   }
 
   Widget get _rows {
@@ -470,6 +489,7 @@ class MaterialScrollableTableState<T>
       cellBuilder: widget.itemCellBuilder,
       checkboxState: _checkboxStates[index],
       columns: widget.columns,
+      decoration: widget.decoration,
       index: index,
       isAnyRowDragging: isRowDragging.any((isDragging) => isDragging),
       isDragging: isRowDragging[index],
