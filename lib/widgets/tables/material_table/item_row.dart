@@ -1,3 +1,4 @@
+import 'package:apollocode_flutter_utilities/enums/checkbox_state.dart';
 import 'package:apollocode_flutter_utilities/extensions/global_key_extension.dart';
 import 'package:apollocode_flutter_utilities/models/column_data.dart';
 import 'package:apollocode_flutter_utilities/widgets/tables/material_table/table_cell.dart';
@@ -12,11 +13,14 @@ class ItemRow<T> extends StatefulWidget {
     ColumnData column,
     int index,
   ) cellBuilder;
+  final CheckboxState checkboxState;
   final List<ColumnData> columns;
   final int index;
   final bool isAnyRowDragging;
   final bool isDragging;
   final T item;
+  final void Function(CheckboxState state) onCheckboxChanged;
+  final void Function() onCheckboxTap;
   final void Function(T item)? onTap;
   final bool shouldShowOverlayColor;
   final GlobalKey? tableKey;
@@ -25,12 +29,15 @@ class ItemRow<T> extends StatefulWidget {
     required this.addCheckboxesColumn,
     this.canDrag = false,
     required this.cellBuilder,
+    required this.checkboxState,
     required this.columns,
     required this.index,
     this.isAnyRowDragging = false,
     this.isDragging = false,
     required this.item,
-    this.onTap,
+    required this.onCheckboxChanged,
+    required this.onCheckboxTap,
+    required this.onTap,
     this.shouldShowOverlayColor = true,
     this.tableKey,
     Key? key,
@@ -189,10 +196,12 @@ class _State<T> extends State<ItemRow<T>> {
                 cells.add(
                   TableCell(
                     alignment: Alignment.center,
-                    width: 32,
+                    width: 48,
                     child: TableCheckbox(
-                      checkboxValue: false,
-                      onCheckboxTap: (value) {},
+                      isEvenRow: widget.index.isEven,
+                      onChanged: widget.onCheckboxChanged,
+                      onTap: widget.onCheckboxTap,
+                      state: widget.checkboxState,
                     ),
                   ),
                 );

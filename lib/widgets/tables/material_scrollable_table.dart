@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:apollocode_dart_utilities/apollocode_dart_utilities.dart';
+import 'package:apollocode_flutter_utilities/enums/checkbox_state.dart';
 import 'package:apollocode_flutter_utilities/extensions/global_key_extension.dart';
 import 'package:apollocode_flutter_utilities/models/column_data.dart';
 import 'package:apollocode_flutter_utilities/models/pagination_data.dart';
@@ -11,6 +14,7 @@ import 'package:apollocode_flutter_utilities/widgets/tables/material_table/no_da
 import 'package:apollocode_flutter_utilities/widgets/tables/material_table/pagination_row.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 /// Table that follows the Material theme specifications and the Flutter
 /// [DataTable] sizes.
@@ -38,7 +42,11 @@ import 'package:flutter/material.dart';
 /// configuration changes.
 ///
 /// By default, the table doesn't have a column of checkboxes. To add one, turn
-/// on the [addCheckboxesColumn] flag.
+/// on the [addCheckboxesColumn] flag. You can then use the [onCheckboxChanged]
+/// callback to get the state of every checkbox for which the state will be
+/// changed. Multi-selection of checkboxes is also enable by default. To
+/// multi-select, the user can press SHIFT while selecting two checkboxes and
+/// every checkbox between will be selected/unselected.
 ///
 /// By default, the table doesn't have any interaction. To add some, provide an
 /// [onRowTap] callback. The [shouldShowOverlayColor] callback can let you
@@ -133,6 +141,25 @@ class MaterialScrollableTable<T> extends StatefulWidget {
 
   /// The label to display in place of the data rows when there is no data.
   final String noDataLabel;
+
+  /// The callback for when a checkbox has been tapped.
+  ///
+  /// It's useful only when the table has a column of checkboxes. Defining the
+  /// callback when there is no such column has no effect.
+  ///
+  /// The indexes of every row (the list will be empty if the row is the
+  /// heading) and the new state of the checkboxes are provided by the callback.
+  ///
+  /// For example, if the checkbox of the third row was not selected before to
+  /// tap it, you will receive 2 for the index and [CheckboxState.selected] for
+  /// the state.
+  ///
+  /// When selecting all, the callback will be called for every checkbox with
+  /// the new state.
+  ///
+  /// When multi-selecting, the callback will be called for every checkbox that
+  /// has been selected/unselected by the operation.
+  final void Function(int? index, CheckboxState state)? onCheckboxChanged;
 
   /// The callback for when the items per page dropdown value change.
   ///
@@ -242,6 +269,7 @@ class MaterialScrollableTable<T> extends StatefulWidget {
     required this.itemCellBuilder,
     this.loadingIndicator,
     required this.noDataLabel,
+    this.onCheckboxChanged,
     this.onItemsPerPageChanged,
     this.onNextPageTap,
     this.onPreviousPageTap,
@@ -302,39 +330,55 @@ class MaterialScrollableTableState<T>
     extends State<MaterialScrollableTable<T>> {
   static const _listEquality = ListEquality();
 
+  static final _shiftKeys = {
+    LogicalKeyboardKey.shiftLeft,
+    LogicalKeyboardKey.shiftRight,
+  };
+
   /// A list of flags that keeps the draggable state of each row.
   ///
   /// This list is always sync with the list of items currently displayed, even
   /// after a dragging gesture.
   final isRowDragging = <bool>[];
 
-  final _checkboxValues = <bool>[];
+  final _checkboxStates = <CheckboxState>[];
   final _key = GlobalKey();
+  late final FocusNode _keyboardFocusNode;
 
   var _currentlyDraggedRowOffset = Offset.zero;
   var _currentRowIndex = -1;
+  var _isMultiSelecting = false;
+  var _isSelectingAll = false;
+  var _isShiftPressed = false;
   var _itemsBeforeDrag = <T>[];
   var _items = <T>[];
   var _startRowIndex = -1;
+
+  MapEntry<int, CheckboxState>? _lastChangedCheckbox;
+  MapEntry<int, CheckboxState>? _lastTappedCheckbox;
 
   /// The width of the table.
   double? get width {
     return _key.widgetBounds?.width;
   }
 
-  bool? get _overallCheckboxValue {
-    if (_checkboxValues.isEmpty) {
-      return false;
+  CheckboxState get _overallCheckboxState {
+    if (_checkboxStates.isEmpty) {
+      return CheckboxState.unselected;
     }
-    final isAllSelected = _checkboxValues.every((isSelected) => isSelected);
-    final isAnySelected = _checkboxValues.any((isSelected) => isSelected);
+    final isAllSelected = _checkboxStates.every((state) {
+      return state == CheckboxState.selected;
+    });
+    final isAnySelected = _checkboxStates.any((state) {
+      return state == CheckboxState.selected;
+    });
     if (isAllSelected) {
-      return true;
+      return CheckboxState.selected;
     }
     if (isAnySelected) {
-      return null;
+      return CheckboxState.partiallySelected;
     }
-    return false;
+    return CheckboxState.unselected;
   }
 
   double get _rowHeight {
@@ -384,7 +428,7 @@ class MaterialScrollableTableState<T>
                           .toInt();
                       _items.swap(_currentRowIndex, newRowIndex);
                       isRowDragging.swap(_currentRowIndex, newRowIndex);
-                      _checkboxValues.swap(_currentRowIndex, newRowIndex);
+                      _checkboxStates.swap(_currentRowIndex, newRowIndex);
                       _currentRowIndex = newRowIndex;
                       _currentlyDraggedRowOffset = Offset.zero;
                     }
@@ -399,16 +443,49 @@ class MaterialScrollableTableState<T>
     );
   }
 
+  void _changeAllCheckboxesBetween(
+    int firstIndex,
+    int lastIndex,
+    CheckboxState state,
+  ) {
+    final checkboxIndexesToChange = <int>[];
+    for (var index = firstIndex; index <= lastIndex; index++) {
+      if (_checkboxStates[index] == state.nextState) {
+        checkboxIndexesToChange.add(index);
+      }
+    }
+    for (final index in checkboxIndexesToChange) {
+      _checkboxStates[index] = state;
+    }
+    if (checkboxIndexesToChange.isNotEmpty) {
+      _isMultiSelecting = true;
+      _lastChangedCheckbox = MapEntry(checkboxIndexesToChange.last, state);
+    }
+  }
+
   Widget _getRow(T item, int index, {bool withTableKey = false}) {
     return ItemRow(
       addCheckboxesColumn: widget.addCheckboxesColumn,
       canDrag: widget.canDrag,
       cellBuilder: widget.itemCellBuilder,
+      checkboxState: _checkboxStates[index],
       columns: widget.columns,
       index: index,
       isAnyRowDragging: isRowDragging.any((isDragging) => isDragging),
       isDragging: isRowDragging[index],
       item: item,
+      onCheckboxChanged: (state) {
+        setState(() {
+          _onCheckboxSelection(index, state);
+        });
+        final onCheckboxChanged = widget.onCheckboxChanged;
+        if (onCheckboxChanged != null) {
+          onCheckboxChanged(index, state);
+        }
+      },
+      onCheckboxTap: () {
+        _keyboardFocusNode.requestFocus();
+      },
       onTap: widget.onRowTap,
       shouldShowOverlayColor: () {
         final shouldShowOverlayColor = widget.shouldShowOverlayColor;
@@ -426,26 +503,95 @@ class MaterialScrollableTableState<T>
     );
   }
 
+  void _onCheckboxSelection(int index, CheckboxState state) {
+    if (_isSelectingAll) {
+      _onCheckboxAllSelection(index);
+    } else if (_isMultiSelecting) {
+      _onCheckboxMultiSelection(index);
+    } else {
+      _onCheckboxSimpleSelection(index, state);
+    }
+  }
+
+  void _onCheckboxAllSelection(int index) {
+    final lastChangedCheckboxIndex = _lastChangedCheckbox?.key;
+    if (lastChangedCheckboxIndex != null && lastChangedCheckboxIndex == index) {
+      _isSelectingAll = false;
+      _lastChangedCheckbox = null;
+    }
+  }
+
+  void _onCheckboxMultiSelection(int index) {
+    final lastChangedCheckboxIndex = _lastChangedCheckbox?.key;
+    if (lastChangedCheckboxIndex != null && lastChangedCheckboxIndex == index) {
+      _isMultiSelecting = false;
+      _lastChangedCheckbox = null;
+    }
+  }
+
+  void _onCheckboxSimpleSelection(int index, CheckboxState state) {
+    _checkboxStates[index] = state;
+    if (_isShiftPressed && state == _lastTappedCheckbox?.value) {
+      _onCheckboxSimpleSelectionWithShift(index, state);
+    } else {
+      _lastTappedCheckbox = MapEntry(index, state);
+    }
+  }
+
+  void _onCheckboxSimpleSelectionWithShift(int index, CheckboxState state) {
+    final lastTappedCheckboxIndex = _lastTappedCheckbox?.key;
+    if (lastTappedCheckboxIndex != null) {
+      final firstIndex = min(index, lastTappedCheckboxIndex) + 1;
+      final lastIndex = max(index, lastTappedCheckboxIndex) - 1;
+      _lastTappedCheckbox = MapEntry(index, state);
+      _changeAllCheckboxesBetween(firstIndex, lastIndex, state);
+    }
+  }
+
   void _onItemsChange() {
     _items = widget.pagination?.paginated?.data ?? widget.items;
     for (var i = 0; i < _items.length; i++) {
       isRowDragging.add(false);
-      _checkboxValues.add(false);
+      _checkboxStates.add(CheckboxState.defaultState);
     }
   }
 
-  void _onOverallCheckboxTap(bool? value) {
-    setState(() {
-      for (var index = 0; index < _checkboxValues.length; index++) {
-        _checkboxValues[index] = value ?? false;
-      }
-    });
+  void _onOverallCheckboxChanged(CheckboxState state) {
+    if (_isSelectingAll) {
+      setState(() {
+        _lastChangedCheckbox = MapEntry(
+          _checkboxStates.lastIndexOf(state.nextState),
+          state,
+        );
+        for (var index = 0; index < _checkboxStates.length; index++) {
+          _checkboxStates[index] = state;
+        }
+      });
+    }
   }
 
   @override
   void initState() {
     super.initState();
     _onItemsChange();
+    _keyboardFocusNode = FocusNode(
+      onKey: (node, event) {
+        final isShiftKey = _shiftKeys.contains(event.logicalKey);
+        if (event is RawKeyDownEvent && isShiftKey) {
+          setState(() {
+            _isShiftPressed = true;
+          });
+          return KeyEventResult.handled;
+        }
+        if (event is RawKeyUpEvent && isShiftKey) {
+          setState(() {
+            _isShiftPressed = false;
+          });
+          return KeyEventResult.handled;
+        }
+        return KeyEventResult.ignored;
+      },
+    );
   }
 
   @override
@@ -457,10 +603,16 @@ class MaterialScrollableTableState<T>
     );
     if (!areItemsEqual || !arePaginatedEqual) {
       isRowDragging.clear();
-      _checkboxValues.clear();
+      _checkboxStates.clear();
       _onItemsChange();
     }
     super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  void dispose() {
+    _keyboardFocusNode.dispose();
+    super.dispose();
   }
 
   @override
@@ -499,91 +651,110 @@ class MaterialScrollableTableState<T>
             ],
           ),
           Expanded(
-            child: Container(
-              clipBehavior: Clip.antiAlias,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(24),
-                color: Theme.of(context).colorScheme.surfaceVariant,
-              ),
-              key: _key,
-              child: Column(
-                children: [
-                  HeadingRow(
-                    addCheckboxesColumn: widget.addCheckboxesColumn,
-                    cellBuilder: widget.headingCellBuilder,
-                    checkboxValue: _overallCheckboxValue,
-                    columns: widget.columns,
-                    onCheckboxTap: _onOverallCheckboxTap,
+            child: GestureDetector(
+              onTap: () {
+                _keyboardFocusNode.requestFocus();
+              },
+              child: KeyboardListener(
+                autofocus: true,
+                focusNode: _keyboardFocusNode,
+                child: Container(
+                  clipBehavior: Clip.antiAlias,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(24),
+                    color: Theme.of(context).colorScheme.surfaceVariant,
                   ),
-                  Expanded(
-                    child: Builder(
-                      builder: (context) {
-                        if (widget.isLoading && _items.isEmpty) {
-                          return const LoadingBody();
-                        }
-                        if (_items.isEmpty) {
-                          return NoDataBody(
-                            labelText: widget.noDataLabel,
-                          );
-                        }
-                        return Builder(
+                  key: _key,
+                  child: Column(
+                    children: [
+                      HeadingRow(
+                        addCheckboxesColumn: widget.addCheckboxesColumn,
+                        cellBuilder: widget.headingCellBuilder,
+                        checkboxState: _overallCheckboxState,
+                        columns: widget.columns,
+                        onCheckboxChanged: _onOverallCheckboxChanged,
+                        onCheckboxTap: () {
+                          _keyboardFocusNode.requestFocus();
+                          _isSelectingAll = true;
+                        },
+                      ),
+                      Expanded(
+                        child: Builder(
                           builder: (context) {
-                            if (widget.canDrag) {
-                              return DragTarget(
-                                builder: (context, acceptedData, rejectedData) {
-                                  return _rows;
-                                },
-                                onAccept: (data) {
-                                  final onRowDrag = widget.onRowDrag;
-                                  if (onRowDrag != null) {
-                                    onRowDrag(_startRowIndex, _currentRowIndex);
-                                  }
-                                  setState(() {
-                                    _currentlyDraggedRowOffset = Offset.zero;
-                                    _currentRowIndex = -1;
-                                    isRowDragging.remove(true);
-                                    isRowDragging.add(false);
-                                    _itemsBeforeDrag = <T>[];
-                                    _startRowIndex = -1;
-                                  });
-                                },
-                                onLeave: (data) {
-                                  setState(() {
-                                    _currentlyDraggedRowOffset = Offset.zero;
-                                    _currentRowIndex = -1;
-                                    isRowDragging.remove(true);
-                                    isRowDragging.add(false);
-                                    _items = List.from(_itemsBeforeDrag);
-                                    _itemsBeforeDrag = <T>[];
-                                    _startRowIndex = -1;
-                                  });
-                                },
-                                onWillAccept: (data) {
-                                  return true;
-                                },
+                            if (widget.isLoading && _items.isEmpty) {
+                              return const LoadingBody();
+                            }
+                            if (_items.isEmpty) {
+                              return NoDataBody(
+                                labelText: widget.noDataLabel,
                               );
                             }
-                            return _rows;
+                            return Builder(
+                              builder: (context) {
+                                if (widget.canDrag) {
+                                  return DragTarget(
+                                    builder: (context, data, rejectedData) {
+                                      return _rows;
+                                    },
+                                    onAccept: (data) {
+                                      final onRowDrag = widget.onRowDrag;
+                                      if (onRowDrag != null) {
+                                        onRowDrag(
+                                          _startRowIndex,
+                                          _currentRowIndex,
+                                        );
+                                      }
+                                      setState(() {
+                                        _currentlyDraggedRowOffset =
+                                            Offset.zero;
+                                        _currentRowIndex = -1;
+                                        isRowDragging.remove(true);
+                                        isRowDragging.add(false);
+                                        _itemsBeforeDrag = <T>[];
+                                        _startRowIndex = -1;
+                                      });
+                                    },
+                                    onLeave: (data) {
+                                      setState(() {
+                                        _currentlyDraggedRowOffset =
+                                            Offset.zero;
+                                        _currentRowIndex = -1;
+                                        isRowDragging.remove(true);
+                                        isRowDragging.add(false);
+                                        _items = List.from(_itemsBeforeDrag);
+                                        _itemsBeforeDrag = <T>[];
+                                        _startRowIndex = -1;
+                                      });
+                                    },
+                                    onWillAccept: (data) {
+                                      return true;
+                                    },
+                                  );
+                                }
+                                return _rows;
+                              },
+                            );
                           },
-                        );
-                      },
-                    ),
+                        ),
+                      ),
+                      Builder(
+                        builder: (context) {
+                          final pagination = widget.pagination;
+                          if (pagination != null) {
+                            return PaginationRow(
+                              onItemsPerPageChanged:
+                                  widget.onItemsPerPageChanged,
+                              onNextPageTap: widget.onNextPageTap,
+                              onPreviousPageTap: widget.onPreviousPageTap,
+                              pagination: pagination,
+                            );
+                          }
+                          return const SizedBox();
+                        },
+                      ),
+                    ],
                   ),
-                  Builder(
-                    builder: (context) {
-                      final pagination = widget.pagination;
-                      if (pagination != null) {
-                        return PaginationRow(
-                          onItemsPerPageChanged: widget.onItemsPerPageChanged,
-                          onNextPageTap: widget.onNextPageTap,
-                          onPreviousPageTap: widget.onPreviousPageTap,
-                          pagination: pagination,
-                        );
-                      }
-                      return const SizedBox();
-                    },
-                  ),
-                ],
+                ),
               ),
             ),
           ),

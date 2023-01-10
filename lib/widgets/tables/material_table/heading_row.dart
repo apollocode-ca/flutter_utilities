@@ -1,3 +1,4 @@
+import 'package:apollocode_flutter_utilities/enums/checkbox_state.dart';
 import 'package:apollocode_flutter_utilities/models/column_data.dart';
 import 'package:apollocode_flutter_utilities/widgets/tables/material_table/table_cell.dart';
 import 'package:apollocode_flutter_utilities/widgets/tables/material_table/table_checkbox.dart';
@@ -6,15 +7,17 @@ import 'package:flutter/material.dart' hide TableCell;
 class HeadingRow extends StatelessWidget {
   final bool addCheckboxesColumn;
   final Widget? Function(BuildContext context, ColumnData column) cellBuilder;
-  final bool? checkboxValue;
+  final CheckboxState checkboxState;
   final List<ColumnData> columns;
-  final void Function(bool? value) onCheckboxTap;
+  final void Function(CheckboxState state) onCheckboxChanged;
+  final void Function() onCheckboxTap;
 
   const HeadingRow({
     required this.addCheckboxesColumn,
     required this.cellBuilder,
-    required this.checkboxValue,
+    required this.checkboxState,
     required this.columns,
+    required this.onCheckboxChanged,
     required this.onCheckboxTap,
     Key? key,
   }) : super(key: key);
@@ -39,10 +42,12 @@ class HeadingRow extends StatelessWidget {
             cells.add(
               TableCell(
                 alignment: Alignment.center,
-                width: 32,
+                width: 48,
                 child: TableCheckbox(
-                  checkboxValue: checkboxValue,
-                  onCheckboxTap: onCheckboxTap,
+                  isEvenRow: null,
+                  onChanged: onCheckboxChanged,
+                  onTap: onCheckboxTap,
+                  state: checkboxState,
                 ),
               ),
             );

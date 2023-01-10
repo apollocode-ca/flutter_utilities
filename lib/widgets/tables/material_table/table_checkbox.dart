@@ -1,41 +1,81 @@
+import 'package:apollocode_flutter_utilities/enums/checkbox_state.dart';
+import 'package:apollocode_flutter_utilities/widgets/togglables/material_checkbox.dart';
 import 'package:flutter/material.dart';
 
 class TableCheckbox extends StatelessWidget {
-  final bool? checkboxValue;
-  final void Function(bool? value) onCheckboxTap;
+  final bool? isEvenRow;
+  final void Function(CheckboxState state) onChanged;
+  final void Function() onTap;
+  final CheckboxState state;
 
   const TableCheckbox({
-    required this.checkboxValue,
-    required this.onCheckboxTap,
+    required this.isEvenRow,
+    required this.onChanged,
+    required this.onTap,
+    required this.state,
     super.key,
   });
 
+  Color _getBackgroundColor(BuildContext context) {
+    final isEvenRow = this.isEvenRow;
+    if (isEvenRow == null) {
+      return Theme.of(context).colorScheme.onPrimary;
+    }
+    if (isEvenRow) {
+      return Theme.of(context).colorScheme.onSurfaceVariant;
+    }
+    return Theme.of(context).colorScheme.onSurface;
+  }
+
+  Color _getForegroundColor(BuildContext context) {
+    final isEvenRow = this.isEvenRow;
+    if (isEvenRow == null) {
+      return Theme.of(context).colorScheme.primary;
+    }
+    if (isEvenRow) {
+      return Theme.of(context).colorScheme.surfaceVariant;
+    }
+    return Theme.of(context).colorScheme.surface;
+  }
+
   @override
   Widget build(BuildContext context) {
-    final onPrimary = Theme.of(context).colorScheme.onPrimary;
-    return Checkbox(
-      fillColor: MaterialStateProperty.resolveWith((states) {
+    return MaterialCheckbox(
+      backgroundColor: MaterialStateProperty.resolveWith((states) {
         if (states.contains(MaterialState.selected)) {
-          return Theme.of(context).colorScheme.primaryContainer;
+          return _getBackgroundColor(context);
         }
         return null;
       }),
-      checkColor: Theme.of(context).colorScheme.onPrimaryContainer,
-      onChanged: onCheckboxTap,
+      border: MaterialStateProperty.resolveWith((states) {
+        if (states.contains(MaterialState.selected)) {
+          return null;
+        }
+        return Border.all(
+          color: _getBackgroundColor(context),
+          width: 2,
+        );
+      }),
+      foregroundColor: MaterialStatePropertyAll(
+        _getForegroundColor(context),
+      ),
       overlayColor: MaterialStateProperty.resolveWith((states) {
+        final color = _getBackgroundColor(context);
         if (states.contains(MaterialState.pressed)) {
-          return onPrimary.withOpacity(0.12);
+          return color.withOpacity(0.12);
         }
         if (states.contains(MaterialState.focused)) {
-          return onPrimary.withOpacity(0.12);
+          return color.withOpacity(0.12);
         }
         if (states.contains(MaterialState.hovered)) {
-          return onPrimary.withOpacity(0.08);
+          return color.withOpacity(0.08);
         }
         return null;
       }),
-      tristate: true,
-      value: checkboxValue,
+      onChanged: onChanged,
+      onTap: onTap,
+      state: state,
+      tristate: isEvenRow == null,
     );
   }
 }
