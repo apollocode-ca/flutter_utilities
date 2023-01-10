@@ -6,10 +6,12 @@ import 'package:flutter/material.dart';
 /// Theme provider for the [MaterialScrollableTable].
 ///
 /// By default, the table has:
-/// * a row height of 52 ([MaterialScrollableTableThemeData.rowHeight]).
+/// * a heading height of 56; and
+/// * a row height of 52.
 class MaterialScrollableTableThemeProvider
     extends AbstractedThemeProvider<MaterialScrollableTableThemeData> {
   final _theme = MaterialScrollableTableThemeData(
+    headingHeight: 56,
     rowHeight: 52,
   );
 

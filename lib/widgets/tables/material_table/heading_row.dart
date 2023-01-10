@@ -1,5 +1,8 @@
+import 'package:apollocode_flutter_utilities/decorations/material_scrollable_table_decoration.dart';
 import 'package:apollocode_flutter_utilities/enums/checkbox_state.dart';
+import 'package:apollocode_flutter_utilities/extensions/theme_data_extension.dart';
 import 'package:apollocode_flutter_utilities/models/column_data.dart';
+import 'package:apollocode_flutter_utilities/themes/material_scrollable_table_theme_data.dart';
 import 'package:apollocode_flutter_utilities/widgets/tables/material_table/table_cell.dart';
 import 'package:apollocode_flutter_utilities/widgets/tables/material_table/table_checkbox.dart';
 import 'package:flutter/material.dart' hide TableCell;
@@ -9,6 +12,7 @@ class HeadingRow extends StatelessWidget {
   final Widget? Function(BuildContext context, ColumnData column) cellBuilder;
   final CheckboxState checkboxState;
   final List<ColumnData> columns;
+  final MaterialScrollableTableDecoration decoration;
   final void Function(CheckboxState state) onCheckboxChanged;
   final void Function() onCheckboxTap;
 
@@ -17,6 +21,7 @@ class HeadingRow extends StatelessWidget {
     required this.cellBuilder,
     required this.checkboxState,
     required this.columns,
+    required this.decoration,
     required this.onCheckboxChanged,
     required this.onCheckboxTap,
     Key? key,
@@ -24,10 +29,13 @@ class HeadingRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme =
+        Theme.of(context).getExtension<MaterialScrollableTableThemeData>();
+    final height = decoration.headingHeight ?? theme.headingHeight;
     final onPrimary = Theme.of(context).colorScheme.onPrimary;
     return Container(
       constraints: BoxConstraints.tightFor(
-        height: Theme.of(context).dataTableTheme.headingRowHeight,
+        height: height,
       ),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.primary,

@@ -692,6 +692,7 @@ class MaterialScrollableTableState<T>
                         cellBuilder: widget.headingCellBuilder,
                         checkboxState: _overallCheckboxState,
                         columns: widget.columns,
+                        decoration: widget.decoration,
                         onCheckboxChanged: _onOverallCheckboxChanged,
                         onCheckboxTap: () {
                           _keyboardFocusNode.requestFocus();

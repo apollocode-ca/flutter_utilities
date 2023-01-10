@@ -6,6 +6,14 @@ import 'package:apollocode_flutter_utilities/widgets/tables/material_scrollable_
 /// The values defined with the decoration will override the values defined in
 /// the [MaterialScrollableTableThemeData].
 class MaterialScrollableTableDecoration {
+  /// The height of the heading of the table.
+  ///
+  /// By default, the value is 56.
+  ///
+  /// This value, when non null, will override the
+  /// [MaterialScrollableTableThemeData.headingHeight] value.
+  final double? headingHeight;
+
   /// The height of a data row in the table.
   ///
   /// By default, the value is 52.
@@ -15,6 +23,7 @@ class MaterialScrollableTableDecoration {
   final double? rowHeight;
 
   const MaterialScrollableTableDecoration({
+    this.headingHeight,
     this.rowHeight,
   });
 }

@@ -10,6 +10,14 @@ import 'package:flutter/material.dart';
 /// [MaterialScrollableTableDecoration] provided to the table.
 class MaterialScrollableTableThemeData
     extends ThemeExtension<MaterialScrollableTableThemeData> {
+  /// The height of the heading of the table.
+  ///
+  /// By default, the value is 56.
+  ///
+  /// This value is overriden by the
+  /// [MaterialScrollableTableDecoration.headingHeight] value when non null.
+  final double headingHeight;
+
   /// The height of a data row in the table.
   ///
   /// By default, the value is 52.
@@ -19,14 +27,17 @@ class MaterialScrollableTableThemeData
   final double rowHeight;
 
   MaterialScrollableTableThemeData({
+    required this.headingHeight,
     required this.rowHeight,
   });
 
   @override
   MaterialScrollableTableThemeData copyWith({
+    final double? headingHeight,
     final double? rowHeight,
   }) {
     return MaterialScrollableTableThemeData(
+      headingHeight: headingHeight ?? this.headingHeight,
       rowHeight: rowHeight ?? this.rowHeight,
     );
   }
@@ -40,6 +51,8 @@ class MaterialScrollableTableThemeData
       return this;
     }
     return MaterialScrollableTableThemeData(
+      headingHeight:
+          lerpDouble(headingHeight, other.headingHeight, t) ?? headingHeight,
       rowHeight: lerpDouble(rowHeight, other.rowHeight, t) ?? rowHeight,
     );
   }
