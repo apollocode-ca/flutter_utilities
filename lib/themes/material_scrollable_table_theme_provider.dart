@@ -28,11 +28,13 @@ class MaterialScrollableTableThemeProvider
     Brightness brightness,
   ) {
     return _theme.copyWith(
+      evenRowBackgroundColor: colorScheme.surface,
       headingBackgroundColor: colorScheme.primary,
       headingTextStyle: TextStyle(
         color: colorScheme.onPrimary,
         fontWeight: FontWeight.w500,
       ),
+      oddRowBackgroundColor: colorScheme.surfaceVariant,
     );
   }
 }

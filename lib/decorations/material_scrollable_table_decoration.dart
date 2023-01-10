@@ -31,6 +31,14 @@ class MaterialScrollableTableDecoration {
   /// [MaterialScrollableTableThemeData.columnSpacing] value.
   final double? columnSpacing;
 
+  /// The background color of any even row of the table.
+  ///
+  /// By default, the value is [ColorScheme.surface].
+  ///
+  /// This value, when non null, will override the
+  /// [MaterialScrollableTableThemeData.evenRowBackgroundColor] value.
+  final Color? evenRowBackgroundColor;
+
   /// The background color of the heading of the table.
   ///
   /// By default, the value is [ColorScheme.primary].
@@ -69,6 +77,14 @@ class MaterialScrollableTableDecoration {
   /// This value, when non null, will override the
   /// [MaterialScrollableTableThemeData.headingTextStyle] value.
   final TextStyle? headingTextStyle;
+
+  /// The background color of any odd row of the table.
+  ///
+  /// By default, the value is [ColorScheme.surfaceVariant].
+  ///
+  /// This value, when non null, will override the
+  /// [MaterialScrollableTableThemeData.oddRowBackgroundColor] value.
+  final Color? oddRowBackgroundColor;
 
   /// The padding inside each row (including the heading and the pagination
   /// rows) of the table.
@@ -119,10 +135,12 @@ class MaterialScrollableTableDecoration {
     this.checkboxColumnAlignment,
     this.checkboxColumnWidth,
     this.columnSpacing,
+    this.evenRowBackgroundColor,
     this.headingBackgroundColor,
     this.headingHeight,
     this.headingPadding,
     this.headingTextStyle,
+    this.oddRowBackgroundColor,
     this.padding,
     this.paginationPadding,
     this.rowHeight,

@@ -36,6 +36,15 @@ class MaterialScrollableTableThemeData
   /// [MaterialScrollableTableDecoration.columnSpacing] value when non null.
   final double columnSpacing;
 
+  /// The background color of any even row of the table.
+  ///
+  /// By default, the value is [ColorScheme.surface].
+  ///
+  /// This value is overriden by the
+  /// [MaterialScrollableTableDecoration.evenRowBackgroundColor] value when non
+  /// null.
+  final Color? evenRowBackgroundColor;
+
   /// The background color of the heading of the table.
   ///
   /// By default, the value is [ColorScheme.primary].
@@ -68,6 +77,15 @@ class MaterialScrollableTableThemeData
   /// [MaterialScrollableTableDecoration.headingTextStyle] value when non null.
   final TextStyle? headingTextStyle;
 
+  /// The background color of any odd row of the table.
+  ///
+  /// By default, the value is [ColorScheme.surfaceVariant].
+  ///
+  /// This value is overriden by the
+  /// [MaterialScrollableTableDecoration.evenRowBackgroundColor] value when non
+  /// null.
+  final Color? oddRowBackgroundColor;
+
   /// The padding inside each row (including the heading and the pagination
   /// rows) of the table.
   ///
@@ -95,9 +113,11 @@ class MaterialScrollableTableThemeData
     required this.checkboxColumnAlignment,
     required this.checkboxColumnWidth,
     required this.columnSpacing,
+    this.evenRowBackgroundColor,
     this.headingBackgroundColor,
     required this.headingHeight,
     this.headingTextStyle,
+    this.oddRowBackgroundColor,
     required this.padding,
     required this.rowHeight,
   });
@@ -107,9 +127,11 @@ class MaterialScrollableTableThemeData
     final AlignmentGeometry? checkboxColumnAlignment,
     final double? checkboxColumnWidth,
     final double? columnSpacing,
+    final Color? evenRowBackgroundColor,
     final Color? headingBackgroundColor,
     final double? headingHeight,
     final TextStyle? headingTextStyle,
+    final Color? oddRowBackgroundColor,
     final EdgeInsetsGeometry? padding,
     final double? rowHeight,
   }) {
@@ -118,10 +140,14 @@ class MaterialScrollableTableThemeData
           checkboxColumnAlignment ?? this.checkboxColumnAlignment,
       checkboxColumnWidth: checkboxColumnWidth ?? this.checkboxColumnWidth,
       columnSpacing: columnSpacing ?? this.columnSpacing,
+      evenRowBackgroundColor:
+          evenRowBackgroundColor ?? this.evenRowBackgroundColor,
       headingBackgroundColor:
           headingBackgroundColor ?? this.headingBackgroundColor,
       headingHeight: headingHeight ?? this.headingHeight,
       headingTextStyle: headingTextStyle ?? this.headingTextStyle,
+      oddRowBackgroundColor:
+          oddRowBackgroundColor ?? this.oddRowBackgroundColor,
       padding: padding ?? this.padding,
       rowHeight: rowHeight ?? this.rowHeight,
     );
@@ -143,6 +169,9 @@ class MaterialScrollableTableThemeData
               checkboxColumnWidth,
       columnSpacing:
           lerpDouble(columnSpacing, other.columnSpacing, t) ?? columnSpacing,
+      evenRowBackgroundColor:
+          Color.lerp(evenRowBackgroundColor, other.evenRowBackgroundColor, t) ??
+              evenRowBackgroundColor,
       headingBackgroundColor:
           Color.lerp(headingBackgroundColor, other.headingBackgroundColor, t) ??
               headingBackgroundColor,
@@ -151,6 +180,9 @@ class MaterialScrollableTableThemeData
       headingTextStyle:
           TextStyle.lerp(headingTextStyle, other.headingTextStyle, t) ??
               headingTextStyle,
+      oddRowBackgroundColor:
+          Color.lerp(oddRowBackgroundColor, other.oddRowBackgroundColor, t) ??
+              oddRowBackgroundColor,
       padding: EdgeInsetsGeometry.lerp(padding, other.padding, t) ?? padding,
       rowHeight: lerpDouble(rowHeight, other.rowHeight, t) ?? rowHeight,
     );

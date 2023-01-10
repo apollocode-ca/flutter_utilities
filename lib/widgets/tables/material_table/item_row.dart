@@ -56,38 +56,47 @@ class _State<T> extends State<ItemRow<T>> {
   var isPressing = false;
 
   Color get backgroundColor {
-    if (widget.index.isOdd) {
-      return Theme.of(context).colorScheme.surface;
+    final number = widget.index + 1;
+    if (number.isOdd) {
+      return widget.decoration.oddRowBackgroundColor ??
+          theme?.oddRowBackgroundColor ??
+          Theme.of(context).colorScheme.surfaceVariant;
     }
-    return Theme.of(context).colorScheme.surfaceVariant;
+    return widget.decoration.evenRowBackgroundColor ??
+        theme?.evenRowBackgroundColor ??
+        Theme.of(context).colorScheme.surface;
   }
 
   Color get draggedColor {
-    if (widget.index.isOdd) {
-      return Theme.of(context).colorScheme.onSurface.withOpacity(0.16);
+    final number = widget.index + 1;
+    if (number.isOdd) {
+      return Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.16);
     }
-    return Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.16);
+    return Theme.of(context).colorScheme.onSurface.withOpacity(0.16);
   }
 
   Color get foregroundColor {
-    if (widget.index.isOdd) {
-      return Theme.of(context).colorScheme.onSurface;
+    final number = widget.index + 1;
+    if (number.isOdd) {
+      return Theme.of(context).colorScheme.onSurfaceVariant;
     }
-    return Theme.of(context).colorScheme.onSurfaceVariant;
+    return Theme.of(context).colorScheme.onSurface;
   }
 
   Color get hoveredColor {
-    if (widget.index.isOdd) {
-      return Theme.of(context).colorScheme.onSurface.withOpacity(0.08);
+    final number = widget.index + 1;
+    if (number.isOdd) {
+      return Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.08);
     }
-    return Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.08);
+    return Theme.of(context).colorScheme.onSurface.withOpacity(0.08);
   }
 
   Color get pressedColor {
-    if (widget.index.isOdd) {
-      return Theme.of(context).colorScheme.onSurface.withOpacity(0.12);
+    final number = widget.index + 1;
+    if (number.isOdd) {
+      return Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.12);
     }
-    return Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.12);
+    return Theme.of(context).colorScheme.onSurface.withOpacity(0.12);
   }
 
   double get rowHeight {
