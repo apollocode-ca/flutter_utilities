@@ -17,8 +17,8 @@ abstract class AbstractedThemeProvider<T> implements ThemeProviderInterface<T> {
   @override
   T getFrom(Brightness brightness) {
     final colorScheme = _colorSchemeProvider.getFrom(brightness);
-    return copyWith(colorScheme);
+    return copyWith(colorScheme, brightness);
   }
 
-  T copyWith(ColorScheme colorScheme);
+  T copyWith(ColorScheme colorScheme, Brightness brightness);
 }
