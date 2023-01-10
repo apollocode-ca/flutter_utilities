@@ -34,6 +34,8 @@ class HeadingRow extends StatelessWidget {
     final backgroundColor =
         decoration.headingBackgroundColor ?? theme.headingBackgroundColor;
     final height = decoration.headingHeight ?? theme.headingHeight;
+    final padding =
+        decoration.headingPadding ?? decoration.padding ?? theme.padding;
     final onPrimary = Theme.of(context).colorScheme.onPrimary;
     return Container(
       constraints: BoxConstraints.tightFor(
@@ -42,9 +44,7 @@ class HeadingRow extends StatelessWidget {
       decoration: BoxDecoration(
         color: backgroundColor,
       ),
-      padding: const EdgeInsets.symmetric(
-        horizontal: 24,
-      ),
+      padding: padding,
       child: Builder(
         builder: (context) {
           final cells = <Widget>[];

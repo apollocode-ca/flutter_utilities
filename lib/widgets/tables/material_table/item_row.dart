@@ -114,6 +114,11 @@ class _State<T> extends State<ItemRow<T>> {
 
   @override
   Widget build(BuildContext context) {
+    final theme =
+        Theme.of(context).getExtension<MaterialScrollableTableThemeData>();
+    final padding = widget.decoration.rowPadding ??
+        widget.decoration.padding ??
+        theme.padding;
     if (widget.isDragging && widget.tableKey == null) {
       return MouseRegion(
         cursor: SystemMouseCursors.grabbing,
@@ -203,9 +208,7 @@ class _State<T> extends State<ItemRow<T>> {
               return null;
             }(),
           ),
-          padding: const EdgeInsets.symmetric(
-            horizontal: 24,
-          ),
+          padding: padding,
           child: Builder(
             builder: (context) {
               final cells = <Widget>[];

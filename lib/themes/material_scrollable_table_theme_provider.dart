@@ -13,6 +13,9 @@ class MaterialScrollableTableThemeProvider
     extends AbstractedThemeProvider<MaterialScrollableTableThemeData> {
   final _theme = MaterialScrollableTableThemeData(
     headingHeight: 56,
+    padding: const EdgeInsets.symmetric(
+      horizontal: 24,
+    ),
     rowHeight: 52,
   );
 

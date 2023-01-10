@@ -1,15 +1,20 @@
+import 'package:apollocode_flutter_utilities/decorations/material_scrollable_table_decoration.dart';
+import 'package:apollocode_flutter_utilities/extensions/theme_data_extension.dart';
 import 'package:apollocode_flutter_utilities/models/pagination_data.dart';
+import 'package:apollocode_flutter_utilities/themes/material_scrollable_table_theme_data.dart';
 import 'package:apollocode_flutter_utilities/widgets/icons/dropdown_arrow.dart';
 import 'package:apollocode_flutter_utilities/widgets/texts/body_text.dart';
 import 'package:flutter/material.dart';
 
 class PaginationRow extends StatefulWidget {
+  final MaterialScrollableTableDecoration decoration;
   final void Function(int page, int itemsPerPage)? onItemsPerPageChanged;
   final void Function(int page, int itemsPerPage)? onNextPageTap;
   final void Function(int page, int itemsPerPage)? onPreviousPageTap;
   final PaginationData pagination;
 
   const PaginationRow({
+    required this.decoration,
     required this.onItemsPerPageChanged,
     required this.onNextPageTap,
     required this.onPreviousPageTap,
@@ -66,6 +71,11 @@ class _PaginationRowState extends State<PaginationRow> {
 
   @override
   Widget build(BuildContext context) {
+    final theme =
+        Theme.of(context).getExtension<MaterialScrollableTableThemeData>();
+    final padding = widget.decoration.paginationPadding ??
+        widget.decoration.padding ??
+        theme.padding;
     final onPrimary = Theme.of(context).colorScheme.onPrimary;
     final onSurfaceVariant = Theme.of(context).colorScheme.onSurfaceVariant;
     final itemsPerPageSuggestions = widget.pagination.itemsPerPageSuggestions;
@@ -76,9 +86,7 @@ class _PaginationRowState extends State<PaginationRow> {
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.primary,
       ),
-      padding: const EdgeInsets.symmetric(
-        horizontal: 24,
-      ),
+      padding: padding,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [

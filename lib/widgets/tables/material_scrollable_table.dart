@@ -763,6 +763,7 @@ class MaterialScrollableTableState<T>
                           final pagination = widget.pagination;
                           if (pagination != null) {
                             return PaginationRow(
+                              decoration: widget.decoration,
                               onItemsPerPageChanged:
                                   widget.onItemsPerPageChanged,
                               onNextPageTap: widget.onNextPageTap,

@@ -27,6 +27,21 @@ class MaterialScrollableTableThemeData
   /// [MaterialScrollableTableDecoration.headingHeight] value when non null.
   final double headingHeight;
 
+  /// The padding inside each row (including the heading and the pagination
+  /// rows) of the table.
+  ///
+  /// By default, the value is:
+  ///
+  /// ```dart
+  /// const EdgeInsets.symmetric(
+  ///   horizontal: 24,
+  /// );
+  /// ```
+  ///
+  /// This value is overriden by the
+  /// [MaterialScrollableTableDecoration.padding] value when non null.
+  final EdgeInsetsGeometry padding;
+
   /// The height of a data row in the table.
   ///
   /// By default, the value is 52.
@@ -38,6 +53,7 @@ class MaterialScrollableTableThemeData
   MaterialScrollableTableThemeData({
     this.headingBackgroundColor,
     required this.headingHeight,
+    required this.padding,
     required this.rowHeight,
   });
 
@@ -45,12 +61,14 @@ class MaterialScrollableTableThemeData
   MaterialScrollableTableThemeData copyWith({
     final Color? headingBackgroundColor,
     final double? headingHeight,
+    final EdgeInsetsGeometry? padding,
     final double? rowHeight,
   }) {
     return MaterialScrollableTableThemeData(
       headingBackgroundColor:
           headingBackgroundColor ?? this.headingBackgroundColor,
       headingHeight: headingHeight ?? this.headingHeight,
+      padding: padding ?? this.padding,
       rowHeight: rowHeight ?? this.rowHeight,
     );
   }
@@ -69,6 +87,7 @@ class MaterialScrollableTableThemeData
               headingBackgroundColor,
       headingHeight:
           lerpDouble(headingHeight, other.headingHeight, t) ?? headingHeight,
+      padding: EdgeInsetsGeometry.lerp(padding, other.padding, t) ?? padding,
       rowHeight: lerpDouble(rowHeight, other.rowHeight, t) ?? rowHeight,
     );
   }
