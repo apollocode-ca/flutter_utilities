@@ -1,4 +1,4 @@
-import 'package:apollocode/src/configs/theme_provider/text_theme/poppins_text_styles.dart';
+import 'package:live_tester/src/configs/theme_provider/text_theme/poppins_text_styles.dart';
 
 final desktopDisplay = regularPoppins.copyWith(
   fontSize: 57,

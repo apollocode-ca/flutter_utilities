@@ -1,4 +1,4 @@
-import 'package:apollocode/src/utilities/figma_manager.dart';
+import 'package:live_tester/src/utilities/figma_manager.dart';
 import 'package:apollocode_flutter_utilities/themes/interfaces/abstracted_theme_provider.dart';
 import 'package:flutter/material.dart';
 

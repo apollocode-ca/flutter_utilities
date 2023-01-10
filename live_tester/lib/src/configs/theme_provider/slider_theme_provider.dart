@@ -1,4 +1,4 @@
-import 'package:apollocode/src/configs/theme_provider/text_theme.dart';
+import 'package:live_tester/src/configs/theme_provider/text_theme.dart';
 import 'package:apollocode_flutter_utilities/themes/interfaces/abstracted_theme_provider.dart';
 import 'package:flutter/material.dart';
 

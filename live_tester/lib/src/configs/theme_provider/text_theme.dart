@@ -1,6 +1,6 @@
-import 'package:apollocode/src/configs/theme_provider/text_theme/desktop_text_styles.dart';
-import 'package:apollocode/src/configs/theme_provider/text_theme/mobile_text_styles.dart';
-import 'package:apollocode/src/configs/theme_provider/text_theme/tablet_text_styles.dart';
+import 'package:live_tester/src/configs/theme_provider/text_theme/desktop_text_styles.dart';
+import 'package:live_tester/src/configs/theme_provider/text_theme/mobile_text_styles.dart';
+import 'package:live_tester/src/configs/theme_provider/text_theme/tablet_text_styles.dart';
 import 'package:flutter/material.dart';
 
 final textTheme = TextTheme(
