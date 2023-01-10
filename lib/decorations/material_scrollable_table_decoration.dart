@@ -47,6 +47,21 @@ class MaterialScrollableTableDecoration {
   /// [MaterialScrollableTableThemeData.headingPadding] value.
   final EdgeInsetsGeometry? headingPadding;
 
+  /// The style of the texts in the heading of the table.
+  ///
+  /// By default, the value is:
+  ///
+  /// ```dart
+  /// TextStyle(
+  ///   color: colorScheme.onPrimary,
+  ///   fontWeight: FontWeight.w500,
+  /// );
+  /// ```
+  ///
+  /// This value, when non null, will override the
+  /// [MaterialScrollableTableThemeData.headingTextStyle] value.
+  final TextStyle? headingTextStyle;
+
   /// The padding inside each row (including the heading and the pagination
   /// rows) of the table.
   ///
@@ -98,6 +113,7 @@ class MaterialScrollableTableDecoration {
     this.headingBackgroundColor,
     this.headingHeight,
     this.headingPadding,
+    this.headingTextStyle,
     this.padding,
     this.paginationPadding,
     this.rowHeight,

@@ -1,5 +1,4 @@
 import 'package:apollocode_flutter_utilities/decorations/material_scrollable_table_decoration.dart';
-import 'package:apollocode_flutter_utilities/extensions/theme_data_extension.dart';
 import 'package:apollocode_flutter_utilities/models/pagination_data.dart';
 import 'package:apollocode_flutter_utilities/themes/material_scrollable_table_theme_data.dart';
 import 'package:apollocode_flutter_utilities/widgets/icons/dropdown_arrow.dart';
@@ -30,6 +29,10 @@ class _PaginationRowState extends State<PaginationRow> {
   late int currentItemsPerPage;
 
   var currentPage = 1;
+
+  MaterialScrollableTableThemeData? get theme {
+    return Theme.of(context).extension<MaterialScrollableTableThemeData>();
+  }
 
   void onItemsPerPageChanged(int? value) {
     if (value != null) {
@@ -71,11 +74,12 @@ class _PaginationRowState extends State<PaginationRow> {
 
   @override
   Widget build(BuildContext context) {
-    final theme =
-        Theme.of(context).getExtension<MaterialScrollableTableThemeData>();
     final padding = widget.decoration.paginationPadding ??
         widget.decoration.padding ??
-        theme.padding;
+        theme?.padding ??
+        const EdgeInsets.symmetric(
+          horizontal: 24,
+        );
     final onPrimary = Theme.of(context).colorScheme.onPrimary;
     final onSurfaceVariant = Theme.of(context).colorScheme.onSurfaceVariant;
     final itemsPerPageSuggestions = widget.pagination.itemsPerPageSuggestions;

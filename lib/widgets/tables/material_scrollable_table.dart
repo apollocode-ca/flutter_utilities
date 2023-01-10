@@ -4,7 +4,6 @@ import 'package:apollocode_dart_utilities/apollocode_dart_utilities.dart';
 import 'package:apollocode_flutter_utilities/decorations/material_scrollable_table_decoration.dart';
 import 'package:apollocode_flutter_utilities/enums/checkbox_state.dart';
 import 'package:apollocode_flutter_utilities/extensions/global_key_extension.dart';
-import 'package:apollocode_flutter_utilities/extensions/theme_data_extension.dart';
 import 'package:apollocode_flutter_utilities/models/column_data.dart';
 import 'package:apollocode_flutter_utilities/models/pagination_data.dart';
 import 'package:apollocode_flutter_utilities/themes/material_scrollable_table_theme_data.dart';
@@ -401,11 +400,11 @@ class MaterialScrollableTableState<T>
     if (rowHeight != null) {
       return rowHeight;
     }
-    return _theme.rowHeight;
+    return _theme?.rowHeight ?? 52;
   }
 
-  MaterialScrollableTableThemeData get _theme {
-    return Theme.of(context).getExtension<MaterialScrollableTableThemeData>();
+  MaterialScrollableTableThemeData? get _theme {
+    return Theme.of(context).extension<MaterialScrollableTableThemeData>();
   }
 
   Widget get _rows {

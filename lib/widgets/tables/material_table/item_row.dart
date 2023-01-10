@@ -1,7 +1,6 @@
 import 'package:apollocode_flutter_utilities/decorations/material_scrollable_table_decoration.dart';
 import 'package:apollocode_flutter_utilities/enums/checkbox_state.dart';
 import 'package:apollocode_flutter_utilities/extensions/global_key_extension.dart';
-import 'package:apollocode_flutter_utilities/extensions/theme_data_extension.dart';
 import 'package:apollocode_flutter_utilities/models/column_data.dart';
 import 'package:apollocode_flutter_utilities/themes/material_scrollable_table_theme_data.dart';
 import 'package:apollocode_flutter_utilities/widgets/tables/material_table/table_cell.dart';
@@ -96,11 +95,11 @@ class _State<T> extends State<ItemRow<T>> {
     if (rowHeight != null) {
       return rowHeight;
     }
-    return theme.rowHeight;
+    return theme?.rowHeight ?? 52;
   }
 
-  MaterialScrollableTableThemeData get theme {
-    return Theme.of(context).getExtension<MaterialScrollableTableThemeData>();
+  MaterialScrollableTableThemeData? get theme {
+    return Theme.of(context).extension<MaterialScrollableTableThemeData>();
   }
 
   @override
@@ -114,15 +113,18 @@ class _State<T> extends State<ItemRow<T>> {
 
   @override
   Widget build(BuildContext context) {
-    final theme =
-        Theme.of(context).getExtension<MaterialScrollableTableThemeData>();
     final checkboxColumnAlignment = widget.decoration.checkboxColumnAlignment ??
-        theme.checkboxColumnAlignment;
-    final checkboxColumnWidth =
-        widget.decoration.checkboxColumnWidth ?? theme.checkboxColumnWidth;
+        theme?.checkboxColumnAlignment ??
+        AlignmentDirectional.center;
+    final checkboxColumnWidth = widget.decoration.checkboxColumnWidth ??
+        theme?.checkboxColumnWidth ??
+        48;
     final padding = widget.decoration.rowPadding ??
         widget.decoration.padding ??
-        theme.padding;
+        theme?.padding ??
+        const EdgeInsets.symmetric(
+          horizontal: 24,
+        );
     if (widget.isDragging && widget.tableKey == null) {
       return MouseRegion(
         cursor: SystemMouseCursors.grabbing,

@@ -45,6 +45,21 @@ class MaterialScrollableTableThemeData
   /// [MaterialScrollableTableDecoration.headingHeight] value when non null.
   final double headingHeight;
 
+  /// The style of the texts in the heading of the table.
+  ///
+  /// By default, the value is:
+  ///
+  /// ```dart
+  /// TextStyle(
+  ///   color: colorScheme.onPrimary,
+  ///   fontWeight: FontWeight.w500,
+  /// );
+  /// ```
+  ///
+  /// This value is overriden by the
+  /// [MaterialScrollableTableDecoration.headingTextStyle] value when non null.
+  final TextStyle? headingTextStyle;
+
   /// The padding inside each row (including the heading and the pagination
   /// rows) of the table.
   ///
@@ -73,6 +88,7 @@ class MaterialScrollableTableThemeData
     required this.checkboxColumnWidth,
     this.headingBackgroundColor,
     required this.headingHeight,
+    this.headingTextStyle,
     required this.padding,
     required this.rowHeight,
   });
@@ -83,6 +99,7 @@ class MaterialScrollableTableThemeData
     final double? checkboxColumnWidth,
     final Color? headingBackgroundColor,
     final double? headingHeight,
+    final TextStyle? headingTextStyle,
     final EdgeInsetsGeometry? padding,
     final double? rowHeight,
   }) {
@@ -93,6 +110,7 @@ class MaterialScrollableTableThemeData
       headingBackgroundColor:
           headingBackgroundColor ?? this.headingBackgroundColor,
       headingHeight: headingHeight ?? this.headingHeight,
+      headingTextStyle: headingTextStyle ?? this.headingTextStyle,
       padding: padding ?? this.padding,
       rowHeight: rowHeight ?? this.rowHeight,
     );
@@ -117,6 +135,9 @@ class MaterialScrollableTableThemeData
               headingBackgroundColor,
       headingHeight:
           lerpDouble(headingHeight, other.headingHeight, t) ?? headingHeight,
+      headingTextStyle:
+          TextStyle.lerp(headingTextStyle, other.headingTextStyle, t) ??
+              headingTextStyle,
       padding: EdgeInsetsGeometry.lerp(padding, other.padding, t) ?? padding,
       rowHeight: lerpDouble(rowHeight, other.rowHeight, t) ?? rowHeight,
     );

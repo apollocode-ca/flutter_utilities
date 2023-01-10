@@ -1,6 +1,5 @@
 import 'package:apollocode_flutter_utilities/decorations/material_scrollable_table_decoration.dart';
 import 'package:apollocode_flutter_utilities/enums/checkbox_state.dart';
-import 'package:apollocode_flutter_utilities/extensions/theme_data_extension.dart';
 import 'package:apollocode_flutter_utilities/models/column_data.dart';
 import 'package:apollocode_flutter_utilities/themes/material_scrollable_table_theme_data.dart';
 import 'package:apollocode_flutter_utilities/widgets/tables/material_table/table_cell.dart';
@@ -30,17 +29,28 @@ class HeadingRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme =
-        Theme.of(context).getExtension<MaterialScrollableTableThemeData>();
-    final backgroundColor =
-        decoration.headingBackgroundColor ?? theme.headingBackgroundColor;
-    final checkboxColumnAlignment =
-        decoration.checkboxColumnAlignment ?? theme.checkboxColumnAlignment;
+        Theme.of(context).extension<MaterialScrollableTableThemeData>();
+    final backgroundColor = decoration.headingBackgroundColor ??
+        theme?.headingBackgroundColor ??
+        Theme.of(context).colorScheme.primary;
+    final checkboxColumnAlignment = decoration.checkboxColumnAlignment ??
+        theme?.checkboxColumnAlignment ??
+        AlignmentDirectional.center;
     final checkboxColumnWidth =
-        decoration.checkboxColumnWidth ?? theme.checkboxColumnWidth;
-    final height = decoration.headingHeight ?? theme.headingHeight;
-    final padding =
-        decoration.headingPadding ?? decoration.padding ?? theme.padding;
-    final onPrimary = Theme.of(context).colorScheme.onPrimary;
+        decoration.checkboxColumnWidth ?? theme?.checkboxColumnWidth ?? 48;
+    final height = decoration.headingHeight ?? theme?.headingHeight ?? 56;
+    final padding = decoration.headingPadding ??
+        decoration.padding ??
+        theme?.padding ??
+        const EdgeInsets.symmetric(
+          horizontal: 24,
+        );
+    final textStyle = decoration.headingTextStyle ??
+        theme?.headingTextStyle ??
+        TextStyle(
+          color: Theme.of(context).colorScheme.onPrimary,
+          fontWeight: FontWeight.w500,
+        );
     return Container(
       constraints: BoxConstraints.tightFor(
         height: height,
@@ -72,10 +82,7 @@ class HeadingRow extends StatelessWidget {
               cells.add(
                 Expanded(
                   child: DefaultTextStyle(
-                    style: TextStyle(
-                      color: onPrimary,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    style: textStyle,
                     textAlign: column.textAlign,
                     child: TableCell(
                       column: column,
@@ -88,10 +95,7 @@ class HeadingRow extends StatelessWidget {
             } else {
               cells.add(
                 DefaultTextStyle(
-                  style: TextStyle(
-                    color: onPrimary,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  style: textStyle,
                   textAlign: column.textAlign,
                   child: TableCell(
                     column: column,

@@ -28,6 +28,10 @@ class MaterialScrollableTableThemeProvider
   ) {
     return _theme.copyWith(
       headingBackgroundColor: colorScheme.primary,
+      headingTextStyle: TextStyle(
+        color: colorScheme.onPrimary,
+        fontWeight: FontWeight.w500,
+      ),
     );
   }
 }
