@@ -1,10 +1,10 @@
-import 'package:live_tester/src/configs/theme_provider/color_scheme_provider.dart';
-import 'package:live_tester/src/configs/theme_provider/text_theme.dart';
-import 'package:live_tester/src/utilities/figma_manager.dart';
+import 'package:apollocode/src/configs/theme_provider/text_theme.dart';
+import 'package:apollocode/src/utilities/figma_manager.dart';
+import 'package:apollocode_flutter_utilities/themes/interfaces/abstracted_theme_provider.dart';
 import 'package:flutter/material.dart';
 
-class TextButtonThemeProvider {
-  final _colorSchemeProvider = ColorSchemeProvider();
+class TextButtonThemeProvider
+    extends AbstractedThemeProvider<TextButtonThemeData> {
   final _helper = FigmaManager.instance.helper;
   final _style = ButtonStyle(
     alignment: Alignment.center,
@@ -26,8 +26,12 @@ class TextButtonThemeProvider {
     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
   );
 
-  TextButtonThemeData getFrom(Brightness brightness) {
-    final colorScheme = _colorSchemeProvider.getFrom(brightness);
+  TextButtonThemeProvider({
+    required super.colorSchemeProvider,
+  });
+
+  @override
+  TextButtonThemeData copyWith(ColorScheme colorScheme, Brightness brightness) {
     return TextButtonThemeData(
       style: _style.copyWith(
         foregroundColor: MaterialStateProperty.resolveWith((states) {

@@ -1,15 +1,18 @@
-import 'package:live_tester/src/configs/theme_provider/color_scheme_provider.dart';
+import 'package:apollocode_flutter_utilities/themes/interfaces/abstracted_theme_provider.dart';
 import 'package:flutter/material.dart';
 
-class CheckboxThemeProvider {
-  final _colorSchemeProvider = ColorSchemeProvider();
+class CheckboxThemeProvider extends AbstractedThemeProvider<CheckboxThemeData> {
   final _theme = const CheckboxThemeData(
     materialTapTargetSize: MaterialTapTargetSize.padded,
     splashRadius: 24,
   );
 
-  CheckboxThemeData getFrom(Brightness brightness) {
-    final colorScheme = _colorSchemeProvider.getFrom(brightness);
+  CheckboxThemeProvider({
+    required super.colorSchemeProvider,
+  });
+
+  @override
+  CheckboxThemeData copyWith(ColorScheme colorScheme, Brightness brightness) {
     return _theme.copyWith(
       checkColor: MaterialStateProperty.all(
         colorScheme.onPrimary,

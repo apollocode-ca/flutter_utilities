@@ -1,10 +1,9 @@
-import 'package:live_tester/src/configs/theme_provider/color_scheme_provider.dart';
-import 'package:live_tester/src/configs/theme_provider/text_theme.dart';
-import 'package:live_tester/src/utilities/figma_manager.dart';
+import 'package:apollocode/src/configs/theme_provider/text_theme.dart';
+import 'package:apollocode/src/utilities/figma_manager.dart';
+import 'package:apollocode_flutter_utilities/themes/interfaces/abstracted_theme_provider.dart';
 import 'package:flutter/material.dart';
 
-class TabBarThemeProvider {
-  final _colorSchemeProvider = ColorSchemeProvider();
+class TabBarThemeProvider extends AbstractedThemeProvider<TabBarTheme> {
   final _helper = FigmaManager.instance.helper;
   final _theme = const TabBarTheme(
     indicatorSize: TabBarIndicatorSize.tab,
@@ -13,8 +12,12 @@ class TabBarThemeProvider {
     ),
   );
 
-  TabBarTheme getFrom(Brightness brightness) {
-    final colorScheme = _colorSchemeProvider.getFrom(brightness);
+  TabBarThemeProvider({
+    required super.colorSchemeProvider,
+  });
+
+  @override
+  TabBarTheme copyWith(ColorScheme colorScheme, Brightness brightness) {
     return _theme.copyWith(
       indicator: UnderlineTabIndicator(
         borderSide: BorderSide(

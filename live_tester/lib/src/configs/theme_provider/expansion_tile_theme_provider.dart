@@ -1,8 +1,8 @@
-import 'package:live_tester/src/configs/theme_provider/color_scheme_provider.dart';
+import 'package:apollocode_flutter_utilities/themes/interfaces/abstracted_theme_provider.dart';
 import 'package:flutter/material.dart';
 
-class ExpansionTileThemeProvider {
-  final _colorSchemeProvider = ColorSchemeProvider();
+class ExpansionTileThemeProvider
+    extends AbstractedThemeProvider<ExpansionTileThemeData> {
   final _theme = const ExpansionTileThemeData(
     childrenPadding: EdgeInsets.only(
       bottom: 16,
@@ -17,8 +17,15 @@ class ExpansionTileThemeProvider {
     ),
   );
 
-  ExpansionTileThemeData getFrom(Brightness brightness) {
-    final colorScheme = _colorSchemeProvider.getFrom(brightness);
+  ExpansionTileThemeProvider({
+    required super.colorSchemeProvider,
+  });
+
+  @override
+  ExpansionTileThemeData copyWith(
+    ColorScheme colorScheme,
+    Brightness brightness,
+  ) {
     return _theme.copyWith(
       backgroundColor: colorScheme.surface,
       collapsedBackgroundColor: colorScheme.surface,

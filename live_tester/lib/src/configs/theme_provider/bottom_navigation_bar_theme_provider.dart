@@ -1,9 +1,9 @@
-import 'package:live_tester/src/configs/theme_provider/text_theme.dart';
-import 'package:live_tester/src/configs/theme_provider/color_scheme_provider.dart';
+import 'package:apollocode/src/configs/theme_provider/text_theme.dart';
+import 'package:apollocode_flutter_utilities/themes/interfaces/abstracted_theme_provider.dart';
 import 'package:flutter/material.dart';
 
-class BottomNavigationBarThemeProvider {
-  final _colorSchemeProvider = ColorSchemeProvider();
+class BottomNavigationBarThemeProvider
+    extends AbstractedThemeProvider<BottomNavigationBarThemeData> {
   final _iconTheme = const IconThemeData(
     size: 24,
   );
@@ -15,8 +15,15 @@ class BottomNavigationBarThemeProvider {
     type: BottomNavigationBarType.fixed,
   );
 
-  BottomNavigationBarThemeData getFrom(Brightness brightness) {
-    final colorScheme = _colorSchemeProvider.getFrom(brightness);
+  BottomNavigationBarThemeProvider({
+    required super.colorSchemeProvider,
+  });
+
+  @override
+  BottomNavigationBarThemeData copyWith(
+    ColorScheme colorScheme,
+    Brightness brightness,
+  ) {
     return _theme.copyWith(
       backgroundColor: colorScheme.surface,
       selectedIconTheme: _iconTheme.copyWith(

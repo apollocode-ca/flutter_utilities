@@ -1,8 +1,7 @@
-import 'package:live_tester/src/configs/theme_provider/color_scheme_provider.dart';
+import 'package:apollocode_flutter_utilities/themes/interfaces/abstracted_theme_provider.dart';
 import 'package:flutter/material.dart';
 
-class DrawerThemeProvider {
-  final _colorSchemeProvider = ColorSchemeProvider();
+class DrawerThemeProvider extends AbstractedThemeProvider<DrawerThemeData> {
   final _theme = const DrawerThemeData(
     elevation: 0,
     shape: RoundedRectangleBorder(
@@ -14,8 +13,12 @@ class DrawerThemeProvider {
     width: 360,
   );
 
-  DrawerThemeData getFrom(Brightness brightness) {
-    final colorScheme = _colorSchemeProvider.getFrom(brightness);
+  DrawerThemeProvider({
+    required super.colorSchemeProvider,
+  });
+
+  @override
+  DrawerThemeData copyWith(ColorScheme colorScheme, Brightness brightness) {
     return _theme.copyWith(
       backgroundColor: colorScheme.surface,
       scrimColor: colorScheme.shadow.withOpacity(0.32),

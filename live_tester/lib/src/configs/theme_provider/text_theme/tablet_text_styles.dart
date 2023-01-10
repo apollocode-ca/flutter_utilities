@@ -1,4 +1,4 @@
-import 'package:live_tester/src/configs/theme_provider/text_theme/poppins_text_styles.dart';
+import 'package:apollocode/src/configs/theme_provider/text_theme/poppins_text_styles.dart';
 
 final tabletDisplay = regularPoppins.copyWith(
   fontSize: 45,

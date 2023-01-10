@@ -1,11 +1,12 @@
-import 'package:live_tester/src/configs/theme_provider/color_scheme_provider.dart';
-import 'package:live_tester/src/configs/theme_provider/input_decoration_theme_provider.dart';
-import 'package:live_tester/src/configs/theme_provider/text_theme.dart';
+import 'package:apollocode/src/configs/theme_provider/input_decoration_theme_provider.dart';
+import 'package:apollocode/src/configs/theme_provider/text_theme.dart';
+import 'package:apollocode_flutter_utilities/themes/interfaces/abstracted_theme_provider.dart';
 import 'package:flutter/material.dart';
 
-class TimePickerThemeProvider {
-  final _colorSchemeProvider = ColorSchemeProvider();
-  final _inputDecorationThemeProvider = InputDecorationThemeProvider();
+class TimePickerThemeProvider
+    extends AbstractedThemeProvider<TimePickerThemeData> {
+  final InputDecorationThemeProvider _inputDecorationThemeProvider;
+
   final _theme = TimePickerThemeData(
     dayPeriodShape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(4),
@@ -15,8 +16,14 @@ class TimePickerThemeProvider {
     ),
   );
 
-  TimePickerThemeData getFrom(Brightness brightness) {
-    final colorScheme = _colorSchemeProvider.getFrom(brightness);
+  TimePickerThemeProvider({
+    required super.colorSchemeProvider,
+  }) : _inputDecorationThemeProvider = InputDecorationThemeProvider(
+          colorSchemeProvider: colorSchemeProvider,
+        );
+
+  @override
+  TimePickerThemeData copyWith(ColorScheme colorScheme, Brightness brightness) {
     return _theme.copyWith(
       backgroundColor: colorScheme.surface,
       dayPeriodBorderSide: BorderSide(

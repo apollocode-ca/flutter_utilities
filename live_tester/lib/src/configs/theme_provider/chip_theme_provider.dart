@@ -1,12 +1,11 @@
-import 'package:live_tester/src/configs/theme_provider/color_scheme_provider.dart';
-import 'package:live_tester/src/configs/theme_provider/text_theme.dart';
+import 'package:apollocode/src/configs/theme_provider/text_theme.dart';
+import 'package:apollocode_flutter_utilities/themes/interfaces/abstracted_theme_provider.dart';
 import 'package:flutter/material.dart';
 
-class ChipThemeProvider {
+class ChipThemeProvider extends AbstractedThemeProvider<ChipThemeData> {
   final _borderSide = const BorderSide(
     width: 1,
   );
-  final _colorSchemeProvider = ColorSchemeProvider();
   final _theme = ChipThemeData(
     elevation: 0,
     labelPadding: const EdgeInsets.symmetric(
@@ -22,8 +21,12 @@ class ChipThemeProvider {
     showCheckmark: true,
   );
 
-  ChipThemeData getFrom(Brightness brightness) {
-    final colorScheme = _colorSchemeProvider.getFrom(brightness);
+  ChipThemeProvider({
+    required super.colorSchemeProvider,
+  });
+
+  @override
+  ChipThemeData copyWith(ColorScheme colorScheme, Brightness brightness) {
     return _theme.copyWith(
       backgroundColor: colorScheme.surface,
       brightness: brightness,

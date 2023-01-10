@@ -1,10 +1,9 @@
-import 'package:live_tester/src/configs/theme_provider/text_theme.dart';
-import 'package:live_tester/src/configs/theme_provider/color_scheme_provider.dart';
+import 'package:apollocode/src/configs/theme_provider/text_theme.dart';
+import 'package:apollocode_flutter_utilities/themes/interfaces/abstracted_theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class AppBarThemeProvider {
-  final _colorSchemeProvider = ColorSchemeProvider();
+class AppBarThemeProvider extends AbstractedThemeProvider<AppBarTheme> {
   final _iconTheme = const IconThemeData(
     size: 24,
   );
@@ -15,8 +14,12 @@ class AppBarThemeProvider {
     toolbarHeight: 64,
   );
 
-  AppBarTheme getFrom(Brightness brightness) {
-    final colorScheme = _colorSchemeProvider.getFrom(brightness);
+  AppBarThemeProvider({
+    required super.colorSchemeProvider,
+  });
+
+  @override
+  AppBarTheme copyWith(ColorScheme colorScheme, Brightness brightness) {
     return _theme.copyWith(
       actionsIconTheme: _iconTheme.copyWith(
         color: colorScheme.onSurfaceVariant,

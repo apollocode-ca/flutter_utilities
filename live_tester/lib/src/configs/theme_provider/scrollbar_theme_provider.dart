@@ -1,8 +1,8 @@
-import 'package:live_tester/src/configs/theme_provider/color_scheme_provider.dart';
+import 'package:apollocode_flutter_utilities/themes/interfaces/abstracted_theme_provider.dart';
 import 'package:flutter/material.dart';
 
-class ScrollbarThemeProvider {
-  final _colorSchemeProvider = ColorSchemeProvider();
+class ScrollbarThemeProvider
+    extends AbstractedThemeProvider<ScrollbarThemeData> {
   final _theme = ScrollbarThemeData(
     crossAxisMargin: 4,
     mainAxisMargin: 4,
@@ -18,8 +18,12 @@ class ScrollbarThemeProvider {
     }),
   );
 
-  ScrollbarThemeData getFrom(Brightness brightness) {
-    final colorScheme = _colorSchemeProvider.getFrom(brightness);
+  ScrollbarThemeProvider({
+    required super.colorSchemeProvider,
+  });
+
+  @override
+  ScrollbarThemeData copyWith(ColorScheme colorScheme, Brightness brightness) {
     return _theme.copyWith(
       thumbColor: MaterialStateProperty.resolveWith((states) {
         if (states.contains(MaterialState.dragged)) {

@@ -1,15 +1,18 @@
-import 'package:live_tester/src/configs/theme_provider/color_scheme_provider.dart';
+import 'package:apollocode_flutter_utilities/themes/interfaces/abstracted_theme_provider.dart';
 import 'package:flutter/material.dart';
 
-class SwitchThemeProvider {
-  final _colorSchemeProvider = ColorSchemeProvider();
+class SwitchThemeProvider extends AbstractedThemeProvider<SwitchThemeData> {
   final _theme = const SwitchThemeData(
     materialTapTargetSize: MaterialTapTargetSize.padded,
     splashRadius: 20,
   );
 
-  SwitchThemeData getFrom(Brightness brightness) {
-    final colorScheme = _colorSchemeProvider.getFrom(brightness);
+  SwitchThemeProvider({
+    required super.colorSchemeProvider,
+  });
+
+  @override
+  SwitchThemeData copyWith(ColorScheme colorScheme, Brightness brightness) {
     return _theme.copyWith(
       overlayColor: MaterialStateProperty.resolveWith((states) {
         if (states.contains(MaterialState.selected)) {

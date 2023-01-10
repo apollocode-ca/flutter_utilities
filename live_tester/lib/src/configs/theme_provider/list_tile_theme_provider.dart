@@ -1,8 +1,7 @@
-import 'package:live_tester/src/configs/theme_provider/color_scheme_provider.dart';
+import 'package:apollocode_flutter_utilities/themes/interfaces/abstracted_theme_provider.dart';
 import 'package:flutter/material.dart';
 
-class ListTileThemeProvider {
-  final _colorSchemeProvider = ColorSchemeProvider();
+class ListTileThemeProvider extends AbstractedThemeProvider<ListTileThemeData> {
   final _theme = const ListTileThemeData(
     contentPadding: EdgeInsets.symmetric(
       horizontal: 16,
@@ -16,8 +15,12 @@ class ListTileThemeProvider {
     style: ListTileStyle.list,
   );
 
-  ListTileThemeData getFrom(Brightness brightness) {
-    final colorScheme = _colorSchemeProvider.getFrom(brightness);
+  ListTileThemeProvider({
+    required super.colorSchemeProvider,
+  });
+
+  @override
+  ListTileThemeData copyWith(ColorScheme colorScheme, Brightness brightness) {
     return _theme.copyWith(
       iconColor: colorScheme.onSurface,
       selectedColor: colorScheme.onTertiary,

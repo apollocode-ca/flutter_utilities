@@ -1,9 +1,11 @@
+import 'package:apollocode_flutter_utilities/themes/interfaces/color_scheme_provider_interface.dart';
 import 'package:flutter/material.dart';
 
 // To build a new Material Theme:
 // https://www.figma.com/community/plugin/1034969338659738588/Material-Theme-Builder
 
-class ColorSchemeProvider {
+class ColorSchemeProvider extends ColorSchemeProviderInterface {
+  @override
   ColorScheme getFrom(Brightness brightness) {
     return ColorScheme(
       background: _getBackgroundFrom(brightness),
@@ -38,6 +40,7 @@ class ColorSchemeProvider {
     );
   }
 
+  @override
   Color getDarkerPrimaryFrom(Brightness brightness) {
     if (brightness == Brightness.light) {
       // Primary30
@@ -47,6 +50,7 @@ class ColorSchemeProvider {
     return const Color(0xFFFF8A76);
   }
 
+  @override
   Color getLighterPrimaryFrom(Brightness brightness) {
     if (brightness == Brightness.light) {
       // Primary50

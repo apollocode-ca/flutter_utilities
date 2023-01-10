@@ -1,8 +1,7 @@
-import 'package:live_tester/src/configs/theme_provider/color_scheme_provider.dart';
+import 'package:apollocode_flutter_utilities/themes/interfaces/abstracted_theme_provider.dart';
 import 'package:flutter/material.dart';
 
-class DividerThemeProvider {
-  final _colorSchemeProvider = ColorSchemeProvider();
+class DividerThemeProvider extends AbstractedThemeProvider<DividerThemeData> {
   final _theme = const DividerThemeData(
     endIndent: 8,
     indent: 8,
@@ -10,8 +9,12 @@ class DividerThemeProvider {
     thickness: 1,
   );
 
-  DividerThemeData getFrom(Brightness brightness) {
-    final colorScheme = _colorSchemeProvider.getFrom(brightness);
+  DividerThemeProvider({
+    required super.colorSchemeProvider,
+  });
+
+  @override
+  DividerThemeData copyWith(ColorScheme colorScheme, Brightness brightness) {
     return _theme.copyWith(
       color: colorScheme.outline,
     );

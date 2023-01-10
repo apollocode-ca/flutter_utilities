@@ -1,9 +1,9 @@
-import 'package:live_tester/src/configs/theme_provider/color_scheme_provider.dart';
-import 'package:live_tester/src/configs/theme_provider/text_theme.dart';
+import 'package:apollocode/src/configs/theme_provider/text_theme.dart';
+import 'package:apollocode_flutter_utilities/themes/interfaces/abstracted_theme_provider.dart';
 import 'package:flutter/material.dart';
 
-class InputDecorationThemeProvider {
-  final _colorSchemeProvider = ColorSchemeProvider();
+class InputDecorationThemeProvider
+    extends AbstractedThemeProvider<InputDecorationTheme> {
   final _inputBorder = OutlineInputBorder(
     borderRadius: BorderRadius.circular(4),
     gapPadding: 4,
@@ -22,8 +22,13 @@ class InputDecorationThemeProvider {
     isDense: false,
   );
 
-  InputDecorationTheme getFrom(Brightness brightness) {
-    final colorScheme = _colorSchemeProvider.getFrom(brightness);
+  InputDecorationThemeProvider({
+    required super.colorSchemeProvider,
+  });
+
+  @override
+  InputDecorationTheme copyWith(
+      ColorScheme colorScheme, Brightness brightness) {
     return _theme.copyWith(
       border: _inputBorder.copyWith(
         borderSide: BorderSide(

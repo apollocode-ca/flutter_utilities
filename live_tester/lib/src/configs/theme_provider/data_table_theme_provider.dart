@@ -1,9 +1,9 @@
-import 'package:live_tester/src/configs/theme_provider/color_scheme_provider.dart';
-import 'package:live_tester/src/configs/theme_provider/text_theme.dart';
+import 'package:apollocode/src/configs/theme_provider/text_theme.dart';
+import 'package:apollocode_flutter_utilities/themes/interfaces/abstracted_theme_provider.dart';
 import 'package:flutter/material.dart';
 
-class DataTableThemeProvider {
-  final _colorSchemeProvider = ColorSchemeProvider();
+class DataTableThemeProvider
+    extends AbstractedThemeProvider<DataTableThemeData> {
   final _theme = const DataTableThemeData(
     checkboxHorizontalMargin: 8,
     columnSpacing: 32,
@@ -13,8 +13,12 @@ class DataTableThemeProvider {
     horizontalMargin: 8,
   );
 
-  DataTableThemeData getFrom(Brightness brightness) {
-    final colorScheme = _colorSchemeProvider.getFrom(brightness);
+  DataTableThemeProvider({
+    required super.colorSchemeProvider,
+  });
+
+  @override
+  DataTableThemeData copyWith(ColorScheme colorScheme, Brightness brightness) {
     return _theme.copyWith(
       dataRowColor: MaterialStateProperty.resolveWith((states) {
         if (states.contains(MaterialState.selected)) {

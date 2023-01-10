@@ -1,11 +1,17 @@
-import 'package:live_tester/src/configs/theme_provider/color_scheme_provider.dart';
+import 'package:apollocode_flutter_utilities/themes/interfaces/abstracted_theme_provider.dart';
 import 'package:flutter/material.dart';
 
-class TextSelectionThemeProvider {
-  final _colorSchemeProvider = ColorSchemeProvider();
+class TextSelectionThemeProvider
+    extends AbstractedThemeProvider<TextSelectionThemeData> {
+  TextSelectionThemeProvider({
+    required super.colorSchemeProvider,
+  });
 
-  TextSelectionThemeData getFrom(Brightness brightness) {
-    final colorScheme = _colorSchemeProvider.getFrom(brightness);
+  @override
+  TextSelectionThemeData copyWith(
+    ColorScheme colorScheme,
+    Brightness brightness,
+  ) {
     return TextSelectionThemeData(
       cursorColor: colorScheme.primary,
       selectionColor: colorScheme.surfaceVariant,
