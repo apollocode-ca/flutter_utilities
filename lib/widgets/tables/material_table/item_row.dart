@@ -222,6 +222,7 @@ class _State<T> extends State<ItemRow<T>> {
                 cells.add(
                   TableCell(
                     alignment: checkboxColumnAlignment,
+                    decoration: widget.decoration,
                     width: checkboxColumnWidth,
                     child: TableCheckbox(
                       isEvenRow: widget.index.isEven,
@@ -234,6 +235,8 @@ class _State<T> extends State<ItemRow<T>> {
               }
               for (var index = 0; index < widget.columns.length; index++) {
                 final column = widget.columns[index];
+                final shouldApplyMargin =
+                    index != 0 || widget.addCheckboxesColumn;
                 if (column.width == null) {
                   cells.add(
                     Expanded(
@@ -244,8 +247,8 @@ class _State<T> extends State<ItemRow<T>> {
                         textAlign: column.textAlign,
                         child: TableCell(
                           column: column,
-                          shouldApplyMargin:
-                              index != 0 || widget.addCheckboxesColumn,
+                          decoration: widget.decoration,
+                          shouldApplyMargin: shouldApplyMargin,
                           child: widget.cellBuilder(
                             context,
                             column,
@@ -264,8 +267,8 @@ class _State<T> extends State<ItemRow<T>> {
                       textAlign: column.textAlign,
                       child: TableCell(
                         column: column,
-                        shouldApplyMargin:
-                            index != 0 || widget.addCheckboxesColumn,
+                        decoration: widget.decoration,
+                        shouldApplyMargin: shouldApplyMargin,
                         child: widget.cellBuilder(
                           context,
                           column,

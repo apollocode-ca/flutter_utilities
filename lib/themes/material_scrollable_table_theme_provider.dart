@@ -9,6 +9,7 @@ class MaterialScrollableTableThemeProvider
   final _theme = MaterialScrollableTableThemeData(
     checkboxColumnAlignment: AlignmentDirectional.center,
     checkboxColumnWidth: 48,
+    columnSpacing: 32,
     headingHeight: 56,
     padding: const EdgeInsets.symmetric(
       horizontal: 24,

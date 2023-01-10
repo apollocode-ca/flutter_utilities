@@ -23,6 +23,14 @@ class MaterialScrollableTableDecoration {
   /// [MaterialScrollableTableThemeData.checkboxColumnWidth] value.
   final double? checkboxColumnWidth;
 
+  /// The margin between each column of the table.
+  ///
+  /// By default, the value is 32.
+  ///
+  /// This value, when non null, will override the
+  /// [MaterialScrollableTableThemeData.columnSpacing] value.
+  final double? columnSpacing;
+
   /// The background color of the heading of the table.
   ///
   /// By default, the value is [ColorScheme.primary].
@@ -110,6 +118,7 @@ class MaterialScrollableTableDecoration {
   const MaterialScrollableTableDecoration({
     this.checkboxColumnAlignment,
     this.checkboxColumnWidth,
+    this.columnSpacing,
     this.headingBackgroundColor,
     this.headingHeight,
     this.headingPadding,

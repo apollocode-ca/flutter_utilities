@@ -66,6 +66,7 @@ class HeadingRow extends StatelessWidget {
             cells.add(
               TableCell(
                 alignment: checkboxColumnAlignment,
+                decoration: decoration,
                 width: checkboxColumnWidth,
                 child: TableCheckbox(
                   isEvenRow: null,
@@ -86,6 +87,7 @@ class HeadingRow extends StatelessWidget {
                     textAlign: column.textAlign,
                     child: TableCell(
                       column: column,
+                      decoration: decoration,
                       shouldApplyMargin: index != 0 || addCheckboxesColumn,
                       child: cellBuilder(context, column),
                     ),
@@ -99,6 +101,7 @@ class HeadingRow extends StatelessWidget {
                   textAlign: column.textAlign,
                   child: TableCell(
                     column: column,
+                    decoration: decoration,
                     shouldApplyMargin: index != 0 || addCheckboxesColumn,
                     child: cellBuilder(context, column),
                   ),

@@ -28,6 +28,14 @@ class MaterialScrollableTableThemeData
   /// null.
   final double checkboxColumnWidth;
 
+  /// The margin between each column of the table.
+  ///
+  /// By default, the value is 32.
+  ///
+  /// This value is overriden by the
+  /// [MaterialScrollableTableDecoration.columnSpacing] value when non null.
+  final double columnSpacing;
+
   /// The background color of the heading of the table.
   ///
   /// By default, the value is [ColorScheme.primary].
@@ -86,6 +94,7 @@ class MaterialScrollableTableThemeData
   MaterialScrollableTableThemeData({
     required this.checkboxColumnAlignment,
     required this.checkboxColumnWidth,
+    required this.columnSpacing,
     this.headingBackgroundColor,
     required this.headingHeight,
     this.headingTextStyle,
@@ -97,6 +106,7 @@ class MaterialScrollableTableThemeData
   MaterialScrollableTableThemeData copyWith({
     final AlignmentGeometry? checkboxColumnAlignment,
     final double? checkboxColumnWidth,
+    final double? columnSpacing,
     final Color? headingBackgroundColor,
     final double? headingHeight,
     final TextStyle? headingTextStyle,
@@ -107,6 +117,7 @@ class MaterialScrollableTableThemeData
       checkboxColumnAlignment:
           checkboxColumnAlignment ?? this.checkboxColumnAlignment,
       checkboxColumnWidth: checkboxColumnWidth ?? this.checkboxColumnWidth,
+      columnSpacing: columnSpacing ?? this.columnSpacing,
       headingBackgroundColor:
           headingBackgroundColor ?? this.headingBackgroundColor,
       headingHeight: headingHeight ?? this.headingHeight,
@@ -130,6 +141,8 @@ class MaterialScrollableTableThemeData
       checkboxColumnWidth:
           lerpDouble(checkboxColumnWidth, other.checkboxColumnWidth, t) ??
               checkboxColumnWidth,
+      columnSpacing:
+          lerpDouble(columnSpacing, other.columnSpacing, t) ?? columnSpacing,
       headingBackgroundColor:
           Color.lerp(headingBackgroundColor, other.headingBackgroundColor, t) ??
               headingBackgroundColor,
