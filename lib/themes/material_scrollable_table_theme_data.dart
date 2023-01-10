@@ -10,6 +10,15 @@ import 'package:flutter/material.dart';
 /// [MaterialScrollableTableDecoration] provided to the table.
 class MaterialScrollableTableThemeData
     extends ThemeExtension<MaterialScrollableTableThemeData> {
+  /// The width of the checkboxes column of the table.
+  ///
+  /// By default, the value is 48.
+  ///
+  /// This value is overriden by the
+  /// [MaterialScrollableTableDecoration.checkboxColumnWidth] value when non
+  /// null.
+  final double checkboxColumnWidth;
+
   /// The background color of the heading of the table.
   ///
   /// By default, the value is [ColorScheme.primary].
@@ -51,6 +60,7 @@ class MaterialScrollableTableThemeData
   final double rowHeight;
 
   MaterialScrollableTableThemeData({
+    required this.checkboxColumnWidth,
     this.headingBackgroundColor,
     required this.headingHeight,
     required this.padding,
@@ -59,12 +69,14 @@ class MaterialScrollableTableThemeData
 
   @override
   MaterialScrollableTableThemeData copyWith({
+    final double? checkboxColumnWidth,
     final Color? headingBackgroundColor,
     final double? headingHeight,
     final EdgeInsetsGeometry? padding,
     final double? rowHeight,
   }) {
     return MaterialScrollableTableThemeData(
+      checkboxColumnWidth: checkboxColumnWidth ?? this.checkboxColumnWidth,
       headingBackgroundColor:
           headingBackgroundColor ?? this.headingBackgroundColor,
       headingHeight: headingHeight ?? this.headingHeight,
@@ -82,6 +94,9 @@ class MaterialScrollableTableThemeData
       return this;
     }
     return MaterialScrollableTableThemeData(
+      checkboxColumnWidth:
+          lerpDouble(checkboxColumnWidth, other.checkboxColumnWidth, t) ??
+              checkboxColumnWidth,
       headingBackgroundColor:
           Color.lerp(headingBackgroundColor, other.headingBackgroundColor, t) ??
               headingBackgroundColor,

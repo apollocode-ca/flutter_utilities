@@ -116,6 +116,8 @@ class _State<T> extends State<ItemRow<T>> {
   Widget build(BuildContext context) {
     final theme =
         Theme.of(context).getExtension<MaterialScrollableTableThemeData>();
+    final checkboxColumnWidth =
+        widget.decoration.checkboxColumnWidth ?? theme.checkboxColumnWidth;
     final padding = widget.decoration.rowPadding ??
         widget.decoration.padding ??
         theme.padding;
@@ -216,7 +218,7 @@ class _State<T> extends State<ItemRow<T>> {
                 cells.add(
                   TableCell(
                     alignment: Alignment.center,
-                    width: 48,
+                    width: checkboxColumnWidth,
                     child: TableCheckbox(
                       isEvenRow: widget.index.isEven,
                       onChanged: widget.onCheckboxChanged,

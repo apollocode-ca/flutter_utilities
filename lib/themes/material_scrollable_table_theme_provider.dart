@@ -4,14 +4,10 @@ import 'package:apollocode_flutter_utilities/themes/material_scrollable_table_th
 import 'package:flutter/material.dart';
 
 /// Theme provider for the [MaterialScrollableTable].
-///
-/// By default, the table has:
-/// * a heading background color of [ColorScheme.primary];
-/// * a heading height of 56; and
-/// * a row height of 52.
 class MaterialScrollableTableThemeProvider
     extends AbstractedThemeProvider<MaterialScrollableTableThemeData> {
   final _theme = MaterialScrollableTableThemeData(
+    checkboxColumnWidth: 48,
     headingHeight: 56,
     padding: const EdgeInsets.symmetric(
       horizontal: 24,

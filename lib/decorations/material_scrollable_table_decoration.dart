@@ -7,6 +7,14 @@ import 'package:flutter/material.dart';
 /// The values defined with the decoration will override the values defined in
 /// the [MaterialScrollableTableThemeData].
 class MaterialScrollableTableDecoration {
+  /// The width of the checkboxes column of the table.
+  ///
+  /// By default, the value is 48.
+  ///
+  /// This value, when non null, will override the
+  /// [MaterialScrollableTableThemeData.checkboxColumnWidth] value.
+  final double? checkboxColumnWidth;
+
   /// The background color of the heading of the table.
   ///
   /// By default, the value is [ColorScheme.primary].
@@ -77,6 +85,7 @@ class MaterialScrollableTableDecoration {
   final EdgeInsetsGeometry? rowPadding;
 
   const MaterialScrollableTableDecoration({
+    this.checkboxColumnWidth,
     this.headingBackgroundColor,
     this.headingHeight,
     this.headingPadding,
