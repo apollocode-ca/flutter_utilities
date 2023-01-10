@@ -7,6 +7,14 @@ import 'package:flutter/material.dart';
 /// The values defined with the decoration will override the values defined in
 /// the [MaterialScrollableTableThemeData].
 class MaterialScrollableTableDecoration {
+  /// The alignment of the cells of the checkbox column of the table.
+  ///
+  /// By default, the value is [AlignmentDirectional.center].
+  ///
+  /// This value, when non null, will override the
+  /// [MaterialScrollableTableThemeData.checkboxColumnAlignment] value.
+  final AlignmentGeometry? checkboxColumnAlignment;
+
   /// The width of the checkboxes column of the table.
   ///
   /// By default, the value is 48.
@@ -85,6 +93,7 @@ class MaterialScrollableTableDecoration {
   final EdgeInsetsGeometry? rowPadding;
 
   const MaterialScrollableTableDecoration({
+    this.checkboxColumnAlignment,
     this.checkboxColumnWidth,
     this.headingBackgroundColor,
     this.headingHeight,

@@ -33,6 +33,8 @@ class HeadingRow extends StatelessWidget {
         Theme.of(context).getExtension<MaterialScrollableTableThemeData>();
     final backgroundColor =
         decoration.headingBackgroundColor ?? theme.headingBackgroundColor;
+    final checkboxColumnAlignment =
+        decoration.checkboxColumnAlignment ?? theme.checkboxColumnAlignment;
     final checkboxColumnWidth =
         decoration.checkboxColumnWidth ?? theme.checkboxColumnWidth;
     final height = decoration.headingHeight ?? theme.headingHeight;
@@ -53,7 +55,7 @@ class HeadingRow extends StatelessWidget {
           if (addCheckboxesColumn) {
             cells.add(
               TableCell(
-                alignment: Alignment.center,
+                alignment: checkboxColumnAlignment,
                 width: checkboxColumnWidth,
                 child: TableCheckbox(
                   isEvenRow: null,

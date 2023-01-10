@@ -10,7 +10,16 @@ import 'package:flutter/material.dart';
 /// [MaterialScrollableTableDecoration] provided to the table.
 class MaterialScrollableTableThemeData
     extends ThemeExtension<MaterialScrollableTableThemeData> {
-  /// The width of the checkboxes column of the table.
+  /// The alignment of the cells of the checkbox column of the table.
+  ///
+  /// By default, the value is [AlignmentDirectional.center].
+  ///
+  /// This value is overriden by the
+  /// [MaterialScrollableTableDecoration.checkboxColumnAlignment] value when non
+  /// null.
+  final AlignmentGeometry checkboxColumnAlignment;
+
+  /// The width of the checkbox column of the table.
   ///
   /// By default, the value is 48.
   ///
@@ -60,6 +69,7 @@ class MaterialScrollableTableThemeData
   final double rowHeight;
 
   MaterialScrollableTableThemeData({
+    required this.checkboxColumnAlignment,
     required this.checkboxColumnWidth,
     this.headingBackgroundColor,
     required this.headingHeight,
@@ -69,6 +79,7 @@ class MaterialScrollableTableThemeData
 
   @override
   MaterialScrollableTableThemeData copyWith({
+    final AlignmentGeometry? checkboxColumnAlignment,
     final double? checkboxColumnWidth,
     final Color? headingBackgroundColor,
     final double? headingHeight,
@@ -76,6 +87,8 @@ class MaterialScrollableTableThemeData
     final double? rowHeight,
   }) {
     return MaterialScrollableTableThemeData(
+      checkboxColumnAlignment:
+          checkboxColumnAlignment ?? this.checkboxColumnAlignment,
       checkboxColumnWidth: checkboxColumnWidth ?? this.checkboxColumnWidth,
       headingBackgroundColor:
           headingBackgroundColor ?? this.headingBackgroundColor,
@@ -94,6 +107,8 @@ class MaterialScrollableTableThemeData
       return this;
     }
     return MaterialScrollableTableThemeData(
+      checkboxColumnAlignment:
+          lerpCheckboxColumnAlignment(other, t) ?? checkboxColumnAlignment,
       checkboxColumnWidth:
           lerpDouble(checkboxColumnWidth, other.checkboxColumnWidth, t) ??
               checkboxColumnWidth,
@@ -104,6 +119,17 @@ class MaterialScrollableTableThemeData
           lerpDouble(headingHeight, other.headingHeight, t) ?? headingHeight,
       padding: EdgeInsetsGeometry.lerp(padding, other.padding, t) ?? padding,
       rowHeight: lerpDouble(rowHeight, other.rowHeight, t) ?? rowHeight,
+    );
+  }
+
+  AlignmentGeometry? lerpCheckboxColumnAlignment(
+    MaterialScrollableTableThemeData other,
+    double t,
+  ) {
+    return AlignmentGeometry.lerp(
+      checkboxColumnAlignment,
+      other.checkboxColumnAlignment,
+      t,
     );
   }
 }
