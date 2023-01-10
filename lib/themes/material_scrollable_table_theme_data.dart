@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:apollocode_flutter_utilities/decorations/material_scrollable_table_decoration.dart';
 import 'package:apollocode_flutter_utilities/widgets/tables/material_scrollable_table.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 /// Theme data for the [MaterialScrollableTable].
@@ -10,6 +11,14 @@ import 'package:flutter/material.dart';
 /// [MaterialScrollableTableDecoration] provided to the table.
 class MaterialScrollableTableThemeData
     extends ThemeExtension<MaterialScrollableTableThemeData> {
+  /// The duration of overlay animations on any row of the table.
+  ///
+  /// By default, the value is [kThemeAnimationDuration].
+  ///
+  /// This value is overriden by the
+  /// [MaterialScrollableTableDecoration.animationDuration] value when non null.
+  final Duration animationDuration;
+
   /// The alignment of the cells of the checkbox column of the table.
   ///
   /// By default, the value is [AlignmentDirectional.center].
@@ -110,6 +119,7 @@ class MaterialScrollableTableThemeData
   final double rowHeight;
 
   MaterialScrollableTableThemeData({
+    required this.animationDuration,
     required this.checkboxColumnAlignment,
     required this.checkboxColumnWidth,
     required this.columnSpacing,
@@ -124,6 +134,7 @@ class MaterialScrollableTableThemeData
 
   @override
   MaterialScrollableTableThemeData copyWith({
+    final Duration? animationDuration,
     final AlignmentGeometry? checkboxColumnAlignment,
     final double? checkboxColumnWidth,
     final double? columnSpacing,
@@ -136,6 +147,7 @@ class MaterialScrollableTableThemeData
     final double? rowHeight,
   }) {
     return MaterialScrollableTableThemeData(
+      animationDuration: animationDuration ?? this.animationDuration,
       checkboxColumnAlignment:
           checkboxColumnAlignment ?? this.checkboxColumnAlignment,
       checkboxColumnWidth: checkboxColumnWidth ?? this.checkboxColumnWidth,
@@ -162,6 +174,8 @@ class MaterialScrollableTableThemeData
       return this;
     }
     return MaterialScrollableTableThemeData(
+      animationDuration:
+          lerpDuration(animationDuration, other.animationDuration, t),
       checkboxColumnAlignment:
           lerpCheckboxColumnAlignment(other, t) ?? checkboxColumnAlignment,
       checkboxColumnWidth:

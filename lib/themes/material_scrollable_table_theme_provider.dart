@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 class MaterialScrollableTableThemeProvider
     extends AbstractedThemeProvider<MaterialScrollableTableThemeData> {
   final _theme = MaterialScrollableTableThemeData(
+    animationDuration: kThemeAnimationDuration,
     checkboxColumnAlignment: AlignmentDirectional.center,
     checkboxColumnWidth: 48,
     columnSpacing: 32,

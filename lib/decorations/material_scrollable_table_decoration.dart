@@ -7,6 +7,14 @@ import 'package:flutter/material.dart';
 /// The values defined with the decoration will override the values defined in
 /// the [MaterialScrollableTableThemeData].
 class MaterialScrollableTableDecoration {
+  /// The duration of overlay animations on any row of the table.
+  ///
+  /// By default, the value is [kThemeAnimationDuration].
+  ///
+  /// This value, when non null, will override the
+  /// [MaterialScrollableTableThemeData.animationDuration] value.
+  final Duration? animationDuration;
+
   /// The alignment of the cells of the checkbox column of the table.
   ///
   /// By default, the value is [AlignmentDirectional.center].
@@ -132,6 +140,7 @@ class MaterialScrollableTableDecoration {
   final EdgeInsetsGeometry? rowPadding;
 
   const MaterialScrollableTableDecoration({
+    this.animationDuration,
     this.checkboxColumnAlignment,
     this.checkboxColumnWidth,
     this.columnSpacing,

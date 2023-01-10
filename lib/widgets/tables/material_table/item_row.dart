@@ -122,6 +122,9 @@ class _State<T> extends State<ItemRow<T>> {
 
   @override
   Widget build(BuildContext context) {
+    final animationDuration = widget.decoration.animationDuration ??
+        theme?.animationDuration ??
+        kThemeAnimationDuration;
     final checkboxColumnAlignment = widget.decoration.checkboxColumnAlignment ??
         theme?.checkboxColumnAlignment ??
         AlignmentDirectional.center;
@@ -203,7 +206,7 @@ class _State<T> extends State<ItemRow<T>> {
           decoration: BoxDecoration(
             color: backgroundColor,
           ),
-          duration: kThemeChangeDuration,
+          duration: animationDuration,
           foregroundDecoration: BoxDecoration(
             color: () {
               if (widget.onTap == null && !widget.canDrag) {
