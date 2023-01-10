@@ -1,3 +1,4 @@
+import 'package:apollocode_flutter_utilities/themes/theme_extensions_provider.dart';
 import 'package:live_tester/src/configs/theme_provider/app_bar_theme_provider.dart';
 import 'package:live_tester/src/configs/theme_provider/banner_theme_provider.dart';
 import 'package:live_tester/src/configs/theme_provider/bottom_app_bar_theme_provider.dart';
@@ -139,6 +140,9 @@ class ThemeProvider {
   late final _textSelectionThemeProvider = TextSelectionThemeProvider(
     colorSchemeProvider: _colorSchemeProvider,
   );
+  late final _themeExtensionsProvider = ThemeExtensionsProvider(
+    colorSchemeProvider: _colorSchemeProvider,
+  );
   late final _timePickerThemeProvider = TimePickerThemeProvider(
     colorSchemeProvider: _colorSchemeProvider,
   );
@@ -179,6 +183,7 @@ class ThemeProvider {
       elevatedButtonTheme: _elevatedButtonThemeProvider.getFrom(brightness),
       errorColor: colorScheme.error,
       expansionTileTheme: _expansionTileThemeProvider.getFrom(brightness),
+      extensions: _themeExtensionsProvider.getFrom(brightness),
       floatingActionButtonTheme: _floatingActionButtonThemeProvider.getFrom(
         brightness,
       ),
