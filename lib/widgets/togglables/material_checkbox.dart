@@ -680,7 +680,7 @@ class _State extends State<MaterialCheckbox> with TickerProviderStateMixin {
       },
       child: GestureDetector(
         onTap: () {
-          if (widget.disabled) {
+          if (statesController.value.contains(MaterialState.disabled)) {
             return null;
           }
           return () {
@@ -692,19 +692,25 @@ class _State extends State<MaterialCheckbox> with TickerProviderStateMixin {
           };
         }(),
         onLongPressCancel: () {
-          setState(() {
-            statesController.update(MaterialState.pressed, false);
-          });
+          if (!statesController.value.contains(MaterialState.disabled)) {
+            setState(() {
+              statesController.update(MaterialState.pressed, false);
+            });
+          }
         },
         onLongPressDown: (details) {
-          setState(() {
-            statesController.update(MaterialState.pressed, true);
-          });
+          if (!statesController.value.contains(MaterialState.disabled)) {
+            setState(() {
+              statesController.update(MaterialState.pressed, true);
+            });
+          }
         },
         onLongPressUp: () {
-          setState(() {
-            statesController.update(MaterialState.pressed, false);
-          });
+          if (!statesController.value.contains(MaterialState.disabled)) {
+            setState(() {
+              statesController.update(MaterialState.pressed, false);
+            });
+          }
         },
         child: Focus(
           focusNode: focusNode,
