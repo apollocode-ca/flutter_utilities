@@ -39,6 +39,17 @@ class MaterialScrollableTableDecoration {
   /// [MaterialScrollableTableThemeData.columnSpacing] value.
   final double? columnSpacing;
 
+  /// The background color of the pagination's dropdown of the table.
+  ///
+  /// By default, the value is [ColorScheme.surfaceVariant].
+  ///
+  /// This value, when non null, will override the
+  /// [MaterialScrollableTableThemeData.dropdownBackgroundColor] value.
+  ///
+  /// If the table doesn't have pagination, this property doesn't have any
+  /// effect.
+  final Color? dropdownBackgroundColor;
+
   /// The style of the text displayed when the table is empty.
   ///
   /// By default, the value is:
@@ -330,6 +341,7 @@ class MaterialScrollableTableDecoration {
     this.checkboxColumnAlignment,
     this.checkboxColumnWidth,
     this.columnSpacing,
+    this.dropdownBackgroundColor,
     this.emptyTableTextStyle,
     this.evenRowBackgroundColor,
     this.evenRowForegroundColor,

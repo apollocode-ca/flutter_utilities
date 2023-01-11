@@ -81,6 +81,9 @@ class _PaginationRowState extends State<PaginationRow> {
         widget.decoration.headingBackgroundColor ??
         theme?.headingBackgroundColor ??
         Theme.of(context).colorScheme.primary;
+    final dropdownColor = widget.decoration.dropdownBackgroundColor ??
+        theme?.dropdownBackgroundColor ??
+        Theme.of(context).colorScheme.surfaceVariant;
     final foregroundColor = widget.decoration.paginationForegroundColor ??
         widget.decoration.headingForegroundColor ??
         theme?.headingForegroundColor ??
@@ -188,7 +191,7 @@ class _PaginationRowState extends State<PaginationRow> {
           ),
           DropdownButtonHideUnderline(
             child: DropdownButton(
-              dropdownColor: Theme.of(context).colorScheme.surfaceVariant,
+              dropdownColor: dropdownColor,
               icon: DropdownArrow(
                 color: foregroundColor,
               ),

@@ -45,6 +45,18 @@ class MaterialScrollableTableThemeData
   /// [MaterialScrollableTableDecoration.columnSpacing] value when non null.
   final double columnSpacing;
 
+  /// The background color of the pagination's dropdown of the table.
+  ///
+  /// By default, the value is [ColorScheme.surfaceVariant].
+  ///
+  /// This value is overriden by the
+  /// [MaterialScrollableTableDecoration.dropdownBackgroundColor] value when non
+  /// null.
+  ///
+  /// If the table doesn't have pagination, this property doesn't have any
+  /// effect.
+  final Color? dropdownBackgroundColor;
+
   /// The style of the text displayed when the table is empty.
   ///
   /// By default, the value is:
@@ -221,6 +233,9 @@ class MaterialScrollableTableThemeData
   /// This value is overriden by the
   /// [MaterialScrollableTableDecoration.paginationAlignment] value when non
   /// null.
+  ///
+  /// If the table doesn't have pagination, this property doesn't have any
+  /// effect.
   final MainAxisAlignment paginationAlignment;
 
   /// The height of a data row in the table.
@@ -248,6 +263,7 @@ class MaterialScrollableTableThemeData
     required this.checkboxColumnAlignment,
     required this.checkboxColumnWidth,
     required this.columnSpacing,
+    this.dropdownBackgroundColor,
     required this.emptyTableTextStyle,
     this.evenRowBackgroundColor,
     this.evenRowForegroundColor,
@@ -273,6 +289,7 @@ class MaterialScrollableTableThemeData
     final AlignmentGeometry? checkboxColumnAlignment,
     final double? checkboxColumnWidth,
     final double? columnSpacing,
+    final Color? dropdownBackgroundColor,
     final TextStyle? emptyTableTextStyle,
     final Color? evenRowBackgroundColor,
     final Color? evenRowForegroundColor,
@@ -297,6 +314,8 @@ class MaterialScrollableTableThemeData
           checkboxColumnAlignment ?? this.checkboxColumnAlignment,
       checkboxColumnWidth: checkboxColumnWidth ?? this.checkboxColumnWidth,
       columnSpacing: columnSpacing ?? this.columnSpacing,
+      dropdownBackgroundColor:
+          dropdownBackgroundColor ?? this.dropdownBackgroundColor,
       emptyTableTextStyle: emptyTableTextStyle ?? this.emptyTableTextStyle,
       evenRowBackgroundColor:
           evenRowBackgroundColor ?? this.evenRowBackgroundColor,
@@ -344,6 +363,8 @@ class MaterialScrollableTableThemeData
               checkboxColumnWidth,
       columnSpacing:
           lerpDouble(columnSpacing, other.columnSpacing, t) ?? columnSpacing,
+      dropdownBackgroundColor:
+          lerpDropdownBackgroundColor(other, t) ?? dropdownBackgroundColor,
       emptyTableTextStyle:
           TextStyle.lerp(emptyTableTextStyle, other.emptyTableTextStyle, t) ??
               emptyTableTextStyle,
@@ -396,6 +417,17 @@ class MaterialScrollableTableThemeData
     return AlignmentGeometry.lerp(
       checkboxColumnAlignment,
       other.checkboxColumnAlignment,
+      t,
+    );
+  }
+
+  Color? lerpDropdownBackgroundColor(
+    MaterialScrollableTableThemeData other,
+    double t,
+  ) {
+    return Color.lerp(
+      dropdownBackgroundColor,
+      other.dropdownBackgroundColor,
       t,
     );
   }
