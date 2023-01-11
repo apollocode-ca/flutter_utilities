@@ -74,6 +74,10 @@ class _PaginationRowState extends State<PaginationRow> {
 
   @override
   Widget build(BuildContext context) {
+    final backgroundColor = widget.decoration.paginationBackgroundColor ??
+        widget.decoration.headingBackgroundColor ??
+        theme?.headingBackgroundColor ??
+        Theme.of(context).colorScheme.primary;
     final height = widget.decoration.paginationHeight ??
         widget.decoration.headingHeight ??
         theme?.headingHeight ??
@@ -92,7 +96,7 @@ class _PaginationRowState extends State<PaginationRow> {
         height: height,
       ),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.primary,
+        color: backgroundColor,
       ),
       padding: padding,
       child: Row(

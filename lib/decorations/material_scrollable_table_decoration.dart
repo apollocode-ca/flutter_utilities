@@ -241,12 +241,17 @@ class MaterialScrollableTableDecoration {
   /// separately, use [headingPadding], [rowPadding] and [paginationPadding].
   final EdgeInsetsGeometry? padding;
 
+  /// The background color of the pagination of the table.
+  ///
+  /// By default, [headingBackgroundColor] is used instead.
+  ///
+  /// If the table doesn't have pagination, this property doesn't have any
+  /// effect.
+  final Color? paginationBackgroundColor;
+
   /// The height of the pagination row of the table.
   ///
   /// By default, [headingHeight] is used instead.
-  ///
-  /// This value, when non null, will override the
-  /// [MaterialScrollableTableThemeData.paginationHeight] value.
   ///
   /// If the table doesn't have pagination, this property doesn't have any
   /// effect.
@@ -255,9 +260,6 @@ class MaterialScrollableTableDecoration {
   /// The padding inside the pagination of the table.
   ///
   /// By default, [padding] is used instead.
-  ///
-  /// This value, when non null, will override the
-  /// [MaterialScrollableTableThemeData.paginationPadding] value.
   ///
   /// If the table doesn't have pagination, this property doesn't have any
   /// effect.
@@ -313,6 +315,7 @@ class MaterialScrollableTableDecoration {
     this.oddRowForegroundColor,
     this.oddRowTextStyle,
     this.padding,
+    this.paginationBackgroundColor,
     this.paginationHeight,
     this.paginationPadding,
     this.rowHeight,
