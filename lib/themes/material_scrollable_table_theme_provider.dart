@@ -42,6 +42,7 @@ class MaterialScrollableTableThemeProvider
     Brightness brightness,
   ) {
     return _theme.copyWith(
+      backgroundColor: colorScheme.surfaceVariant,
       dropdownBackgroundColor: colorScheme.surfaceVariant,
       dropdownForegroundColor: colorScheme.onSurfaceVariant,
       evenRowBackgroundColor: colorScheme.surface,

@@ -15,6 +15,18 @@ class MaterialScrollableTableDecoration {
   /// [MaterialScrollableTableThemeData.animationDuration] value.
   final Duration? animationDuration;
 
+  /// The background color of the table.
+  ///
+  /// By default, the value is [ColorScheme.surfaceVariant].
+  ///
+  /// This color will be visible only when the data is loading and when there is
+  /// no data in the table. Otherwise, the [evenRowBackgroundColor] and the
+  /// [oddRowBackgroundColor] will be visible instead.
+  ///
+  /// This value, when non null, will override the
+  /// [MaterialScrollableTableThemeData.backgroundColor] value.
+  final Color? backgroundColor;
+
   /// The border radius of the table.
   ///
   /// By default, the value is:
@@ -371,6 +383,7 @@ class MaterialScrollableTableDecoration {
 
   const MaterialScrollableTableDecoration({
     this.animationDuration,
+    this.backgroundColor,
     this.borderRadius,
     this.checkboxColumnAlignment,
     this.checkboxColumnWidth,

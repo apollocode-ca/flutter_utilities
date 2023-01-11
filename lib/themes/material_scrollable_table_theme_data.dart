@@ -19,6 +19,18 @@ class MaterialScrollableTableThemeData
   /// [MaterialScrollableTableDecoration.animationDuration] value when non null.
   final Duration animationDuration;
 
+  /// The background color of the table.
+  ///
+  /// By default, the value is [ColorScheme.surfaceVariant].
+  ///
+  /// This color will be visible only when the data is loading and when there is
+  /// no data in the table. Otherwise, the [evenRowBackgroundColor] and the
+  /// [oddRowBackgroundColor] will be visible instead.
+  ///
+  /// This value is overriden by the
+  /// [MaterialScrollableTableDecoration.backgroundColor] value when non null.
+  final Color? backgroundColor;
+
   /// The border radius of the table.
   ///
   /// By default, the value is:
@@ -286,6 +298,7 @@ class MaterialScrollableTableThemeData
 
   MaterialScrollableTableThemeData({
     required this.animationDuration,
+    this.backgroundColor,
     required this.borderRadius,
     required this.checkboxColumnAlignment,
     required this.checkboxColumnWidth,
@@ -314,6 +327,7 @@ class MaterialScrollableTableThemeData
   @override
   MaterialScrollableTableThemeData copyWith({
     final Duration? animationDuration,
+    final Color? backgroundColor,
     final BorderRadiusGeometry? borderRadius,
     final AlignmentGeometry? checkboxColumnAlignment,
     final double? checkboxColumnWidth,
@@ -340,6 +354,7 @@ class MaterialScrollableTableThemeData
   }) {
     return MaterialScrollableTableThemeData(
       animationDuration: animationDuration ?? this.animationDuration,
+      backgroundColor: backgroundColor ?? this.backgroundColor,
       borderRadius: borderRadius ?? this.borderRadius,
       checkboxColumnAlignment:
           checkboxColumnAlignment ?? this.checkboxColumnAlignment,
@@ -389,6 +404,8 @@ class MaterialScrollableTableThemeData
     return MaterialScrollableTableThemeData(
       animationDuration:
           lerpDuration(animationDuration, other.animationDuration, t),
+      backgroundColor: Color.lerp(backgroundColor, other.backgroundColor, t) ??
+          backgroundColor,
       borderRadius:
           BorderRadiusGeometry.lerp(borderRadius, other.borderRadius, t) ??
               borderRadius,
