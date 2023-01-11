@@ -117,6 +117,14 @@ class _PaginationRowState extends State<PaginationRow> {
           color: textColor,
           fontWeight: FontWeight.w500,
         );
+    final dropdownTextColor =
+        widget.decoration.dropdownTextStyle?.color ?? dropdownForegroundColor;
+    final dropdownTextStyle = widget.decoration.dropdownTextStyle?.copyWith(
+          color: dropdownTextColor,
+        ) ??
+        textStyle.copyWith(
+          color: dropdownTextColor,
+        );
     final itemsPerPageSuggestions = widget.pagination.itemsPerPageSuggestions;
     return Container(
       constraints: BoxConstraints.tightFor(
@@ -205,10 +213,7 @@ class _PaginationRowState extends State<PaginationRow> {
                     value: suggestion,
                     child: BodyText(
                       suggestion.toString(),
-                      style: TextStyle(
-                        color: dropdownForegroundColor,
-                        fontWeight: FontWeight.w500,
-                      ),
+                      style: dropdownTextStyle,
                     ),
                   );
                 }),

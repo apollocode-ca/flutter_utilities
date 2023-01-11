@@ -63,6 +63,14 @@ class MaterialScrollableTableDecoration {
   /// effect.
   final Color? dropdownForegroundColor;
 
+  /// The style of every text inside the pagination's dropdown of the table.
+  ///
+  /// By default, [paginationTextStyle] is used instead.
+  ///
+  /// If the table doesn't have pagination, this property doesn't have any
+  /// effect.
+  final TextStyle? dropdownTextStyle;
+
   /// The style of the text displayed when the table is empty.
   ///
   /// By default, the value is:
@@ -356,6 +364,7 @@ class MaterialScrollableTableDecoration {
     this.columnSpacing,
     this.dropdownBackgroundColor,
     this.dropdownForegroundColor,
+    this.dropdownTextStyle,
     this.emptyTableTextStyle,
     this.evenRowBackgroundColor,
     this.evenRowForegroundColor,
