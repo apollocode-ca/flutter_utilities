@@ -74,6 +74,10 @@ class _PaginationRowState extends State<PaginationRow> {
 
   @override
   Widget build(BuildContext context) {
+    final height = widget.decoration.paginationHeight ??
+        widget.decoration.headingHeight ??
+        theme?.headingHeight ??
+        56;
     final padding = widget.decoration.paginationPadding ??
         widget.decoration.padding ??
         theme?.padding ??
@@ -85,7 +89,7 @@ class _PaginationRowState extends State<PaginationRow> {
     final itemsPerPageSuggestions = widget.pagination.itemsPerPageSuggestions;
     return Container(
       constraints: BoxConstraints.tightFor(
-        height: Theme.of(context).dataTableTheme.headingRowHeight,
+        height: height,
       ),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.primary,
