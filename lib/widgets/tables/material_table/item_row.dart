@@ -68,35 +68,27 @@ class _State<T> extends State<ItemRow<T>> {
   }
 
   Color get draggedColor {
-    final number = widget.index + 1;
-    if (number.isOdd) {
-      return Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.16);
-    }
-    return Theme.of(context).colorScheme.onSurface.withOpacity(0.16);
+    return foregroundColor.withOpacity(0.16);
   }
 
   Color get foregroundColor {
     final number = widget.index + 1;
     if (number.isOdd) {
-      return Theme.of(context).colorScheme.onSurfaceVariant;
+      return widget.decoration.oddRowForegroundColor ??
+          theme?.oddRowForegroundColor ??
+          Theme.of(context).colorScheme.onSurfaceVariant;
     }
-    return Theme.of(context).colorScheme.onSurface;
+    return widget.decoration.evenRowForegroundColor ??
+        theme?.evenRowForegroundColor ??
+        Theme.of(context).colorScheme.onSurface;
   }
 
   Color get hoveredColor {
-    final number = widget.index + 1;
-    if (number.isOdd) {
-      return Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.08);
-    }
-    return Theme.of(context).colorScheme.onSurface.withOpacity(0.08);
+    return foregroundColor.withOpacity(0.08);
   }
 
   Color get pressedColor {
-    final number = widget.index + 1;
-    if (number.isOdd) {
-      return Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.12);
-    }
-    return Theme.of(context).colorScheme.onSurface.withOpacity(0.12);
+    return foregroundColor.withOpacity(0.12);
   }
 
   double get rowHeight {

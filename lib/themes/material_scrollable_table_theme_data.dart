@@ -54,6 +54,19 @@ class MaterialScrollableTableThemeData
   /// null.
   final Color? evenRowBackgroundColor;
 
+  /// The foreground color of any even row of the table.
+  ///
+  /// By default, the value is [ColorScheme.onSurface].
+  ///
+  /// This color is used by default for every text in the row. To override the
+  /// text color, use the [TextStyle.color] field of [evenRowTextStyle]. The
+  /// foreground color is also used for the overlay color of the row animations.
+  ///
+  /// This value is overriden by the
+  /// [MaterialScrollableTableDecoration.evenRowForegroundColor] value when non
+  /// null.
+  final Color? evenRowForegroundColor;
+
   /// The background color of the heading of the table.
   ///
   /// By default, the value is [ColorScheme.primary].
@@ -95,6 +108,19 @@ class MaterialScrollableTableThemeData
   /// null.
   final Color? oddRowBackgroundColor;
 
+  /// The foreground color of any odd row of the table.
+  ///
+  /// By default, the value is [ColorScheme.onSurfaceVariant].
+  ///
+  /// This color is used by default for every text in the row. To override the
+  /// text color, use the [TextStyle.color] field of [oddRowTextStyle]. The
+  /// foreground color is also used for the overlay color of the row animations.
+  ///
+  /// This value is overriden by the
+  /// [MaterialScrollableTableDecoration.oddRowForegroundColor] value when non
+  /// null.
+  final Color? oddRowForegroundColor;
+
   /// The padding inside each row (including the heading and the pagination
   /// rows) of the table.
   ///
@@ -124,10 +150,12 @@ class MaterialScrollableTableThemeData
     required this.checkboxColumnWidth,
     required this.columnSpacing,
     this.evenRowBackgroundColor,
+    this.evenRowForegroundColor,
     this.headingBackgroundColor,
     required this.headingHeight,
     this.headingTextStyle,
     this.oddRowBackgroundColor,
+    this.oddRowForegroundColor,
     required this.padding,
     required this.rowHeight,
   });
@@ -139,10 +167,12 @@ class MaterialScrollableTableThemeData
     final double? checkboxColumnWidth,
     final double? columnSpacing,
     final Color? evenRowBackgroundColor,
+    final evenRowForegroundColor,
     final Color? headingBackgroundColor,
     final double? headingHeight,
     final TextStyle? headingTextStyle,
     final Color? oddRowBackgroundColor,
+    final Color? oddRowForegroundColor,
     final EdgeInsetsGeometry? padding,
     final double? rowHeight,
   }) {
@@ -154,12 +184,16 @@ class MaterialScrollableTableThemeData
       columnSpacing: columnSpacing ?? this.columnSpacing,
       evenRowBackgroundColor:
           evenRowBackgroundColor ?? this.evenRowBackgroundColor,
+      evenRowForegroundColor:
+          evenRowForegroundColor ?? this.evenRowForegroundColor,
       headingBackgroundColor:
           headingBackgroundColor ?? this.headingBackgroundColor,
       headingHeight: headingHeight ?? this.headingHeight,
       headingTextStyle: headingTextStyle ?? this.headingTextStyle,
       oddRowBackgroundColor:
           oddRowBackgroundColor ?? this.oddRowBackgroundColor,
+      oddRowForegroundColor:
+          oddRowForegroundColor ?? this.oddRowForegroundColor,
       padding: padding ?? this.padding,
       rowHeight: rowHeight ?? this.rowHeight,
     );
@@ -186,6 +220,9 @@ class MaterialScrollableTableThemeData
       evenRowBackgroundColor:
           Color.lerp(evenRowBackgroundColor, other.evenRowBackgroundColor, t) ??
               evenRowBackgroundColor,
+      evenRowForegroundColor:
+          Color.lerp(evenRowForegroundColor, other.evenRowForegroundColor, t) ??
+              evenRowForegroundColor,
       headingBackgroundColor:
           Color.lerp(headingBackgroundColor, other.headingBackgroundColor, t) ??
               headingBackgroundColor,
@@ -197,6 +234,9 @@ class MaterialScrollableTableThemeData
       oddRowBackgroundColor:
           Color.lerp(oddRowBackgroundColor, other.oddRowBackgroundColor, t) ??
               oddRowBackgroundColor,
+      oddRowForegroundColor:
+          Color.lerp(oddRowBackgroundColor, other.oddRowForegroundColor, t) ??
+              oddRowForegroundColor,
       padding: EdgeInsetsGeometry.lerp(padding, other.padding, t) ?? padding,
       rowHeight: lerpDouble(rowHeight, other.rowHeight, t) ?? rowHeight,
     );

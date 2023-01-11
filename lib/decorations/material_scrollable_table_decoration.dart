@@ -47,6 +47,18 @@ class MaterialScrollableTableDecoration {
   /// [MaterialScrollableTableThemeData.evenRowBackgroundColor] value.
   final Color? evenRowBackgroundColor;
 
+  /// The foreground color of any even row of the table.
+  ///
+  /// By default, the value is [ColorScheme.onSurface].
+  ///
+  /// This color is used by default for every text in the row. To override the
+  /// text color, use the [TextStyle.color] field of [evenRowTextStyle]. The
+  /// foreground color is also used for the overlay color of the row animations.
+  ///
+  /// This value, when non null, will override the
+  /// [MaterialScrollableTableThemeData.evenRowForegroundColor] value.
+  final Color? evenRowForegroundColor;
+
   /// The background color of the heading of the table.
   ///
   /// By default, the value is [ColorScheme.primary].
@@ -93,6 +105,18 @@ class MaterialScrollableTableDecoration {
   /// This value, when non null, will override the
   /// [MaterialScrollableTableThemeData.oddRowBackgroundColor] value.
   final Color? oddRowBackgroundColor;
+
+  /// The foreground color of any odd row of the table.
+  ///
+  /// By default, the value is [ColorScheme.onSurfaceVariant].
+  ///
+  /// This color is used by default for every text in the row. To override the
+  /// text color, use the [TextStyle.color] field of [oddRowTextStyle]. The
+  /// foreground color is also used for the overlay color of the row animations.
+  ///
+  /// This value, when non null, will override the
+  /// [MaterialScrollableTableThemeData.oddRowForegroundColor] value.
+  final Color? oddRowForegroundColor;
 
   /// The padding inside each row (including the heading and the pagination
   /// rows) of the table.
@@ -145,11 +169,13 @@ class MaterialScrollableTableDecoration {
     this.checkboxColumnWidth,
     this.columnSpacing,
     this.evenRowBackgroundColor,
+    this.evenRowForegroundColor,
     this.headingBackgroundColor,
     this.headingHeight,
     this.headingPadding,
     this.headingTextStyle,
     this.oddRowBackgroundColor,
+    this.oddRowForegroundColor,
     this.padding,
     this.paginationPadding,
     this.rowHeight,

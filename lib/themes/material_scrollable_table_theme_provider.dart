@@ -30,12 +30,14 @@ class MaterialScrollableTableThemeProvider
   ) {
     return _theme.copyWith(
       evenRowBackgroundColor: colorScheme.surface,
+      evenRowForegroundColor: colorScheme.onSurface,
       headingBackgroundColor: colorScheme.primary,
       headingTextStyle: TextStyle(
         color: colorScheme.onPrimary,
         fontWeight: FontWeight.w500,
       ),
       oddRowBackgroundColor: colorScheme.surfaceVariant,
+      oddRowForegroundColor: colorScheme.onSurfaceVariant,
     );
   }
 }
