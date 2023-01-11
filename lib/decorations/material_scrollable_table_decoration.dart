@@ -289,6 +289,14 @@ class MaterialScrollableTableDecoration {
   /// effect.
   final EdgeInsetsGeometry? paginationPadding;
 
+  /// The style of the texts in the pagination of the table.
+  ///
+  /// By default, [headingTextStyle] is used instead.
+  ///
+  /// If the table doesn't have pagination, this property doesn't have any
+  /// effect.
+  final TextStyle? paginationTextStyle;
+
   /// The height of a data row in the table.
   ///
   /// By default, the value is 52.
@@ -344,6 +352,7 @@ class MaterialScrollableTableDecoration {
     this.paginationForegroundColor,
     this.paginationHeight,
     this.paginationPadding,
+    this.paginationTextStyle,
     this.rowHeight,
     this.rowPadding,
     this.rowTextStyle,

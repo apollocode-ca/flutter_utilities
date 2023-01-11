@@ -95,6 +95,22 @@ class _PaginationRowState extends State<PaginationRow> {
         const EdgeInsets.symmetric(
           horizontal: 24,
         );
+    final textColor = widget.decoration.paginationTextStyle?.color ??
+        widget.decoration.headingTextStyle?.color ??
+        foregroundColor;
+    final textStyle = widget.decoration.paginationTextStyle?.copyWith(
+          color: textColor,
+        ) ??
+        widget.decoration.headingTextStyle?.copyWith(
+          color: textColor,
+        ) ??
+        theme?.headingTextStyle.copyWith(
+          color: textColor,
+        ) ??
+        TextStyle(
+          color: textColor,
+          fontWeight: FontWeight.w500,
+        );
     final onSurfaceVariant = Theme.of(context).colorScheme.onSurfaceVariant;
     final itemsPerPageSuggestions = widget.pagination.itemsPerPageSuggestions;
     return Container(
@@ -110,10 +126,7 @@ class _PaginationRowState extends State<PaginationRow> {
         children: [
           BodyText(
             widget.pagination.formattedItemsPerPageText,
-            style: TextStyle(
-              color: foregroundColor,
-              fontWeight: FontWeight.w500,
-            ),
+            style: textStyle,
           ),
           Padding(
             padding: const EdgeInsets.symmetric(
@@ -145,10 +158,7 @@ class _PaginationRowState extends State<PaginationRow> {
             ),
             child: BodyText(
               widget.pagination.formatCurrentPageText(currentPage),
-              style: TextStyle(
-                color: foregroundColor,
-                fontWeight: FontWeight.w500,
-              ),
+              style: textStyle,
             ),
           ),
           Padding(
@@ -209,10 +219,7 @@ class _PaginationRowState extends State<PaginationRow> {
                         ),
                         child: BodyText(
                           suggestion.toString(),
-                          style: TextStyle(
-                            color: foregroundColor,
-                            fontWeight: FontWeight.w500,
-                          ),
+                          style: textStyle,
                         ),
                       ),
                     );
