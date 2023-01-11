@@ -81,6 +81,10 @@ class _PaginationRowState extends State<PaginationRow> {
         widget.decoration.headingBackgroundColor ??
         theme?.headingBackgroundColor ??
         Theme.of(context).colorScheme.primary;
+    final foregroundColor = widget.decoration.paginationForegroundColor ??
+        widget.decoration.headingForegroundColor ??
+        theme?.headingForegroundColor ??
+        Theme.of(context).colorScheme.onPrimary;
     final height = widget.decoration.paginationHeight ??
         widget.decoration.headingHeight ??
         theme?.headingHeight ??
@@ -91,7 +95,6 @@ class _PaginationRowState extends State<PaginationRow> {
         const EdgeInsets.symmetric(
           horizontal: 24,
         );
-    final onPrimary = Theme.of(context).colorScheme.onPrimary;
     final onSurfaceVariant = Theme.of(context).colorScheme.onSurfaceVariant;
     final itemsPerPageSuggestions = widget.pagination.itemsPerPageSuggestions;
     return Container(
@@ -108,7 +111,7 @@ class _PaginationRowState extends State<PaginationRow> {
           BodyText(
             widget.pagination.formattedItemsPerPageText,
             style: TextStyle(
-              color: onPrimary,
+              color: foregroundColor,
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -117,11 +120,11 @@ class _PaginationRowState extends State<PaginationRow> {
               horizontal: 12,
             ),
             child: IconButton(
-              color: onPrimary,
+              color: foregroundColor,
               constraints: BoxConstraints.tight(
                 const Size.square(48),
               ),
-              disabledColor: onPrimary.withOpacity(0.38),
+              disabledColor: foregroundColor.withOpacity(0.38),
               padding: EdgeInsets.zero,
               onPressed: () {
                 if (currentPage > 1) {
@@ -143,7 +146,7 @@ class _PaginationRowState extends State<PaginationRow> {
             child: BodyText(
               widget.pagination.formatCurrentPageText(currentPage),
               style: TextStyle(
-                color: onPrimary,
+                color: foregroundColor,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -154,11 +157,11 @@ class _PaginationRowState extends State<PaginationRow> {
               right: 16,
             ),
             child: IconButton(
-              color: onPrimary,
+              color: foregroundColor,
               constraints: BoxConstraints.tight(
                 const Size.square(48),
               ),
-              disabledColor: onPrimary.withOpacity(0.38),
+              disabledColor: foregroundColor.withOpacity(0.38),
               padding: EdgeInsets.zero,
               onPressed: () {
                 final pageCount = widget.pagination.paginated?.pageCount ?? 0;
@@ -177,7 +180,7 @@ class _PaginationRowState extends State<PaginationRow> {
             child: DropdownButton(
               dropdownColor: Theme.of(context).colorScheme.surfaceVariant,
               icon: DropdownArrow(
-                color: onPrimary,
+                color: foregroundColor,
               ),
               onChanged: onItemsPerPageChanged,
               value: currentItemsPerPage,
@@ -207,7 +210,7 @@ class _PaginationRowState extends State<PaginationRow> {
                         child: BodyText(
                           suggestion.toString(),
                           style: TextStyle(
-                            color: onPrimary,
+                            color: foregroundColor,
                             fontWeight: FontWeight.w500,
                           ),
                         ),

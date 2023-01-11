@@ -247,6 +247,9 @@ class MaterialScrollableTableDecoration {
   ///
   /// This value, when non null, will override the
   /// [MaterialScrollableTableThemeData.paginationAlignment] value.
+  ///
+  /// If the table doesn't have pagination, this property doesn't have any
+  /// effect.
   final MainAxisAlignment? paginationAlignment;
 
   /// The background color of the pagination of the table.
@@ -256,6 +259,19 @@ class MaterialScrollableTableDecoration {
   /// If the table doesn't have pagination, this property doesn't have any
   /// effect.
   final Color? paginationBackgroundColor;
+
+  /// The foreground color of the pagination of the table.
+  ///
+  /// By default, [headingForegroundColor] is used instead.
+  ///
+  /// This color is used by default for every text in the pagination. To
+  /// override the text color, use the [TextStyle.color] field of
+  /// [paginationTextStyle]. The foreground color is also used for the overlay
+  /// color of the pagination animations.
+  ///
+  /// If the table doesn't have pagination, this property doesn't have any
+  /// effect.
+  final Color? paginationForegroundColor;
 
   /// The height of the pagination row of the table.
   ///
@@ -325,6 +341,7 @@ class MaterialScrollableTableDecoration {
     this.padding,
     this.paginationAlignment,
     this.paginationBackgroundColor,
+    this.paginationForegroundColor,
     this.paginationHeight,
     this.paginationPadding,
     this.rowHeight,
