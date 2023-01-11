@@ -15,6 +15,7 @@ class MaterialScrollableTableThemeProvider
     headingTextStyle: const TextStyle(
       fontWeight: FontWeight.w500,
     ),
+    loadingIndicatorHeight: 32,
     padding: const EdgeInsets.symmetric(
       horizontal: 24,
     ),

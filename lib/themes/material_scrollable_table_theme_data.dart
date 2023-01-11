@@ -108,6 +108,18 @@ class MaterialScrollableTableThemeData
   /// [MaterialScrollableTableDecoration.headingTextStyle] value when non null.
   final TextStyle headingTextStyle;
 
+  /// The height of the space taken by the loading indicator of the table.
+  ///
+  /// By default, the value is 32.
+  ///
+  /// The loading indicator is the one that shows up above the table after the
+  /// first data loading.
+  ///
+  /// This value is overriden by the
+  /// [MaterialScrollableTableDecoration.loadingIndicatorHeight] value when non
+  /// null.
+  final double loadingIndicatorHeight;
+
   /// The color of the loading widget of the table.
   ///
   /// By default, the value is [ColorScheme.onSurfaceVariant].
@@ -189,6 +201,7 @@ class MaterialScrollableTableThemeData
     this.headingForegroundColor,
     required this.headingHeight,
     required this.headingTextStyle,
+    required this.loadingIndicatorHeight,
     this.loadingWidgetColor,
     this.oddRowBackgroundColor,
     this.oddRowForegroundColor,
@@ -212,6 +225,7 @@ class MaterialScrollableTableThemeData
     final Color? oddRowBackgroundColor,
     final Color? oddRowForegroundColor,
     final EdgeInsetsGeometry? padding,
+    final double? loadingIndicatorHeight,
     final Color? loadingWidgetColor,
     final double? rowHeight,
     final TextStyle? rowTextStyle,
@@ -232,6 +246,8 @@ class MaterialScrollableTableThemeData
           headingForegroundColor ?? this.headingForegroundColor,
       headingHeight: headingHeight ?? this.headingHeight,
       headingTextStyle: headingTextStyle ?? this.headingTextStyle,
+      loadingIndicatorHeight:
+          loadingIndicatorHeight ?? this.loadingIndicatorHeight,
       loadingWidgetColor: loadingWidgetColor ?? this.loadingWidgetColor,
       oddRowBackgroundColor:
           oddRowBackgroundColor ?? this.oddRowBackgroundColor,
@@ -278,6 +294,12 @@ class MaterialScrollableTableThemeData
       headingTextStyle:
           TextStyle.lerp(headingTextStyle, other.headingTextStyle, t) ??
               headingTextStyle,
+      loadingIndicatorHeight:
+          lerpDouble(loadingIndicatorHeight, other.loadingIndicatorHeight, t) ??
+              loadingIndicatorHeight,
+      loadingWidgetColor:
+          Color.lerp(loadingWidgetColor, other.loadingWidgetColor, t) ??
+              loadingWidgetColor,
       oddRowBackgroundColor:
           Color.lerp(oddRowBackgroundColor, other.oddRowBackgroundColor, t) ??
               oddRowBackgroundColor,
@@ -285,9 +307,6 @@ class MaterialScrollableTableThemeData
           Color.lerp(oddRowBackgroundColor, other.oddRowForegroundColor, t) ??
               oddRowForegroundColor,
       padding: EdgeInsetsGeometry.lerp(padding, other.padding, t) ?? padding,
-      loadingWidgetColor:
-          Color.lerp(loadingWidgetColor, other.loadingWidgetColor, t) ??
-              loadingWidgetColor,
       rowHeight: lerpDouble(rowHeight, other.rowHeight, t) ?? rowHeight,
       rowTextStyle:
           TextStyle.lerp(rowTextStyle, other.rowTextStyle, t) ?? rowTextStyle,

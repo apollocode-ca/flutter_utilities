@@ -653,6 +653,9 @@ class MaterialScrollableTableState<T>
 
   @override
   Widget build(BuildContext context) {
+    final loadingIndicatorHeight = widget.decoration.loadingIndicatorHeight ??
+        _theme?.loadingIndicatorHeight ??
+        32;
     return _Inherited<T>(
       state: this,
       child: Column(
@@ -664,10 +667,10 @@ class MaterialScrollableTableState<T>
             children: [
               Container(
                 alignment: Alignment.centerRight,
-                constraints: const BoxConstraints.tightFor(
-                  height: 36,
+                constraints: BoxConstraints.tightFor(
+                  height: loadingIndicatorHeight,
                 ),
-                padding: const EdgeInsets.only(
+                margin: const EdgeInsets.only(
                   bottom: 4,
                   right: 24,
                 ),
@@ -676,13 +679,13 @@ class MaterialScrollableTableState<T>
                   if (loadingIndicator != null) {
                     return loadingIndicator;
                   }
-                  return const LoadingIndicator(
-                    size: 32,
+                  return LoadingIndicator(
+                    size: loadingIndicatorHeight,
                   );
                 }(),
               ),
-              const SizedBox(
-                height: 36,
+              SizedBox(
+                height: loadingIndicatorHeight + 4,
               ),
             ],
           ),

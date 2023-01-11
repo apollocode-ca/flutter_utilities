@@ -121,6 +121,17 @@ class MaterialScrollableTableDecoration {
   /// [MaterialScrollableTableThemeData.headingTextStyle] value.
   final TextStyle? headingTextStyle;
 
+  /// The height of the space taken by the loading indicator of the table.
+  ///
+  /// By default, the value is 32.
+  ///
+  /// The loading indicator is the one that shows up above the table after the
+  /// first data loading.
+  ///
+  /// This value, when non null, will override the
+  /// [MaterialScrollableTableThemeData.loadingIndicatorHeight] value.
+  final double? loadingIndicatorHeight;
+
   /// The color of the primary loading widget of the table.
   ///
   /// By default, the value is [ColorScheme.onSurfaceVariant].
@@ -237,6 +248,7 @@ class MaterialScrollableTableDecoration {
     this.headingHeight,
     this.headingPadding,
     this.headingTextStyle,
+    this.loadingIndicatorHeight,
     this.loadingWidgetColor,
     this.oddRowBackgroundColor,
     this.oddRowForegroundColor,
