@@ -81,9 +81,12 @@ class _PaginationRowState extends State<PaginationRow> {
         widget.decoration.headingBackgroundColor ??
         theme?.headingBackgroundColor ??
         Theme.of(context).colorScheme.primary;
-    final dropdownColor = widget.decoration.dropdownBackgroundColor ??
+    final dropdownBackgroundColor = widget.decoration.dropdownBackgroundColor ??
         theme?.dropdownBackgroundColor ??
         Theme.of(context).colorScheme.surfaceVariant;
+    final dropdownForegroundColor = widget.decoration.dropdownForegroundColor ??
+        theme?.dropdownForegroundColor ??
+        Theme.of(context).colorScheme.onSurfaceVariant;
     final foregroundColor = widget.decoration.paginationForegroundColor ??
         widget.decoration.headingForegroundColor ??
         theme?.headingForegroundColor ??
@@ -114,7 +117,6 @@ class _PaginationRowState extends State<PaginationRow> {
           color: textColor,
           fontWeight: FontWeight.w500,
         );
-    final onSurfaceVariant = Theme.of(context).colorScheme.onSurfaceVariant;
     final itemsPerPageSuggestions = widget.pagination.itemsPerPageSuggestions;
     return Container(
       constraints: BoxConstraints.tightFor(
@@ -191,7 +193,7 @@ class _PaginationRowState extends State<PaginationRow> {
           ),
           DropdownButtonHideUnderline(
             child: DropdownButton(
-              dropdownColor: dropdownColor,
+              dropdownColor: dropdownBackgroundColor,
               icon: DropdownArrow(
                 color: foregroundColor,
               ),
@@ -204,7 +206,7 @@ class _PaginationRowState extends State<PaginationRow> {
                     child: BodyText(
                       suggestion.toString(),
                       style: TextStyle(
-                        color: onSurfaceVariant,
+                        color: dropdownForegroundColor,
                         fontWeight: FontWeight.w500,
                       ),
                     ),

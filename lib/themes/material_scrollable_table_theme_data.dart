@@ -57,6 +57,20 @@ class MaterialScrollableTableThemeData
   /// effect.
   final Color? dropdownBackgroundColor;
 
+  /// The foreground color of the pagination's dropdown of the table.
+  ///
+  /// By default, the value is [ColorScheme.onSurfaceVariant].
+  ///
+  /// This color is used by default for every text in the row.
+  ///
+  /// This value is overriden by the
+  /// [MaterialScrollableTableDecoration.dropdownForegroundColor] value when non
+  /// null.
+  ///
+  /// If the table doesn't have pagination, this property doesn't have any
+  /// effect.
+  final Color? dropdownForegroundColor;
+
   /// The style of the text displayed when the table is empty.
   ///
   /// By default, the value is:
@@ -264,6 +278,7 @@ class MaterialScrollableTableThemeData
     required this.checkboxColumnWidth,
     required this.columnSpacing,
     this.dropdownBackgroundColor,
+    this.dropdownForegroundColor,
     required this.emptyTableTextStyle,
     this.evenRowBackgroundColor,
     this.evenRowForegroundColor,
@@ -290,6 +305,7 @@ class MaterialScrollableTableThemeData
     final double? checkboxColumnWidth,
     final double? columnSpacing,
     final Color? dropdownBackgroundColor,
+    final Color? dropdownForegroundColor,
     final TextStyle? emptyTableTextStyle,
     final Color? evenRowBackgroundColor,
     final Color? evenRowForegroundColor,
@@ -316,6 +332,8 @@ class MaterialScrollableTableThemeData
       columnSpacing: columnSpacing ?? this.columnSpacing,
       dropdownBackgroundColor:
           dropdownBackgroundColor ?? this.dropdownBackgroundColor,
+      dropdownForegroundColor:
+          dropdownForegroundColor ?? this.dropdownForegroundColor,
       emptyTableTextStyle: emptyTableTextStyle ?? this.emptyTableTextStyle,
       evenRowBackgroundColor:
           evenRowBackgroundColor ?? this.evenRowBackgroundColor,
@@ -365,6 +383,8 @@ class MaterialScrollableTableThemeData
           lerpDouble(columnSpacing, other.columnSpacing, t) ?? columnSpacing,
       dropdownBackgroundColor:
           lerpDropdownBackgroundColor(other, t) ?? dropdownBackgroundColor,
+      dropdownForegroundColor:
+          lerpDropdownForegroundColor(other, t) ?? dropdownForegroundColor,
       emptyTableTextStyle:
           TextStyle.lerp(emptyTableTextStyle, other.emptyTableTextStyle, t) ??
               emptyTableTextStyle,
@@ -428,6 +448,17 @@ class MaterialScrollableTableThemeData
     return Color.lerp(
       dropdownBackgroundColor,
       other.dropdownBackgroundColor,
+      t,
+    );
+  }
+
+  Color? lerpDropdownForegroundColor(
+    MaterialScrollableTableThemeData other,
+    double t,
+  ) {
+    return Color.lerp(
+      dropdownForegroundColor,
+      other.dropdownForegroundColor,
       t,
     );
   }
