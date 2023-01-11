@@ -11,6 +11,7 @@ class MaterialScrollableTableThemeProvider
     checkboxColumnAlignment: AlignmentDirectional.center,
     checkboxColumnWidth: 48,
     columnSpacing: 32,
+    emptyTableTextStyle: const TextStyle(),
     headingHeight: 56,
     headingTextStyle: const TextStyle(
       fontWeight: FontWeight.w500,

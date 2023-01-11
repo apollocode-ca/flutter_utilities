@@ -45,6 +45,19 @@ class MaterialScrollableTableThemeData
   /// [MaterialScrollableTableDecoration.columnSpacing] value when non null.
   final double columnSpacing;
 
+  /// The style of the text displayed when the table is empty.
+  ///
+  /// By default, the value is:
+  ///
+  /// ```dart
+  /// const TextStyle();
+  /// ```
+  ///
+  /// This value is overriden by the
+  /// [MaterialScrollableTableDecoration.emptyTableTextStyle] value when non
+  /// null.
+  final TextStyle emptyTableTextStyle;
+
   /// The background color of any even row of the table.
   ///
   /// By default, the value is [ColorScheme.surface].
@@ -226,6 +239,7 @@ class MaterialScrollableTableThemeData
     required this.checkboxColumnAlignment,
     required this.checkboxColumnWidth,
     required this.columnSpacing,
+    required this.emptyTableTextStyle,
     this.evenRowBackgroundColor,
     this.evenRowForegroundColor,
     this.headingBackgroundColor,
@@ -249,8 +263,9 @@ class MaterialScrollableTableThemeData
     final AlignmentGeometry? checkboxColumnAlignment,
     final double? checkboxColumnWidth,
     final double? columnSpacing,
+    final TextStyle? emptyTableTextStyle,
     final Color? evenRowBackgroundColor,
-    final evenRowForegroundColor,
+    final Color? evenRowForegroundColor,
     final Color? headingBackgroundColor,
     final Color? headingForegroundColor,
     final double? headingHeight,
@@ -271,6 +286,7 @@ class MaterialScrollableTableThemeData
           checkboxColumnAlignment ?? this.checkboxColumnAlignment,
       checkboxColumnWidth: checkboxColumnWidth ?? this.checkboxColumnWidth,
       columnSpacing: columnSpacing ?? this.columnSpacing,
+      emptyTableTextStyle: emptyTableTextStyle ?? this.emptyTableTextStyle,
       evenRowBackgroundColor:
           evenRowBackgroundColor ?? this.evenRowBackgroundColor,
       evenRowForegroundColor:
@@ -316,6 +332,9 @@ class MaterialScrollableTableThemeData
               checkboxColumnWidth,
       columnSpacing:
           lerpDouble(columnSpacing, other.columnSpacing, t) ?? columnSpacing,
+      emptyTableTextStyle:
+          TextStyle.lerp(emptyTableTextStyle, other.emptyTableTextStyle, t) ??
+              emptyTableTextStyle,
       evenRowBackgroundColor:
           Color.lerp(evenRowBackgroundColor, other.evenRowBackgroundColor, t) ??
               evenRowBackgroundColor,

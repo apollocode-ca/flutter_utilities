@@ -102,6 +102,13 @@ class MaterialScrollableTable<T> extends StatefulWidget {
   /// [MaterialScrollableTableThemeData].
   final MaterialScrollableTableDecoration decoration;
 
+  /// Icon used with the [noDataLabel] to show that the table doesn't have any
+  /// data.
+  ///
+  /// By default, an exclamation mark surrounded by a circle is used.
+  /// The icon is red. The icon has also a right padding of 8 by default.
+  final Widget? errorIcon;
+
   /// The items to display in the table.
   ///
   /// Each item should correspond to a row in the table.
@@ -293,6 +300,7 @@ class MaterialScrollableTable<T> extends StatefulWidget {
     this.canDrag = false,
     required this.columns,
     this.decoration = const MaterialScrollableTableDecoration(),
+    this.errorIcon,
     required this.headingCellBuilder,
     this.isLoading = false,
     this.items = const [],
@@ -737,6 +745,8 @@ class MaterialScrollableTableState<T>
                             }
                             if (_items.isEmpty) {
                               return NoDataBody(
+                                decoration: widget.decoration,
+                                icon: widget.errorIcon,
                                 labelText: widget.noDataLabel,
                               );
                             }

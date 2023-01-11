@@ -39,6 +39,20 @@ class MaterialScrollableTableDecoration {
   /// [MaterialScrollableTableThemeData.columnSpacing] value.
   final double? columnSpacing;
 
+  /// The style of the text displayed when the table is empty.
+  ///
+  /// By default, the value is:
+  ///
+  /// ```dart
+  /// const TextStyle();
+  /// ```
+  ///
+  /// When this field is null, the value of [oddRowTextStyle] will be taken.
+  ///
+  /// This value, when non null, will override the
+  /// [MaterialScrollableTableThemeData.emptyTableTextStyle] value.
+  final TextStyle? emptyTableTextStyle;
+
   /// The background color of any even row of the table.
   ///
   /// By default, the value is [ColorScheme.surface].
@@ -191,6 +205,8 @@ class MaterialScrollableTableDecoration {
   /// const TextStyle();
   /// ```
   ///
+  /// If this value is null, the value of [rowTextStyle] will be taken.
+  ///
   /// This value, when non null, will override the
   /// [MaterialScrollableTableDecoration.rowTextStyle] value.
   final TextStyle? oddRowTextStyle;
@@ -269,6 +285,7 @@ class MaterialScrollableTableDecoration {
     this.checkboxColumnAlignment,
     this.checkboxColumnWidth,
     this.columnSpacing,
+    this.emptyTableTextStyle,
     this.evenRowBackgroundColor,
     this.evenRowForegroundColor,
     this.evenRowTextStyle,
