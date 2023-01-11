@@ -67,6 +67,17 @@ class MaterialScrollableTableDecoration {
   /// [MaterialScrollableTableThemeData.headingBackgroundColor] value.
   final Color? headingBackgroundColor;
 
+  /// The foreground color of the heading of the table.
+  ///
+  /// By default, the value is [ColorScheme.onPrimary]. To override the text
+  /// color, use the [TextStyle.color] field of [evenRowTextStyle].
+  ///
+  /// This color is used by default for every text in the heading.
+  ///
+  /// This value, when non null, will override the
+  /// [MaterialScrollableTableThemeData.headingForegroundColor] value.
+  final Color? headingForegroundColor;
+
   /// The height of the heading of the table.
   ///
   /// By default, the value is 56.
@@ -171,6 +182,7 @@ class MaterialScrollableTableDecoration {
     this.evenRowBackgroundColor,
     this.evenRowForegroundColor,
     this.headingBackgroundColor,
+    this.headingForegroundColor,
     this.headingHeight,
     this.headingPadding,
     this.headingTextStyle,

@@ -58,9 +58,8 @@ class MaterialScrollableTableThemeData
   ///
   /// By default, the value is [ColorScheme.onSurface].
   ///
-  /// This color is used by default for every text in the row. To override the
-  /// text color, use the [TextStyle.color] field of [evenRowTextStyle]. The
-  /// foreground color is also used for the overlay color of the row animations.
+  /// This color is used by default for every text in the row. The foreground
+  /// color is also used for the overlay color of the row animations.
   ///
   /// This value is overriden by the
   /// [MaterialScrollableTableDecoration.evenRowForegroundColor] value when non
@@ -76,6 +75,17 @@ class MaterialScrollableTableThemeData
   /// null.
   final Color? headingBackgroundColor;
 
+  /// The foreground color of the heading of the table.
+  ///
+  /// By default, the value is [ColorScheme.onPrimary].
+  ///
+  /// This color is used by default for every text in the heading.
+  ///
+  /// This value is overriden by the
+  /// [MaterialScrollableTableDecoration.headingForegroundColor] value when non
+  /// null.
+  final Color? headingForegroundColor;
+
   /// The height of the heading of the table.
   ///
   /// By default, the value is 56.
@@ -90,7 +100,6 @@ class MaterialScrollableTableThemeData
   ///
   /// ```dart
   /// TextStyle(
-  ///   color: colorScheme.onPrimary,
   ///   fontWeight: FontWeight.w500,
   /// );
   /// ```
@@ -112,9 +121,8 @@ class MaterialScrollableTableThemeData
   ///
   /// By default, the value is [ColorScheme.onSurfaceVariant].
   ///
-  /// This color is used by default for every text in the row. To override the
-  /// text color, use the [TextStyle.color] field of [oddRowTextStyle]. The
-  /// foreground color is also used for the overlay color of the row animations.
+  /// This color is used by default for every text in the row. The foreground
+  /// color is also used for the overlay color of the row animations.
   ///
   /// This value is overriden by the
   /// [MaterialScrollableTableDecoration.oddRowForegroundColor] value when non
@@ -152,6 +160,7 @@ class MaterialScrollableTableThemeData
     this.evenRowBackgroundColor,
     this.evenRowForegroundColor,
     this.headingBackgroundColor,
+    this.headingForegroundColor,
     required this.headingHeight,
     this.headingTextStyle,
     this.oddRowBackgroundColor,
@@ -169,6 +178,7 @@ class MaterialScrollableTableThemeData
     final Color? evenRowBackgroundColor,
     final evenRowForegroundColor,
     final Color? headingBackgroundColor,
+    final Color? headingForegroundColor,
     final double? headingHeight,
     final TextStyle? headingTextStyle,
     final Color? oddRowBackgroundColor,
@@ -188,6 +198,8 @@ class MaterialScrollableTableThemeData
           evenRowForegroundColor ?? this.evenRowForegroundColor,
       headingBackgroundColor:
           headingBackgroundColor ?? this.headingBackgroundColor,
+      headingForegroundColor:
+          headingForegroundColor ?? this.headingForegroundColor,
       headingHeight: headingHeight ?? this.headingHeight,
       headingTextStyle: headingTextStyle ?? this.headingTextStyle,
       oddRowBackgroundColor:
@@ -226,6 +238,9 @@ class MaterialScrollableTableThemeData
       headingBackgroundColor:
           Color.lerp(headingBackgroundColor, other.headingBackgroundColor, t) ??
               headingBackgroundColor,
+      headingForegroundColor:
+          Color.lerp(headingForegroundColor, other.headingForegroundColor, t) ??
+              headingForegroundColor,
       headingHeight:
           lerpDouble(headingHeight, other.headingHeight, t) ?? headingHeight,
       headingTextStyle:

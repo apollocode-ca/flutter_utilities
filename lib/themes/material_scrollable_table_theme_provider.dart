@@ -32,8 +32,8 @@ class MaterialScrollableTableThemeProvider
       evenRowBackgroundColor: colorScheme.surface,
       evenRowForegroundColor: colorScheme.onSurface,
       headingBackgroundColor: colorScheme.primary,
-      headingTextStyle: TextStyle(
-        color: colorScheme.onPrimary,
+      headingForegroundColor: colorScheme.onPrimary,
+      headingTextStyle: const TextStyle(
         fontWeight: FontWeight.w500,
       ),
       oddRowBackgroundColor: colorScheme.surfaceVariant,

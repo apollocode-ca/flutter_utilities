@@ -38,6 +38,9 @@ class HeadingRow extends StatelessWidget {
         AlignmentDirectional.center;
     final checkboxColumnWidth =
         decoration.checkboxColumnWidth ?? theme?.checkboxColumnWidth ?? 48;
+    final foregroundColor = decoration.headingForegroundColor ??
+        theme?.headingForegroundColor ??
+        Theme.of(context).colorScheme.onPrimary;
     final height = decoration.headingHeight ?? theme?.headingHeight ?? 56;
     final padding = decoration.headingPadding ??
         decoration.padding ??
@@ -45,10 +48,15 @@ class HeadingRow extends StatelessWidget {
         const EdgeInsets.symmetric(
           horizontal: 24,
         );
-    final textStyle = decoration.headingTextStyle ??
-        theme?.headingTextStyle ??
+    final textColor = decoration.headingTextStyle?.color ?? foregroundColor;
+    final textStyle = decoration.headingTextStyle?.copyWith(
+          color: textColor,
+        ) ??
+        theme?.headingTextStyle?.copyWith(
+          color: textColor,
+        ) ??
         TextStyle(
-          color: Theme.of(context).colorScheme.onPrimary,
+          color: textColor,
           fontWeight: FontWeight.w500,
         );
     return Container(
