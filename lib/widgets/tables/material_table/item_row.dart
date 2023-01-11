@@ -53,6 +53,7 @@ class ItemRow<T> extends StatefulWidget {
 
 class _State<T> extends State<ItemRow<T>> {
   var isHovering = false;
+  var isHoveringCheckbox = false;
   var isPressing = false;
 
   Color get backgroundColor {
@@ -97,6 +98,12 @@ class _State<T> extends State<ItemRow<T>> {
       return rowHeight;
     }
     return theme?.rowHeight ?? 52;
+  }
+
+  bool get shouldShowOverlayColor {
+    return widget.shouldShowOverlayColor &&
+        !isHoveringCheckbox &&
+        !widget.isAnyRowDragging;
   }
 
   Color get textColor {
@@ -188,7 +195,7 @@ class _State<T> extends State<ItemRow<T>> {
         });
       },
       onLongPressDown: (details) {
-        if (widget.shouldShowOverlayColor && !widget.isAnyRowDragging) {
+        if (shouldShowOverlayColor) {
           setState(() {
             isPressing = true;
           });
@@ -245,7 +252,7 @@ class _State<T> extends State<ItemRow<T>> {
               if (widget.isDragging) {
                 return draggedColor;
               }
-              if (widget.shouldShowOverlayColor && !widget.isAnyRowDragging) {
+              if (shouldShowOverlayColor) {
                 if (isPressing) {
                   return pressedColor;
                 }
@@ -269,6 +276,11 @@ class _State<T> extends State<ItemRow<T>> {
                     child: TableCheckbox(
                       isEvenRow: widget.index.isEven,
                       onChanged: widget.onCheckboxChanged,
+                      onHovered: (isHovering) {
+                        setState(() {
+                          isHoveringCheckbox = isHovering;
+                        });
+                      },
                       onTap: widget.onCheckboxTap,
                       state: widget.checkboxState,
                     ),

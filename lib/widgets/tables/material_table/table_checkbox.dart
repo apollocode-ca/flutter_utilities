@@ -6,6 +6,7 @@ class TableCheckbox extends StatelessWidget {
   final bool disabled;
   final bool? isEvenRow;
   final void Function(CheckboxState state)? onChanged;
+  final void Function(bool isHovering)? onHovered;
   final void Function() onTap;
   final CheckboxState state;
 
@@ -13,6 +14,7 @@ class TableCheckbox extends StatelessWidget {
     this.disabled = false,
     required this.isEvenRow,
     required this.onChanged,
+    this.onHovered,
     required this.onTap,
     required this.state,
     super.key,
@@ -74,6 +76,9 @@ class TableCheckbox extends StatelessWidget {
       foregroundColor: MaterialStatePropertyAll(
         _getForegroundColor(context),
       ),
+      onChanged: onChanged,
+      onHovered: onHovered,
+      onTap: onTap,
       overlayColor: MaterialStateProperty.resolveWith((states) {
         final color = _getBackgroundColor(context);
         if (states.contains(MaterialState.pressed)) {
@@ -87,8 +92,6 @@ class TableCheckbox extends StatelessWidget {
         }
         return null;
       }),
-      onChanged: onChanged,
-      onTap: onTap,
       state: state,
       tristate: isEvenRow == null,
     );
