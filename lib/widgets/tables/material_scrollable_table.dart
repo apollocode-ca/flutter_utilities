@@ -653,6 +653,10 @@ class MaterialScrollableTableState<T>
 
   @override
   Widget build(BuildContext context) {
+    final loadingIndicatorAlignment =
+        widget.decoration.loadingIndicatorAlignment ??
+            _theme?.loadingIndicatorAlignment ??
+            AlignmentDirectional.centerEnd;
     final loadingIndicatorHeight = widget.decoration.loadingIndicatorHeight ??
         _theme?.loadingIndicatorHeight ??
         32;
@@ -672,7 +676,7 @@ class MaterialScrollableTableState<T>
             ],
             children: [
               Container(
-                alignment: Alignment.centerRight,
+                alignment: loadingIndicatorAlignment,
                 constraints: BoxConstraints.tightFor(
                   height: loadingIndicatorHeight,
                 ),

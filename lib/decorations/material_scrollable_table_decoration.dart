@@ -121,6 +121,17 @@ class MaterialScrollableTableDecoration {
   /// [MaterialScrollableTableThemeData.headingTextStyle] value.
   final TextStyle? headingTextStyle;
 
+  /// The alignment of the loading indicator of the table.
+  ///
+  /// By default, the value is [AlignmentDirectional.centerEnd].
+  ///
+  /// The loading indicator is the one that shows up above the table after the
+  /// first data loading.
+  ///
+  /// This value, when non null, will override the
+  /// [MaterialScrollableTableThemeData.loadingIndicatorAlignment] value.
+  final AlignmentGeometry? loadingIndicatorAlignment;
+
   /// The height of the space taken by the loading indicator of the table.
   ///
   /// By default, the value is 32.
@@ -266,6 +277,7 @@ class MaterialScrollableTableDecoration {
     this.headingHeight,
     this.headingPadding,
     this.headingTextStyle,
+    this.loadingIndicatorAlignment,
     this.loadingIndicatorHeight,
     this.loadingIndicatorMargin,
     this.loadingWidgetColor,

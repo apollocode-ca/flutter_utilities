@@ -15,6 +15,7 @@ class MaterialScrollableTableThemeProvider
     headingTextStyle: const TextStyle(
       fontWeight: FontWeight.w500,
     ),
+    loadingIndicatorAlignment: AlignmentDirectional.centerEnd,
     loadingIndicatorHeight: 32,
     loadingIndicatorMargin: const EdgeInsetsDirectional.only(
       bottom: 4,

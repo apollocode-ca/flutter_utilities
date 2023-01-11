@@ -108,6 +108,18 @@ class MaterialScrollableTableThemeData
   /// [MaterialScrollableTableDecoration.headingTextStyle] value when non null.
   final TextStyle headingTextStyle;
 
+  /// The alignment of the loading indicator of the table.
+  ///
+  /// By default, the value is [AlignmentDirectional.centerEnd].
+  ///
+  /// The loading indicator is the one that shows up above the table after the
+  /// first data loading.
+  ///
+  /// This value is overriden by the
+  /// [MaterialScrollableTableDecoration.loadingIndicatorAlignment] value when
+  /// non null.
+  final AlignmentGeometry loadingIndicatorAlignment;
+
   /// The height of loading indicator of the table.
   ///
   /// By default, the value is 32.
@@ -220,6 +232,7 @@ class MaterialScrollableTableThemeData
     this.headingForegroundColor,
     required this.headingHeight,
     required this.headingTextStyle,
+    required this.loadingIndicatorAlignment,
     required this.loadingIndicatorHeight,
     required this.loadingIndicatorMargin,
     this.loadingWidgetColor,
@@ -242,6 +255,7 @@ class MaterialScrollableTableThemeData
     final Color? headingForegroundColor,
     final double? headingHeight,
     final TextStyle? headingTextStyle,
+    final AlignmentGeometry? loadingIndicatorAlignment,
     final double? loadingIndicatorHeight,
     final EdgeInsetsGeometry? loadingIndicatorMargin,
     final Color? loadingWidgetColor,
@@ -267,6 +281,8 @@ class MaterialScrollableTableThemeData
           headingForegroundColor ?? this.headingForegroundColor,
       headingHeight: headingHeight ?? this.headingHeight,
       headingTextStyle: headingTextStyle ?? this.headingTextStyle,
+      loadingIndicatorAlignment:
+          loadingIndicatorAlignment ?? this.loadingIndicatorAlignment,
       loadingIndicatorHeight:
           loadingIndicatorHeight ?? this.loadingIndicatorHeight,
       loadingIndicatorMargin:
@@ -317,6 +333,8 @@ class MaterialScrollableTableThemeData
       headingTextStyle:
           TextStyle.lerp(headingTextStyle, other.headingTextStyle, t) ??
               headingTextStyle,
+      loadingIndicatorAlignment:
+          lerpLoadingIndicatorAlignment(other, t) ?? loadingIndicatorAlignment,
       loadingIndicatorHeight:
           lerpDouble(loadingIndicatorHeight, other.loadingIndicatorHeight, t) ??
               loadingIndicatorHeight,
@@ -345,6 +363,17 @@ class MaterialScrollableTableThemeData
     return AlignmentGeometry.lerp(
       checkboxColumnAlignment,
       other.checkboxColumnAlignment,
+      t,
+    );
+  }
+
+  AlignmentGeometry? lerpLoadingIndicatorAlignment(
+    MaterialScrollableTableThemeData other,
+    double t,
+  ) {
+    return AlignmentGeometry.lerp(
+      loadingIndicatorAlignment,
+      other.loadingIndicatorAlignment,
       t,
     );
   }
