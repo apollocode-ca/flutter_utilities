@@ -99,6 +99,44 @@ class _State<T> extends State<ItemRow<T>> {
     return theme?.rowHeight ?? 52;
   }
 
+  Color get textColor {
+    final number = widget.index + 1;
+    if (number.isOdd) {
+      return widget.decoration.oddRowTextStyle?.color ??
+          widget.decoration.rowTextStyle?.color ??
+          foregroundColor;
+    }
+    return widget.decoration.evenRowTextStyle?.color ??
+        widget.decoration.rowTextStyle?.color ??
+        foregroundColor;
+  }
+
+  TextStyle get textStyle {
+    final number = widget.index + 1;
+    if (number.isOdd) {
+      return widget.decoration.oddRowTextStyle?.copyWith(
+            color: textColor,
+          ) ??
+          widget.decoration.rowTextStyle?.copyWith(
+            color: textColor,
+          ) ??
+          theme?.rowTextStyle.copyWith(
+            color: textColor,
+          ) ??
+          const TextStyle();
+    }
+    return widget.decoration.evenRowTextStyle?.copyWith(
+          color: textColor,
+        ) ??
+        widget.decoration.rowTextStyle?.copyWith(
+          color: textColor,
+        ) ??
+        theme?.rowTextStyle.copyWith(
+          color: textColor,
+        ) ??
+        const TextStyle();
+  }
+
   MaterialScrollableTableThemeData? get theme {
     return Theme.of(context).extension<MaterialScrollableTableThemeData>();
   }
@@ -245,9 +283,7 @@ class _State<T> extends State<ItemRow<T>> {
                   cells.add(
                     Expanded(
                       child: DefaultTextStyle(
-                        style: TextStyle(
-                          color: foregroundColor,
-                        ),
+                        style: textStyle,
                         textAlign: column.textAlign,
                         child: TableCell(
                           column: column,
@@ -265,9 +301,7 @@ class _State<T> extends State<ItemRow<T>> {
                 } else {
                   cells.add(
                     DefaultTextStyle(
-                      style: TextStyle(
-                        color: foregroundColor,
-                      ),
+                      style: textStyle,
                       textAlign: column.textAlign,
                       child: TableCell(
                         column: column,

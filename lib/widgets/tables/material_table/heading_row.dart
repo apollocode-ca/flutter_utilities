@@ -52,7 +52,7 @@ class HeadingRow extends StatelessWidget {
     final textStyle = decoration.headingTextStyle?.copyWith(
           color: textColor,
         ) ??
-        theme?.headingTextStyle?.copyWith(
+        theme?.headingTextStyle.copyWith(
           color: textColor,
         ) ??
         TextStyle(

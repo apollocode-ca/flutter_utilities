@@ -12,10 +12,14 @@ class MaterialScrollableTableThemeProvider
     checkboxColumnWidth: 48,
     columnSpacing: 32,
     headingHeight: 56,
+    headingTextStyle: const TextStyle(
+      fontWeight: FontWeight.w500,
+    ),
     padding: const EdgeInsets.symmetric(
       horizontal: 24,
     ),
     rowHeight: 52,
+    rowTextStyle: const TextStyle(),
   );
 
   MaterialScrollableTableThemeProvider({
@@ -33,9 +37,6 @@ class MaterialScrollableTableThemeProvider
       evenRowForegroundColor: colorScheme.onSurface,
       headingBackgroundColor: colorScheme.primary,
       headingForegroundColor: colorScheme.onPrimary,
-      headingTextStyle: const TextStyle(
-        fontWeight: FontWeight.w500,
-      ),
       oddRowBackgroundColor: colorScheme.surfaceVariant,
       oddRowForegroundColor: colorScheme.onSurfaceVariant,
     );

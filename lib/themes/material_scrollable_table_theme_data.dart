@@ -99,14 +99,14 @@ class MaterialScrollableTableThemeData
   /// By default, the value is:
   ///
   /// ```dart
-  /// TextStyle(
+  /// const TextStyle(
   ///   fontWeight: FontWeight.w500,
   /// );
   /// ```
   ///
   /// This value is overriden by the
   /// [MaterialScrollableTableDecoration.headingTextStyle] value when non null.
-  final TextStyle? headingTextStyle;
+  final TextStyle headingTextStyle;
 
   /// The background color of any odd row of the table.
   ///
@@ -152,6 +152,18 @@ class MaterialScrollableTableThemeData
   /// [MaterialScrollableTableDecoration.rowHeight] value when non null.
   final double rowHeight;
 
+  /// The style of the texts inside a data row in the table.
+  ///
+  /// By default, the value is:
+  ///
+  /// ```dart
+  /// const TextStyle();
+  /// ```
+  ///
+  /// This value is overriden by the
+  /// [MaterialScrollableTableDecoration.rowTextStyle] value when non null.
+  final TextStyle rowTextStyle;
+
   MaterialScrollableTableThemeData({
     required this.animationDuration,
     required this.checkboxColumnAlignment,
@@ -162,11 +174,12 @@ class MaterialScrollableTableThemeData
     this.headingBackgroundColor,
     this.headingForegroundColor,
     required this.headingHeight,
-    this.headingTextStyle,
+    required this.headingTextStyle,
     this.oddRowBackgroundColor,
     this.oddRowForegroundColor,
     required this.padding,
     required this.rowHeight,
+    required this.rowTextStyle,
   });
 
   @override
@@ -185,6 +198,7 @@ class MaterialScrollableTableThemeData
     final Color? oddRowForegroundColor,
     final EdgeInsetsGeometry? padding,
     final double? rowHeight,
+    final TextStyle? rowTextStyle,
   }) {
     return MaterialScrollableTableThemeData(
       animationDuration: animationDuration ?? this.animationDuration,
@@ -208,6 +222,7 @@ class MaterialScrollableTableThemeData
           oddRowForegroundColor ?? this.oddRowForegroundColor,
       padding: padding ?? this.padding,
       rowHeight: rowHeight ?? this.rowHeight,
+      rowTextStyle: rowTextStyle ?? this.rowTextStyle,
     );
   }
 
@@ -254,6 +269,8 @@ class MaterialScrollableTableThemeData
               oddRowForegroundColor,
       padding: EdgeInsetsGeometry.lerp(padding, other.padding, t) ?? padding,
       rowHeight: lerpDouble(rowHeight, other.rowHeight, t) ?? rowHeight,
+      rowTextStyle:
+          TextStyle.lerp(rowTextStyle, other.rowTextStyle, t) ?? rowTextStyle,
     );
   }
 

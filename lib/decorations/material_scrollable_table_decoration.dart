@@ -59,6 +59,18 @@ class MaterialScrollableTableDecoration {
   /// [MaterialScrollableTableThemeData.evenRowForegroundColor] value.
   final Color? evenRowForegroundColor;
 
+  /// The style of the texts inside an even row in the table.
+  ///
+  /// By default, the value is:
+  ///
+  /// ```dart
+  /// const TextStyle();
+  /// ```
+  ///
+  /// This value, when non null, will override the
+  /// [MaterialScrollableTableDecoration.rowTextStyle] value.
+  final TextStyle? evenRowTextStyle;
+
   /// The background color of the heading of the table.
   ///
   /// By default, the value is [ColorScheme.primary].
@@ -117,6 +129,18 @@ class MaterialScrollableTableDecoration {
   /// [MaterialScrollableTableThemeData.oddRowBackgroundColor] value.
   final Color? oddRowBackgroundColor;
 
+  /// The style of the texts inside an odd row in the table.
+  ///
+  /// By default, the value is:
+  ///
+  /// ```dart
+  /// const TextStyle();
+  /// ```
+  ///
+  /// This value, when non null, will override the
+  /// [MaterialScrollableTableDecoration.rowTextStyle] value.
+  final TextStyle? oddRowTextStyle;
+
   /// The foreground color of any odd row of the table.
   ///
   /// By default, the value is [ColorScheme.onSurfaceVariant].
@@ -174,6 +198,18 @@ class MaterialScrollableTableDecoration {
   /// [MaterialScrollableTableThemeData.rowPadding] value.
   final EdgeInsetsGeometry? rowPadding;
 
+  /// The style of the texts inside a row in the table.
+  ///
+  /// By default, the value is:
+  ///
+  /// ```dart
+  /// const TextStyle();
+  /// ```
+  ///
+  /// This value, when non null, will override the
+  /// [MaterialScrollableTableThemeData.rowTextStyle] value.
+  final TextStyle? rowTextStyle;
+
   const MaterialScrollableTableDecoration({
     this.animationDuration,
     this.checkboxColumnAlignment,
@@ -181,6 +217,7 @@ class MaterialScrollableTableDecoration {
     this.columnSpacing,
     this.evenRowBackgroundColor,
     this.evenRowForegroundColor,
+    this.evenRowTextStyle,
     this.headingBackgroundColor,
     this.headingForegroundColor,
     this.headingHeight,
@@ -188,9 +225,11 @@ class MaterialScrollableTableDecoration {
     this.headingTextStyle,
     this.oddRowBackgroundColor,
     this.oddRowForegroundColor,
+    this.oddRowTextStyle,
     this.padding,
     this.paginationPadding,
     this.rowHeight,
     this.rowPadding,
+    this.rowTextStyle,
   });
 }
