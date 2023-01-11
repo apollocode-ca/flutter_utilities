@@ -42,8 +42,13 @@ import 'package:flutter/material.dart';
 /// checkbox before of being tapped was partially selected, you will get the
 /// state unselected with the callback.
 ///
+/// The [onHovered] callback can be used to add extra behavior when the user is
+/// hovering the checkbox. For example, if the checkbox is in a widget that has
+/// itself user interaction animations, you can use the callback to prevent the
+/// parent widget to animate when the user interacts with the checkbox.
+///
 /// The [onTap] callback can be used to add extra behavior when the user is
-/// tapping the checkkox. For example, if you want to request the focus on a
+/// tapping the checkbox. For example, if you want to request the focus on a
 /// parent widget (to listen to keyboard, let's say), you can do so with this
 /// callback.
 class MaterialCheckbox extends StatefulWidget {
@@ -165,6 +170,12 @@ class MaterialCheckbox extends StatefulWidget {
   /// is the state after the user tapped on the checkbox (and not before).
   final void Function(CheckboxState state)? onChanged;
 
+  /// A callback for when the checkbox is hovered.
+  ///
+  /// A flag is provided by the callback to know if the checkbox is actually
+  /// hovered ([MouseRegion.onEnter]) or not ([MouseRegion.onExit]).
+  final void Function(bool isHovering)? onHovered;
+
   /// A callback for when the checkbox is tapped.
   final void Function()? onTap;
 
@@ -284,6 +295,7 @@ class MaterialCheckbox extends StatefulWidget {
     this.focusNode,
     this.foregroundColor,
     this.onChanged,
+    this.onHovered,
     this.onTap,
     this.overlayColor,
     this.splashRadius = 20,
@@ -560,6 +572,15 @@ class _State extends State<MaterialCheckbox> with TickerProviderStateMixin {
     }
   }
 
+  void onHovered({
+    required bool isHovering,
+  }) {
+    final onHovered = widget.onHovered;
+    if (onHovered != null) {
+      onHovered(isHovering);
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -668,6 +689,9 @@ class _State extends State<MaterialCheckbox> with TickerProviderStateMixin {
         if (!states.contains(MaterialState.disabled)) {
           setState(() {
             statesController.update(MaterialState.hovered, true);
+            onHovered(
+              isHovering: true,
+            );
           });
         }
       },
@@ -675,6 +699,9 @@ class _State extends State<MaterialCheckbox> with TickerProviderStateMixin {
         if (!states.contains(MaterialState.disabled)) {
           setState(() {
             statesController.update(MaterialState.hovered, false);
+            onHovered(
+              isHovering: false,
+            );
           });
         }
       },
