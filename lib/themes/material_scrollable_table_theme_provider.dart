@@ -8,6 +8,7 @@ class MaterialScrollableTableThemeProvider
     extends AbstractedThemeProvider<MaterialScrollableTableThemeData> {
   final _theme = MaterialScrollableTableThemeData(
     animationDuration: kThemeAnimationDuration,
+    borderRadius: BorderRadiusDirectional.circular(24),
     checkboxColumnAlignment: AlignmentDirectional.center,
     checkboxColumnWidth: 48,
     columnSpacing: 32,

@@ -19,6 +19,18 @@ class MaterialScrollableTableThemeData
   /// [MaterialScrollableTableDecoration.animationDuration] value when non null.
   final Duration animationDuration;
 
+  /// The border radius of the table.
+  ///
+  /// By default, the value is:
+  ///
+  /// ```dart
+  /// BorderRadiusDirectional.circular(24);
+  /// ```
+  ///
+  /// This value is overriden by the
+  /// [MaterialScrollableTableDecoration.animationDuration] value when non null.
+  final BorderRadiusGeometry borderRadius;
+
   /// The alignment of the cells of the checkbox column of the table.
   ///
   /// By default, the value is [AlignmentDirectional.center].
@@ -274,6 +286,7 @@ class MaterialScrollableTableThemeData
 
   MaterialScrollableTableThemeData({
     required this.animationDuration,
+    required this.borderRadius,
     required this.checkboxColumnAlignment,
     required this.checkboxColumnWidth,
     required this.columnSpacing,
@@ -301,6 +314,7 @@ class MaterialScrollableTableThemeData
   @override
   MaterialScrollableTableThemeData copyWith({
     final Duration? animationDuration,
+    final BorderRadiusGeometry? borderRadius,
     final AlignmentGeometry? checkboxColumnAlignment,
     final double? checkboxColumnWidth,
     final double? columnSpacing,
@@ -326,6 +340,7 @@ class MaterialScrollableTableThemeData
   }) {
     return MaterialScrollableTableThemeData(
       animationDuration: animationDuration ?? this.animationDuration,
+      borderRadius: borderRadius ?? this.borderRadius,
       checkboxColumnAlignment:
           checkboxColumnAlignment ?? this.checkboxColumnAlignment,
       checkboxColumnWidth: checkboxColumnWidth ?? this.checkboxColumnWidth,
@@ -374,6 +389,9 @@ class MaterialScrollableTableThemeData
     return MaterialScrollableTableThemeData(
       animationDuration:
           lerpDuration(animationDuration, other.animationDuration, t),
+      borderRadius:
+          BorderRadiusGeometry.lerp(borderRadius, other.borderRadius, t) ??
+              borderRadius,
       checkboxColumnAlignment:
           lerpCheckboxColumnAlignment(other, t) ?? checkboxColumnAlignment,
       checkboxColumnWidth:

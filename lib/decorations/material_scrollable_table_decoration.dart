@@ -15,6 +15,18 @@ class MaterialScrollableTableDecoration {
   /// [MaterialScrollableTableThemeData.animationDuration] value.
   final Duration? animationDuration;
 
+  /// The border radius of the table.
+  ///
+  /// By default, the value is:
+  ///
+  /// ```dart
+  /// BorderRadiusDirectional.circular(24);
+  /// ```
+  ///
+  /// This value, when non null, will override the
+  /// [MaterialScrollableTableThemeData.borderRadius] value.
+  final BorderRadiusGeometry? borderRadius;
+
   /// The alignment of the cells of the checkbox column of the table.
   ///
   /// By default, the value is [AlignmentDirectional.center].
@@ -359,6 +371,7 @@ class MaterialScrollableTableDecoration {
 
   const MaterialScrollableTableDecoration({
     this.animationDuration,
+    this.borderRadius,
     this.checkboxColumnAlignment,
     this.checkboxColumnWidth,
     this.columnSpacing,

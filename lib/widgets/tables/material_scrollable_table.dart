@@ -661,6 +661,9 @@ class MaterialScrollableTableState<T>
 
   @override
   Widget build(BuildContext context) {
+    final borderRadius = widget.decoration.borderRadius ??
+        _theme?.borderRadius ??
+        BorderRadiusDirectional.circular(24);
     final loadingIndicatorAlignment =
         widget.decoration.loadingIndicatorAlignment ??
             _theme?.loadingIndicatorAlignment ??
@@ -716,7 +719,7 @@ class MaterialScrollableTableState<T>
                 child: Container(
                   clipBehavior: Clip.antiAlias,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(24),
+                    borderRadius: borderRadius,
                     color: Theme.of(context).colorScheme.surfaceVariant,
                   ),
                   key: _key,
