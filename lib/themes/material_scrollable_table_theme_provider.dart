@@ -16,6 +16,10 @@ class MaterialScrollableTableThemeProvider
       fontWeight: FontWeight.w500,
     ),
     loadingIndicatorHeight: 32,
+    loadingIndicatorMargin: const EdgeInsetsDirectional.only(
+      bottom: 4,
+      end: 24,
+    ),
     padding: const EdgeInsets.symmetric(
       horizontal: 24,
     ),

@@ -656,6 +656,12 @@ class MaterialScrollableTableState<T>
     final loadingIndicatorHeight = widget.decoration.loadingIndicatorHeight ??
         _theme?.loadingIndicatorHeight ??
         32;
+    final loadingIndicatorMargin = widget.decoration.loadingIndicatorMargin ??
+        _theme?.loadingIndicatorMargin ??
+        const EdgeInsetsDirectional.only(
+          bottom: 4,
+          end: 24,
+        );
     return _Inherited<T>(
       state: this,
       child: Column(
@@ -670,10 +676,7 @@ class MaterialScrollableTableState<T>
                 constraints: BoxConstraints.tightFor(
                   height: loadingIndicatorHeight,
                 ),
-                margin: const EdgeInsets.only(
-                  bottom: 4,
-                  right: 24,
-                ),
+                margin: loadingIndicatorMargin,
                 child: () {
                   final loadingIndicator = widget.loadingIndicator;
                   if (loadingIndicator != null) {
@@ -685,7 +688,8 @@ class MaterialScrollableTableState<T>
                 }(),
               ),
               SizedBox(
-                height: loadingIndicatorHeight + 4,
+                height:
+                    loadingIndicatorHeight + loadingIndicatorMargin.vertical,
               ),
             ],
           ),

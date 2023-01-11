@@ -132,6 +132,24 @@ class MaterialScrollableTableDecoration {
   /// [MaterialScrollableTableThemeData.loadingIndicatorHeight] value.
   final double? loadingIndicatorHeight;
 
+  /// The margin around the loading indicator of the table.
+  ///
+  /// By default, the value is:
+  ///
+  /// ```dart
+  /// const EdgeInsetsDirectional.only(
+  ///   bottom: 4,
+  ///   end: 24,
+  /// );
+  /// ```
+  ///
+  /// The loading indicator is the one that shows up above the table after the
+  /// first data loading.
+  ///
+  /// This value, when non null, will override the
+  /// [MaterialScrollableTableThemeData.loadingIndicatorMargin] value.
+  final EdgeInsetsGeometry? loadingIndicatorMargin;
+
   /// The color of the primary loading widget of the table.
   ///
   /// By default, the value is [ColorScheme.onSurfaceVariant].
@@ -249,6 +267,7 @@ class MaterialScrollableTableDecoration {
     this.headingPadding,
     this.headingTextStyle,
     this.loadingIndicatorHeight,
+    this.loadingIndicatorMargin,
     this.loadingWidgetColor,
     this.oddRowBackgroundColor,
     this.oddRowForegroundColor,

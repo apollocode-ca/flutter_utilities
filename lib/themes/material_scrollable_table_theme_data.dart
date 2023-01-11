@@ -108,7 +108,7 @@ class MaterialScrollableTableThemeData
   /// [MaterialScrollableTableDecoration.headingTextStyle] value when non null.
   final TextStyle headingTextStyle;
 
-  /// The height of the space taken by the loading indicator of the table.
+  /// The height of loading indicator of the table.
   ///
   /// By default, the value is 32.
   ///
@@ -119,6 +119,25 @@ class MaterialScrollableTableThemeData
   /// [MaterialScrollableTableDecoration.loadingIndicatorHeight] value when non
   /// null.
   final double loadingIndicatorHeight;
+
+  /// The margin around the loading indicator of the table.
+  ///
+  /// By default, the value is:
+  ///
+  /// ```dart
+  /// const EdgeInsetsDirectional.only(
+  ///   bottom: 4,
+  ///   end: 24,
+  /// );
+  /// ```
+  ///
+  /// The loading indicator is the one that shows up above the table after the
+  /// first data loading.
+  ///
+  /// This value is overriden by the
+  /// [MaterialScrollableTableDecoration.loadingIndicatorMargin] value when non
+  /// null.
+  final EdgeInsetsGeometry loadingIndicatorMargin;
 
   /// The color of the loading widget of the table.
   ///
@@ -202,6 +221,7 @@ class MaterialScrollableTableThemeData
     required this.headingHeight,
     required this.headingTextStyle,
     required this.loadingIndicatorHeight,
+    required this.loadingIndicatorMargin,
     this.loadingWidgetColor,
     this.oddRowBackgroundColor,
     this.oddRowForegroundColor,
@@ -222,11 +242,12 @@ class MaterialScrollableTableThemeData
     final Color? headingForegroundColor,
     final double? headingHeight,
     final TextStyle? headingTextStyle,
+    final double? loadingIndicatorHeight,
+    final EdgeInsetsGeometry? loadingIndicatorMargin,
+    final Color? loadingWidgetColor,
     final Color? oddRowBackgroundColor,
     final Color? oddRowForegroundColor,
     final EdgeInsetsGeometry? padding,
-    final double? loadingIndicatorHeight,
-    final Color? loadingWidgetColor,
     final double? rowHeight,
     final TextStyle? rowTextStyle,
   }) {
@@ -248,6 +269,8 @@ class MaterialScrollableTableThemeData
       headingTextStyle: headingTextStyle ?? this.headingTextStyle,
       loadingIndicatorHeight:
           loadingIndicatorHeight ?? this.loadingIndicatorHeight,
+      loadingIndicatorMargin:
+          loadingIndicatorMargin ?? this.loadingIndicatorMargin,
       loadingWidgetColor: loadingWidgetColor ?? this.loadingWidgetColor,
       oddRowBackgroundColor:
           oddRowBackgroundColor ?? this.oddRowBackgroundColor,
@@ -297,6 +320,8 @@ class MaterialScrollableTableThemeData
       loadingIndicatorHeight:
           lerpDouble(loadingIndicatorHeight, other.loadingIndicatorHeight, t) ??
               loadingIndicatorHeight,
+      loadingIndicatorMargin:
+          lerpLoadingIndicatorMargin(other, t) ?? loadingIndicatorMargin,
       loadingWidgetColor:
           Color.lerp(loadingWidgetColor, other.loadingWidgetColor, t) ??
               loadingWidgetColor,
@@ -320,6 +345,17 @@ class MaterialScrollableTableThemeData
     return AlignmentGeometry.lerp(
       checkboxColumnAlignment,
       other.checkboxColumnAlignment,
+      t,
+    );
+  }
+
+  EdgeInsetsGeometry? lerpLoadingIndicatorMargin(
+    MaterialScrollableTableThemeData other,
+    double t,
+  ) {
+    return EdgeInsetsGeometry.lerp(
+      loadingIndicatorMargin,
+      other.loadingIndicatorMargin,
       t,
     );
   }
