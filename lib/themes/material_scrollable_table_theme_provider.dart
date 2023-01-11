@@ -37,6 +37,7 @@ class MaterialScrollableTableThemeProvider
       evenRowForegroundColor: colorScheme.onSurface,
       headingBackgroundColor: colorScheme.primary,
       headingForegroundColor: colorScheme.onPrimary,
+      loadingWidgetColor: colorScheme.onSurfaceVariant,
       oddRowBackgroundColor: colorScheme.surfaceVariant,
       oddRowForegroundColor: colorScheme.onSurfaceVariant,
     );

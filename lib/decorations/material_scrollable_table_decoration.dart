@@ -121,6 +121,20 @@ class MaterialScrollableTableDecoration {
   /// [MaterialScrollableTableThemeData.headingTextStyle] value.
   final TextStyle? headingTextStyle;
 
+  /// The color of the primary loading widget of the table.
+  ///
+  /// By default, the value is [ColorScheme.onSurfaceVariant].
+  ///
+  /// The primary loading widget is the one that shows up on the first data
+  /// loading.
+  ///
+  /// This value, when non null, will override the
+  /// [MaterialScrollableTableThemeData.loadingWidgetColor] value.
+  ///
+  /// This field is useless if you replaced the default loading widget by a
+  /// custom one.
+  final Color? loadingWidgetColor;
+
   /// The background color of any odd row of the table.
   ///
   /// By default, the value is [ColorScheme.surfaceVariant].
@@ -223,6 +237,7 @@ class MaterialScrollableTableDecoration {
     this.headingHeight,
     this.headingPadding,
     this.headingTextStyle,
+    this.loadingWidgetColor,
     this.oddRowBackgroundColor,
     this.oddRowForegroundColor,
     this.oddRowTextStyle,

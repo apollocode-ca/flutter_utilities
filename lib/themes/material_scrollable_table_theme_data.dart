@@ -108,6 +108,20 @@ class MaterialScrollableTableThemeData
   /// [MaterialScrollableTableDecoration.headingTextStyle] value when non null.
   final TextStyle headingTextStyle;
 
+  /// The color of the loading widget of the table.
+  ///
+  /// By default, the value is [ColorScheme.onSurfaceVariant].
+  ///
+  /// The loading widget is the one that shows up on the first data loading.
+  ///
+  /// This value is overriden by the
+  /// [MaterialScrollableTableDecoration.loadingWidgetColor] value when non
+  /// null.
+  ///
+  /// This field is useless if you replaced the default loading widget by a
+  /// custom one.
+  final Color? loadingWidgetColor;
+
   /// The background color of any odd row of the table.
   ///
   /// By default, the value is [ColorScheme.surfaceVariant].
@@ -175,6 +189,7 @@ class MaterialScrollableTableThemeData
     this.headingForegroundColor,
     required this.headingHeight,
     required this.headingTextStyle,
+    this.loadingWidgetColor,
     this.oddRowBackgroundColor,
     this.oddRowForegroundColor,
     required this.padding,
@@ -197,6 +212,7 @@ class MaterialScrollableTableThemeData
     final Color? oddRowBackgroundColor,
     final Color? oddRowForegroundColor,
     final EdgeInsetsGeometry? padding,
+    final Color? loadingWidgetColor,
     final double? rowHeight,
     final TextStyle? rowTextStyle,
   }) {
@@ -216,6 +232,7 @@ class MaterialScrollableTableThemeData
           headingForegroundColor ?? this.headingForegroundColor,
       headingHeight: headingHeight ?? this.headingHeight,
       headingTextStyle: headingTextStyle ?? this.headingTextStyle,
+      loadingWidgetColor: loadingWidgetColor ?? this.loadingWidgetColor,
       oddRowBackgroundColor:
           oddRowBackgroundColor ?? this.oddRowBackgroundColor,
       oddRowForegroundColor:
@@ -268,6 +285,9 @@ class MaterialScrollableTableThemeData
           Color.lerp(oddRowBackgroundColor, other.oddRowForegroundColor, t) ??
               oddRowForegroundColor,
       padding: EdgeInsetsGeometry.lerp(padding, other.padding, t) ?? padding,
+      loadingWidgetColor:
+          Color.lerp(loadingWidgetColor, other.loadingWidgetColor, t) ??
+              loadingWidgetColor,
       rowHeight: lerpDouble(rowHeight, other.rowHeight, t) ?? rowHeight,
       rowTextStyle:
           TextStyle.lerp(rowTextStyle, other.rowTextStyle, t) ?? rowTextStyle,

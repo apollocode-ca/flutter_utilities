@@ -8,6 +8,7 @@ import 'package:apollocode_flutter_utilities/models/column_data.dart';
 import 'package:apollocode_flutter_utilities/models/pagination_data.dart';
 import 'package:apollocode_flutter_utilities/themes/material_scrollable_table_theme_data.dart';
 import 'package:apollocode_flutter_utilities/widgets/layout/conditional.dart';
+import 'package:apollocode_flutter_utilities/widgets/loading.dart';
 import 'package:apollocode_flutter_utilities/widgets/tables/material_table/heading_row.dart';
 import 'package:apollocode_flutter_utilities/widgets/tables/material_table/item_row.dart';
 import 'package:apollocode_flutter_utilities/widgets/tables/material_table/loading_body.dart';
@@ -145,12 +146,27 @@ class MaterialScrollableTable<T> extends StatefulWidget {
     int index,
   ) itemCellBuilder;
 
-  /// Indicator that shows up in the top-right corner above the table when data
-  /// is loading and the table is not empty.
+  /// Indicator that shows up by default in the top-right corner above the table
+  /// when data is loading and the table is not empty.
   ///
   /// By default, when this property is not used, an [Icons.autorenew_rounded]
   /// icon will show up and rotate as long as new data is loading.
+  ///
+  /// This widget will be displayed only when the flag [isLoading] is enabled
+  /// and when there is data already loaded in the table (which will almost
+  /// always happen once the data is loaded for the time)
   final Widget? loadingIndicator;
+
+  /// Widget that shows up by default in the table body when its data is
+  /// loading for the first time.
+  ///
+  /// By default, when this property is not used, a [Loading] widget will show
+  /// up as long as new data is loading.
+  ///
+  /// This widget will be displayed only when the flag [isLoading] is enabled
+  /// and when there is no data in the table already (which will happen, most of
+  /// the time, when the data is loading for the first time).
+  final Widget? loadingWidget;
 
   /// The label to display in place of the data rows when there is no data.
   final String noDataLabel;
@@ -282,6 +298,7 @@ class MaterialScrollableTable<T> extends StatefulWidget {
     this.items = const [],
     required this.itemCellBuilder,
     this.loadingIndicator,
+    this.loadingWidget,
     required this.noDataLabel,
     this.onCheckboxChanged,
     this.onItemsPerPageChanged,
@@ -702,7 +719,10 @@ class MaterialScrollableTableState<T>
                         child: Builder(
                           builder: (context) {
                             if (widget.isLoading && _items.isEmpty) {
-                              return const LoadingBody();
+                              return LoadingBody(
+                                decoration: widget.decoration,
+                                child: widget.loadingWidget,
+                              );
                             }
                             if (_items.isEmpty) {
                               return NoDataBody(
