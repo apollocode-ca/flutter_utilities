@@ -4,7 +4,7 @@ import 'package:apollocode_flutter_utilities/extensions/global_key_extension.dar
 import 'package:apollocode_flutter_utilities/models/column_data.dart';
 import 'package:apollocode_flutter_utilities/themes/material_scrollable_table_theme_data.dart';
 import 'package:apollocode_flutter_utilities/widgets/tables/material_table/table_cell.dart';
-import 'package:apollocode_flutter_utilities/widgets/tables/material_table/table_checkbox.dart';
+import 'package:apollocode_flutter_utilities/widgets/togglables/material_checkbox.dart';
 import 'package:flutter/material.dart' hide TableCell;
 
 class ItemRow<T> extends StatefulWidget {
@@ -273,8 +273,28 @@ class _State<T> extends State<ItemRow<T>> {
                     alignment: checkboxColumnAlignment,
                     decoration: widget.decoration,
                     width: checkboxColumnWidth,
-                    child: TableCheckbox(
-                      isEvenRow: widget.index.isEven,
+                    child: MaterialCheckbox(
+                      backgroundColor:
+                          MaterialStateProperty.resolveWith((states) {
+                        if (states.contains(MaterialState.selected)) {
+                          if (states.contains(MaterialState.disabled)) {
+                            return foregroundColor.withOpacity(0.38);
+                          }
+                          return foregroundColor;
+                        }
+                        return null;
+                      }),
+                      border: MaterialStateProperty.resolveWith((states) {
+                        if (states.contains(MaterialState.selected)) {
+                          return null;
+                        }
+                        return Border.all(
+                          color: foregroundColor,
+                          width: 2,
+                        );
+                      }),
+                      foregroundColor:
+                          MaterialStatePropertyAll(backgroundColor),
                       onChanged: widget.onCheckboxChanged,
                       onHovered: (isHovering) {
                         setState(() {
@@ -282,6 +302,18 @@ class _State<T> extends State<ItemRow<T>> {
                         });
                       },
                       onTap: widget.onCheckboxTap,
+                      overlayColor: MaterialStateProperty.resolveWith((states) {
+                        if (states.contains(MaterialState.pressed)) {
+                          return foregroundColor.withOpacity(0.12);
+                        }
+                        if (states.contains(MaterialState.focused)) {
+                          return foregroundColor.withOpacity(0.12);
+                        }
+                        if (states.contains(MaterialState.hovered)) {
+                          return foregroundColor.withOpacity(0.08);
+                        }
+                        return null;
+                      }),
                       state: widget.checkboxState,
                     ),
                   ),
