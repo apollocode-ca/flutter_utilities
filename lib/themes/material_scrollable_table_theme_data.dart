@@ -214,6 +214,15 @@ class MaterialScrollableTableThemeData
   /// [MaterialScrollableTableDecoration.padding] value when non null.
   final EdgeInsetsGeometry padding;
 
+  /// The alignment of the widgets inside the pagination row of the table.
+  ///
+  /// By default, the value is [MainAxisAlignment.end].
+  ///
+  /// This value is overriden by the
+  /// [MaterialScrollableTableDecoration.paginationAlignment] value when non
+  /// null.
+  final MainAxisAlignment paginationAlignment;
+
   /// The height of a data row in the table.
   ///
   /// By default, the value is 52.
@@ -253,6 +262,7 @@ class MaterialScrollableTableThemeData
     this.oddRowBackgroundColor,
     this.oddRowForegroundColor,
     required this.padding,
+    required this.paginationAlignment,
     required this.rowHeight,
     required this.rowTextStyle,
   });
@@ -277,6 +287,7 @@ class MaterialScrollableTableThemeData
     final Color? oddRowBackgroundColor,
     final Color? oddRowForegroundColor,
     final EdgeInsetsGeometry? padding,
+    final MainAxisAlignment? paginationAlignment,
     final double? rowHeight,
     final TextStyle? rowTextStyle,
   }) {
@@ -309,6 +320,7 @@ class MaterialScrollableTableThemeData
       oddRowForegroundColor:
           oddRowForegroundColor ?? this.oddRowForegroundColor,
       padding: padding ?? this.padding,
+      paginationAlignment: paginationAlignment ?? this.paginationAlignment,
       rowHeight: rowHeight ?? this.rowHeight,
       rowTextStyle: rowTextStyle ?? this.rowTextStyle,
     );
@@ -369,6 +381,8 @@ class MaterialScrollableTableThemeData
           Color.lerp(oddRowBackgroundColor, other.oddRowForegroundColor, t) ??
               oddRowForegroundColor,
       padding: EdgeInsetsGeometry.lerp(padding, other.padding, t) ?? padding,
+      paginationAlignment:
+          lerpPaginationAlignment(other, t) ?? paginationAlignment,
       rowHeight: lerpDouble(rowHeight, other.rowHeight, t) ?? rowHeight,
       rowTextStyle:
           TextStyle.lerp(rowTextStyle, other.rowTextStyle, t) ?? rowTextStyle,
@@ -406,5 +420,28 @@ class MaterialScrollableTableThemeData
       other.loadingIndicatorMargin,
       t,
     );
+  }
+
+  MainAxisAlignment? lerpPaginationAlignment(
+    MaterialScrollableTableThemeData other,
+    double t,
+  ) {
+    if (t < 0.5) {
+      return paginationAlignment;
+    } else if (t > 0.5) {
+      return other.paginationAlignment;
+    }
+    if (paginationAlignment == MainAxisAlignment.start &&
+        other.paginationAlignment == MainAxisAlignment.end) {
+      return MainAxisAlignment.center;
+    }
+    if (paginationAlignment == MainAxisAlignment.end &&
+        other.paginationAlignment == MainAxisAlignment.start) {
+      return MainAxisAlignment.center;
+    }
+    if (paginationAlignment == other.paginationAlignment) {
+      return paginationAlignment;
+    }
+    return null;
   }
 }

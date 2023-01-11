@@ -241,6 +241,14 @@ class MaterialScrollableTableDecoration {
   /// separately, use [headingPadding], [rowPadding] and [paginationPadding].
   final EdgeInsetsGeometry? padding;
 
+  /// The alignment of the widgets inside the pagination row of the table.
+  ///
+  /// By default, the value is [MainAxisAlignment.end].
+  ///
+  /// This value, when non null, will override the
+  /// [MaterialScrollableTableThemeData.paginationAlignment] value.
+  final MainAxisAlignment? paginationAlignment;
+
   /// The background color of the pagination of the table.
   ///
   /// By default, [headingBackgroundColor] is used instead.
@@ -315,6 +323,7 @@ class MaterialScrollableTableDecoration {
     this.oddRowForegroundColor,
     this.oddRowTextStyle,
     this.padding,
+    this.paginationAlignment,
     this.paginationBackgroundColor,
     this.paginationHeight,
     this.paginationPadding,

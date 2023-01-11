@@ -25,6 +25,7 @@ class MaterialScrollableTableThemeProvider
     padding: const EdgeInsets.symmetric(
       horizontal: 24,
     ),
+    paginationAlignment: MainAxisAlignment.end,
     rowHeight: 52,
     rowTextStyle: const TextStyle(),
   );

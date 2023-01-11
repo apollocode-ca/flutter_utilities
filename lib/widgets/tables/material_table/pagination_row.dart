@@ -74,6 +74,9 @@ class _PaginationRowState extends State<PaginationRow> {
 
   @override
   Widget build(BuildContext context) {
+    final alignment = widget.decoration.paginationAlignment ??
+        theme?.paginationAlignment ??
+        MainAxisAlignment.end;
     final backgroundColor = widget.decoration.paginationBackgroundColor ??
         widget.decoration.headingBackgroundColor ??
         theme?.headingBackgroundColor ??
@@ -100,7 +103,7 @@ class _PaginationRowState extends State<PaginationRow> {
       ),
       padding: padding,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisAlignment: alignment,
         children: [
           BodyText(
             widget.pagination.formattedItemsPerPageText,
