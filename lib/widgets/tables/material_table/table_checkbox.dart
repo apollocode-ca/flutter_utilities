@@ -3,12 +3,14 @@ import 'package:apollocode_flutter_utilities/widgets/togglables/material_checkbo
 import 'package:flutter/material.dart';
 
 class TableCheckbox extends StatelessWidget {
+  final bool disabled;
   final bool? isEvenRow;
-  final void Function(CheckboxState state) onChanged;
+  final void Function(CheckboxState state)? onChanged;
   final void Function() onTap;
   final CheckboxState state;
 
   const TableCheckbox({
+    this.disabled = false,
     required this.isEvenRow,
     required this.onChanged,
     required this.onTap,
@@ -27,6 +29,14 @@ class TableCheckbox extends StatelessWidget {
     return Theme.of(context).colorScheme.onSurface;
   }
 
+  Color _getBorderColor(Set<MaterialState> states, BuildContext context) {
+    final color = _getBackgroundColor(context);
+    if (states.contains(MaterialState.disabled)) {
+      return color.withOpacity(0.38);
+    }
+    return color;
+  }
+
   Color _getForegroundColor(BuildContext context) {
     final isEvenRow = this.isEvenRow;
     if (isEvenRow == null) {
@@ -42,8 +52,12 @@ class TableCheckbox extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialCheckbox(
       backgroundColor: MaterialStateProperty.resolveWith((states) {
+        final color = _getBackgroundColor(context);
         if (states.contains(MaterialState.selected)) {
-          return _getBackgroundColor(context);
+          if (states.contains(MaterialState.disabled)) {
+            return color.withOpacity(0.38);
+          }
+          return color;
         }
         return null;
       }),
@@ -52,10 +66,11 @@ class TableCheckbox extends StatelessWidget {
           return null;
         }
         return Border.all(
-          color: _getBackgroundColor(context),
+          color: _getBorderColor(states, context),
           width: 2,
         );
       }),
+      disabled: disabled,
       foregroundColor: MaterialStatePropertyAll(
         _getForegroundColor(context),
       ),

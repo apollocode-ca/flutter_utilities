@@ -731,6 +731,7 @@ class MaterialScrollableTableState<T>
                       HeadingRow(
                         addCheckboxesColumn: widget.addCheckboxesColumn,
                         cellBuilder: widget.headingCellBuilder,
+                        checkboxDisabled: _items.isEmpty,
                         checkboxState: _overallCheckboxState,
                         columns: widget.columns,
                         decoration: widget.decoration,

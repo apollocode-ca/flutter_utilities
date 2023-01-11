@@ -9,15 +9,17 @@ import 'package:flutter/material.dart' hide TableCell;
 class HeadingRow extends StatelessWidget {
   final bool addCheckboxesColumn;
   final Widget? Function(BuildContext context, ColumnData column) cellBuilder;
+  final bool checkboxDisabled;
   final CheckboxState checkboxState;
   final List<ColumnData> columns;
   final MaterialScrollableTableDecoration decoration;
-  final void Function(CheckboxState state) onCheckboxChanged;
+  final void Function(CheckboxState state)? onCheckboxChanged;
   final void Function() onCheckboxTap;
 
   const HeadingRow({
     required this.addCheckboxesColumn,
     required this.cellBuilder,
+    required this.checkboxDisabled,
     required this.checkboxState,
     required this.columns,
     required this.decoration,
@@ -77,6 +79,7 @@ class HeadingRow extends StatelessWidget {
                 decoration: decoration,
                 width: checkboxColumnWidth,
                 child: TableCheckbox(
+                  disabled: checkboxDisabled,
                   isEvenRow: null,
                   onChanged: onCheckboxChanged,
                   onTap: onCheckboxTap,
