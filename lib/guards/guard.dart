@@ -237,7 +237,7 @@ class GuardState<T extends Cloneable> extends State<Guard<T>> {
       future: widget.future,
       initialData: initialData,
       builder: (context, snapshot) {
-        if (snapshot.isLoading) {
+        if (snapshot.isLoading && initialData == null) {
           return _DataLoadingHandler(
             externCall: widget.onDataLoading,
           )();
