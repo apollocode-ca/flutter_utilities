@@ -57,7 +57,7 @@ class DisplayText extends StatelessWidget {
 
   TextStyle? _getDefaultStyle(BuildContext context) {
     final style = DefaultTextStyle.of(context).style;
-    if (style != const TextStyle()) {
+    if (style != Theme.of(context).textTheme.bodyMedium) {
       return style;
     }
     return null;
