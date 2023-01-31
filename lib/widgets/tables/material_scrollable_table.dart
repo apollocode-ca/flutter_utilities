@@ -661,6 +661,7 @@ class MaterialScrollableTableState<T>
 
   @override
   Widget build(BuildContext context) {
+    _onItemsChange();
     final backgroundColor = widget.decoration.backgroundColor ??
         _theme?.backgroundColor ??
         Theme.of(context).colorScheme.surfaceVariant;
