@@ -593,7 +593,7 @@ class MaterialScrollableTableState<T>
   }
 
   void _onItemsChange() {
-    _items = widget.pagination?.paginated?.data ?? widget.items;
+    _items = List.of(widget.pagination?.paginated?.data ?? widget.items);
     for (var i = 0; i < _items.length; i++) {
       isRowDragging.add(false);
       _checkboxStates.add(CheckboxState.defaultState);
@@ -640,9 +640,9 @@ class MaterialScrollableTableState<T>
 
   @override
   void didUpdateWidget(covariant MaterialScrollableTable<T> oldWidget) {
-    final areItemsEqual = _listEquality.equals(oldWidget.items, widget.items);
+    final areItemsEqual = _listEquality.equals(_items, widget.items);
     final arePaginatedEqual = _listEquality.equals(
-      oldWidget.pagination?.paginated?.data,
+      _items,
       widget.pagination?.paginated?.data,
     );
     if (!areItemsEqual || !arePaginatedEqual) {
@@ -661,7 +661,6 @@ class MaterialScrollableTableState<T>
 
   @override
   Widget build(BuildContext context) {
-    _onItemsChange();
     final backgroundColor = widget.decoration.backgroundColor ??
         _theme?.backgroundColor ??
         Theme.of(context).colorScheme.surfaceVariant;
