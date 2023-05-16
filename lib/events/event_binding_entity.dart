@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 
 /// Class to bind [Event]s to widgets and functions efficiently.
 ///
+/// Documentation: https://docs.google.com/document/d/1HtFJf06JWew7rlgf3GNtgCO3r-gYR574rsZdDEUOM60
+///
 /// INITIALIZE
 /// Must be initialized in a service like that:
 ///   EventBinding<{the type you want}> event1 = EventBinding<{the type you want}>(event: "events/event1").
